@@ -956,13 +956,13 @@ export default function Home() {
       <h2
         className="
           text-[21px]
-          font-bold
+          font-[600]
           leading-tight
           tracking-[-0.025em]
           text-[#08245A]
 
           sm:text-[24px]
-          lg:text-[28px]
+          lg:text-[26px]
         "
       >
         Why Universities Trust Technical Journals
@@ -1197,13 +1197,13 @@ export default function Home() {
       <h2
         className="
           text-[22px]
-          font-bold
+          font-[600]
           leading-tight
           tracking-[-0.025em]
           text-[#08245A]
 
           sm:text-[26px]
-          lg:text-[28px]
+          lg:text-[26px]
         "
       >
         What We Offer to Universities
@@ -1440,13 +1440,13 @@ export default function Home() {
       <h2
         className="
           text-[21px]
-          font-bold
+          font-[600]
           leading-[1.2]
           tracking-[-0.025em]
           text-[#08245A]
           sm:text-[25px]
-          md:text-[28px]
-          lg:text-[28px]
+          md:text-[26px]
+          lg:text-[26px]
         "
       >
         Trusted by Leading Universities Worldwide
@@ -1592,10 +1592,7 @@ export default function Home() {
                 lg:max-h-[48px]
                 lg:max-w-[155px]
 
-                xl:max-h-[52px]
-                xl:max-w-[180px]
-
-                2xl:max-w-[195px]
+              
               "
             />
           </motion.div>
@@ -1645,7 +1642,7 @@ export default function Home() {
           lg:px-8
           lg:py-7
 
-          xl:grid-cols-[35%_65%]
+          xl:grid-cols-[40%_60%]
           xl:px-10
       "
       >
@@ -1684,8 +1681,8 @@ export default function Home() {
               tracking-[-0.025em]
               text-[#159447]
 
-              sm:text-[25px]
-              lg:text-[26px]
+              sm:text-[24px]
+              lg:text-[24px]
           "
           >
             Sustainable Development
@@ -1780,14 +1777,12 @@ text-justify
           className="
             grid
             grid-cols-2
-            gap-3
-
-            sm:gap-4
+          
 
             md:grid-cols-2
 
             lg:grid-cols-4
-            lg:gap-3
+            
           "
         >
           {sdgs.map((sdg) => (
@@ -1842,10 +1837,10 @@ text-justify
 
                   sm:max-w-[190px]
 
-                  md:max-w-[180px]
+                  md:max-w-[150px]
 
                   lg:max-w-none
-                  xl:max-w-[205px]
+                  xl:max-w-[150px]
                 "
               />
             </motion.div>
