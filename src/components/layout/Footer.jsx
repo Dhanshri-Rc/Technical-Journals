@@ -142,7 +142,7 @@ function FooterSection({ children, className = "" }) {
 
 function FooterHeading({ children }) {
   return (
-    <h3 className="relative mb-4 inline-block text-[14px] font-semibold tracking-[0.01em] text-white">
+    <h3 className="relative mb-4 inline-block text-[14px] font-[550] tracking-[0.01em] text-white">
       {children}
 
       <span className="absolute -bottom-1.5 left-0 h-[2px] w-7 rounded-full bg-blue-500" />
