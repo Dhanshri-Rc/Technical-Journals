@@ -5,7 +5,7 @@ import PageHero from "../components/common/PageHero";
 import StatBar from "../components/common/StatBar";
 import JournalCard from "../components/sections/JournalCard";
 import CtaBanner from "../components/common/CtaBanner";
-import journalsBg from "../assets/backgrounds/journals-bg.jpg";
+import journalsBg from "../assets/images/journalBg.png";
 import { JOURNALS } from "../data/site";
 
 const SUBJECTS = [...new Set(JOURNALS.map((j) => j.field))];
