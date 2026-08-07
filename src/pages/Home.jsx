@@ -22,6 +22,7 @@ import {
   LineChart,
   Landmark,
   Send,
+  ChartNoAxesCombined,
 } from "lucide-react";
 
 import Seo from "../components/common/Seo";
@@ -122,76 +123,88 @@ const trustItems = [
     icon: ShieldCheck,
     title: "Exclusive Platform",
     desc: "Strictly for universities. No commercial content.",
-    iconClass: "bg-[#EDF4FF] text-[#1769E0]",
+    iconBg: "bg-[#EAF2FF]",
+    iconColor: "text-[#1769E0]",
   },
   {
     icon: Globe2,
     title: "Global Reach",
     desc: "Expand your research impact worldwide.",
-    iconClass: "bg-[#EAF8EE] text-[#16A34A]",
+    iconBg: "bg-[#EAF7ED]",
+    iconColor: "text-[#20A447]",
   },
   {
     icon: Workflow,
     title: "End-to-End Workflow",
-    desc: "From submission to publication — streamline seamlessly.",
-    iconClass: "bg-[#FFF1E7] text-[#F97316]",
+    desc: "From submission to publication - managed seamlessly.",
+    iconBg: "bg-[#FFF1E5]",
+    iconColor: "text-[#F97316]",
   },
   {
-    icon: BarChart3,
+    icon: ChartNoAxesCombined,
     title: "Advanced Analytics",
     desc: "Real-time insights on downloads, citations, and performance.",
-    iconClass: "bg-[#F3EDFF] text-[#7C3AED]",
+    iconBg: "bg-[#F2ECFF]",
+    iconColor: "text-[#7C3AED]",
   },
   {
     icon: LockKeyhole,
     title: "Secure & Compliant",
-    desc: "Enterprise-grade security & data protection with global standards.",
-    iconClass: "bg-[#E9F7FF] text-[#0891B2]",
+    desc: "Enterprise-grade security with compliance to global standards.",
+    iconBg: "bg-[#E7F5FB]",
+    iconColor: "text-[#168DB7]",
   },
   {
     icon: Headphones,
     title: "Dedicated Support",
     desc: "Expert support team committed to your success.",
-    iconClass: "bg-[#FFF0F0] text-[#EF4444]",
+    iconBg: "bg-[#FFF0F2]",
+    iconColor: "text-[#F21D42]",
   },
 ];
 
 const services = [
   {
-    icon: BookOpen,
+    icon: FileText,
     title: "Journal Hosting",
     desc: "Reliable and scalable hosting for peer-reviewed journals with custom domains and branding.",
-    iconClass: "bg-[#EAF1FF] text-[#1769E0]",
+    iconBg: "bg-[#EAF2FF]",
+    iconColor: "text-[#146CDB]",
   },
   {
     icon: Workflow,
     title: "Editorial Workflow",
-    desc: "Streamline submissions, review, editing, and publication with smart workflows.",
-    iconClass: "bg-[#EAF8EE] text-[#16A34A]",
+    desc: "Streamline submission, review, editing, and publication with smart workflows.",
+    iconBg: "bg-[#EAF7ED]",
+    iconColor: "text-[#22A447]",
   },
   {
-    icon: LineChart,
+    icon: BarChart3,
     title: "Indexing & Visibility",
     desc: "Get indexed in major databases and increase the visibility of your research.",
-    iconClass: "bg-[#FFF3E7] text-[#F59E0B]",
+    iconBg: "bg-[#FFF1E5]",
+    iconColor: "text-[#F97816]",
   },
   {
     icon: LockKeyhole,
     title: "Security & Compliance",
     desc: "Robust security, regular backups, and adherence to publishing ethics and standards.",
-    iconClass: "bg-[#F2ECFF] text-[#7C3AED]",
+    iconBg: "bg-[#F2EBFF]",
+    iconColor: "text-[#7635D5]",
   },
   {
     icon: Users,
-    title: "Author & Reviewer Tools",
+    title: "Author & Reviewer",
     desc: "Intuitive tools for authors, reviewers, and editors to collaborate efficiently.",
-    iconClass: "bg-[#EAF4FF] text-[#2385E9]",
+    iconBg: "bg-[#EAF4FF]",
+    iconColor: "text-[#1682DC]",
   },
   {
-    icon: BarChart3,
+    icon: ChartNoAxesCombined,
     title: "Reports & Analytics",
-    desc: "Track performance, downloads, citations, and other key metrics in real time.",
-    iconClass: "bg-[#FFF0F1] text-[#F43F5E]",
+    desc: "Track performance, downloads, citations, and other key metrics in real-time.",
+    iconBg: "bg-[#FFF0F2]",
+    iconColor: "text-[#F21942]",
   },
 ];
 
@@ -925,91 +938,488 @@ export default function Home() {
       </motion.div>
     </section>
 
-        {/* WHY TRUST */}
-        <section className="mx-auto max-w-[1180px] px-4 py-10 sm:px-6 lg:px-8 lg:py-12">
-          <SectionTitle>Why Universities Trust Technical Journals</SectionTitle>
+       {/* WHY UNIVERSITIES TRUST */}
+<section className="w-full bg-white py-5">
+  <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8">
 
-          <div className="grid grid-cols-2 gap-y-8 sm:grid-cols-3 lg:grid-cols-6 lg:gap-y-0">
-            {trustItems.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.article
-                  key={item.title}
-                  variants={reveal}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.42, delay: index * 0.04, ease }}
-                  whileHover={{ y: -5 }}
-                  className={`px-3 text-center ${
-                    index !== trustItems.length - 1
-                      ? "lg:border-r lg:border-[#E2E8F0]"
-                      : ""
-                  }`}
-                >
-                  <span
-                    className={`mx-auto grid h-12 w-12 place-items-center rounded-full ${item.iconClass}`}
-                  >
-                    <Icon size={21} strokeWidth={2.1} />
-                  </span>
-                  <h3 className="mt-3 text-[10.5px] font-bold leading-[1.2] text-[#17366B]">
-                    {item.title}
-                  </h3>
-                  <p className="mx-auto mt-2 max-w-[130px] text-[8.5px] font-medium leading-[1.5] text-[#6B7789]">
-                    {item.desc}
-                  </p>
-                </motion.article>
-              );
-            })}
-          </div>
-        </section>
+    {/* Heading */}
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.4 }}
+      transition={{
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="mb-8 text-center sm:mb-9"
+    >
+      <h2
+        className="
+          text-[21px]
+          font-bold
+          leading-tight
+          tracking-[-0.025em]
+          text-[#08245A]
 
-        {/* SERVICES */}
-        <section className="mx-auto max-w-[1180px] px-4 pb-10 sm:px-6 lg:px-8 lg:pb-12">
-          <SectionTitle>What We Offer to Universities</SectionTitle>
+          sm:text-[24px]
+          lg:text-[28px]
+        "
+      >
+        Why Universities Trust Technical Journals
+      </h2>
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            {services.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.article
-                  key={item.title}
-                  variants={reveal}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.42, delay: index * 0.04, ease }}
-                  whileHover={{
-                    y: -7,
-                    boxShadow: "0 16px 36px rgba(29, 74, 134, 0.12)",
-                  }}
-                  className="group flex min-h-[242px] flex-col rounded-[10px] border border-[#E3E9F1] bg-white p-4 transition-colors hover:border-[#BFD3F2]"
-                >
-                  <span
-                    className={`grid h-11 w-11 place-items-center rounded-full ${item.iconClass}`}
-                  >
-                    <Icon size={20} strokeWidth={2.15} />
-                  </span>
+      {/* exact multicolor underline */}
+      <div
+        className="
+          mx-auto
+          mt-3
+          flex
+          h-[3.5px]
+          w-[82px]
+          overflow-hidden
+          rounded-full
+          sm:w-[98px]
+        "
+      >
+        <span className="h-full flex-[2.2] bg-[#1769E0]" />
+        <span className="h-full flex-1 bg-[#FF5A4E]" />
+        <span className="h-full flex-1 bg-[#FFC43D]" />
+        <span className="h-full flex-1 bg-[#25C7D9]" />
+        <span className="h-full flex-[2.2] bg-[#1769E0]" />
+      </div>
+    </motion.div>
 
-                  <h3 className="mt-4 text-[11px] font-bold text-[#17366B]">
-                    {item.title}
-                  </h3>
+    {/* Trust items */}
+    <motion.div
+      initial="hidden"
+      whileInView="show"
+      viewport={{
+        once: true,
+        amount: 0.15,
+      }}
+      variants={{
+        hidden: {},
+        show: {
+          transition: {
+            staggerChildren: 0.06,
+          },
+        },
+      }}
+      className="
+        grid
+        grid-cols-1
 
-                  <p className="mt-3 flex-1 text-[9px] font-medium leading-[1.62] text-[#68768A]">
-                    {item.desc}
-                  </p>
+        sm:grid-cols-2
 
-                  <Link
-                    to="/services"
-                    className="mt-4 inline-flex w-fit items-center gap-1 text-[8.5px] font-bold text-[#1769E0] transition-all group-hover:gap-2"
-                  >
-                    Learn More <ArrowRight size={11} strokeWidth={2.5} />
-                  </Link>
-                </motion.article>
-              );
-            })}
-          </div>
-        </section>
+        md:grid-cols-3
+
+        lg:grid-cols-6
+      "
+    >
+      {trustItems.map((item, index) => {
+        const Icon = item.icon;
+
+        return (
+          <motion.article
+            key={item.title}
+            variants={{
+              hidden: {
+                opacity: 0,
+                y: 18,
+                scale: 0.97,
+              },
+              show: {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+              },
+            }}
+            transition={{
+              duration: 0.45,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            whileHover={{
+              y: -6,
+            }}
+            className={`
+              group
+              relative
+              flex
+              min-h-[182px]
+              flex-col
+              items-center
+              justify-start
+              px-5
+              py-4
+              text-center
+
+              sm:min-h-[190px]
+
+              lg:min-h-[174px]
+              lg:px-4
+
+              ${
+                index !== trustItems.length - 1
+                  ? `
+                    border-b
+                    border-[#E5EAF1]
+
+                    sm:[&:nth-child(odd)]:border-r
+
+                    md:border-b
+                    md:border-r
+                    md:[&:nth-child(3n)]:border-r-0
+
+                    lg:border-b-0
+                    lg:border-r
+                    lg:[&:nth-child(3n)]:border-r
+                  `
+                  : ""
+              }
+            `}
+          >
+            {/* subtle hover background */}
+            <div
+              className="
+                pointer-events-none
+                absolute
+                inset-1
+                rounded-[10px]
+                bg-[#F8FBFF]
+                opacity-0
+                transition-opacity
+                duration-300
+                group-hover:opacity-100
+              "
+            />
+
+            {/* icon */}
+            <motion.div
+              whileHover={{
+                scale: 1.1,
+                rotate: 2,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 280,
+                damping: 18,
+              }}
+              className={`
+                relative
+                z-10
+                grid
+                h-[52px]
+                w-[52px]
+                shrink-0
+                place-items-center
+                rounded-full
+
+                sm:h-[55px]
+                sm:w-[55px]
+
+                ${item.iconBg}
+                ${item.iconColor}
+              `}
+            >
+              <Icon
+                className="
+                  h-[26px]
+                  w-[26px]
+
+                  sm:h-[29px]
+                  sm:w-[29px]
+                "
+                strokeWidth={2.3}
+              />
+            </motion.div>
+
+            {/* title */}
+            <h3
+              className="
+                relative
+                z-10
+                mt-4
+                text-[12px]
+                font-bold
+                leading-[1.25]
+                text-[#102D63]
+
+                sm:text-[12px]
+                lg:text-[13px]
+                xl:text-[14px]
+              "
+            >
+              {item.title}
+            </h3>
+
+            {/* description */}
+            <p
+              className="
+                relative
+                z-10
+                mx-auto
+                mt-2
+                max-w-[145px]
+                text-[8.5px]
+                font-medium
+                leading-[1.65]
+                text-[#5F6F87]
+
+                sm:text-[9px]
+
+                xl:text-[11px]
+              "
+            >
+              {item.desc}
+            </p>
+          </motion.article>
+        );
+      })}
+    </motion.div>
+  </div>
+</section>
+
+       {/* WHAT WE OFFER */}
+<section className="w-full bg-white py-6">
+  <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8">
+
+    {/* Heading */}
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="mb-8 text-center sm:mb-9"
+    >
+      <h2
+        className="
+          text-[22px]
+          font-bold
+          leading-tight
+          tracking-[-0.025em]
+          text-[#08245A]
+
+          sm:text-[26px]
+          lg:text-[28px]
+        "
+      >
+        What We Offer to Universities
+      </h2>
+
+      {/* Multicolor line exactly like reference */}
+      <div
+        className="
+          mx-auto
+          mt-3
+          flex
+          h-[3.5px]
+          w-[82px]
+          overflow-hidden
+          rounded-full
+          sm:w-[98px]
+        "
+      >
+        <span className="h-full flex-[2.2] bg-[#1769E0]" />
+        <span className="h-full flex-1 bg-[#FF5A4E]" />
+        <span className="h-full flex-1 bg-[#FFC43D]" />
+        <span className="h-full flex-1 bg-[#25C7D9]" />
+        <span className="h-full flex-[2.2] bg-[#1769E0]" />
+      </div>
+    </motion.div>
+
+    {/* Cards */}
+    <motion.div
+      initial="hidden"
+      whileInView="show"
+      viewport={{
+        once: true,
+        amount: 0.15,
+      }}
+      variants={{
+        hidden: {},
+        show: {
+          transition: {
+            staggerChildren: 0.06,
+          },
+        },
+      }}
+      className="
+        grid
+        grid-cols-1
+        gap-4
+
+        sm:grid-cols-2
+        md:grid-cols-3
+
+        xl:grid-cols-6
+        xl:gap-[14px]
+      "
+    >
+      {services.map((item) => {
+        const Icon = item.icon;
+
+        return (
+          <motion.article
+            key={item.title}
+            variants={{
+              hidden: {
+                opacity: 0,
+                y: 22,
+                scale: 0.98,
+              },
+              show: {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+              },
+            }}
+            transition={{
+              duration: 0.48,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            whileHover={{
+              y: -7,
+              boxShadow: "0 16px 35px rgba(22, 64, 120, 0.11)",
+            }}
+            className="
+              group
+              flex
+              min-h-[216px]
+              flex-col
+              items-center
+              rounded-[12px]
+              border
+              border-[#E4EAF2]
+              bg-white
+              px-4
+              py-5
+              text-center
+              transition-colors
+              duration-300
+
+              hover:border-[#CADAF0]
+
+              sm:min-h-[220px]
+
+              xl:min-h-[216px]
+              xl:px-[10px]
+            "
+          >
+            {/* Icon circle */}
+            <motion.div
+              whileHover={{
+                scale: 1.08,
+                rotate: 2,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 280,
+                damping: 18,
+              }}
+              className={`
+                grid
+                h-[60px]
+                w-[60px]
+                shrink-0
+                place-items-center
+                rounded-full
+
+                sm:h-[60px]
+                sm:w-[60px]
+
+                ${item.iconBg}
+                ${item.iconColor}
+              `}
+            >
+              <Icon
+                className="
+                  h-[29px]
+                  w-[29px]
+
+                  sm:h-[31px]
+                  sm:w-[31px]
+                "
+                strokeWidth={2.3}
+              />
+            </motion.div>
+
+            {/* Title */}
+            <h3
+              className="
+                mt-5
+                text-[13px]
+                font-bold
+                leading-[1.25]
+                text-[#102D63]
+
+                sm:text-[14.5px]
+              "
+            >
+              {item.title}
+            </h3>
+
+            {/* Description */}
+            <p
+              className="
+                mx-auto
+                mt-5
+                max-w-[165px]
+                flex-1
+                text-[12px]
+                font-medium
+                leading-[1.75]
+                text-[#56667F]
+
+                sm:text-[12.5px]
+                xl:text-[12px]
+              "
+            >
+              {item.desc}
+            </p>
+
+            {/* Learn More */}
+            {/* <Link
+              to="/services"
+              className="
+                mt-6
+                inline-flex
+                items-center
+                justify-center
+                gap-2
+                text-[10.5px]
+                font-extrabold
+                text-[#1769E0]
+                transition-all
+                duration-300
+
+                group-hover:gap-3
+                group-hover:text-[#0B55C3]
+
+                sm:text-[11px]
+              "
+            >
+              Learn More
+
+              <ArrowRight
+                className="
+                  h-[15px]
+                  w-[15px]
+                  transition-transform
+                  duration-300
+                  group-hover:translate-x-1
+                "
+                strokeWidth={2.4}
+              />
+            </Link> */}
+          </motion.article>
+        );
+      })}
+    </motion.div>
+  </div>
+</section>
 
      
        {/* Trusted Universities */}
@@ -1036,19 +1446,30 @@ export default function Home() {
           text-[#08245A]
           sm:text-[25px]
           md:text-[28px]
-          lg:text-[30px]
+          lg:text-[28px]
         "
       >
         Trusted by Leading Universities Worldwide
       </h2>
 
       {/* Exact multicolor underline */}
-      <div className="mx-auto mt-4 flex h-[3px] w-[122px] overflow-hidden rounded-full sm:w-[130px]">
-        <span className="h-full flex-[1.5] bg-[#1769E0]" />
+      <div
+        className="
+          mx-auto
+          mt-3
+          flex
+          h-[3.5px]
+          w-[82px]
+          overflow-hidden
+          rounded-full
+          sm:w-[98px]
+        "
+      >
+        <span className="h-full flex-[2.2] bg-[#1769E0]" />
         <span className="h-full flex-1 bg-[#FF5A4E]" />
-        <span className="h-full flex-1 bg-[#FFC83D]" />
-        <span className="h-full flex-1 bg-[#26C6DA]" />
-        <span className="h-full flex-[1.7] bg-[#1769E0]" />
+        <span className="h-full flex-1 bg-[#FFC43D]" />
+        <span className="h-full flex-1 bg-[#25C7D9]" />
+        <span className="h-full flex-[2.2] bg-[#1769E0]" />
       </div>
     </motion.div>
 
@@ -1258,7 +1679,7 @@ export default function Home() {
             className="
               mt-1
               text-[22px]
-              font-bold
+              font-semibold
               leading-[1.08]
               tracking-[-0.025em]
               text-[#159447]
@@ -1437,7 +1858,7 @@ text-justify
 </section>
 
         {/* CTA */}
-      {/* CTA SECTION */}
+      
 <section className="w-full overflow-hidden">
   <div
     className="
@@ -1455,7 +1876,7 @@ text-justify
         mx-auto
         flex
         w-full
-        max-w-[1440px]
+        max-w-[1240px]
         flex-col
         gap-6
         px-5
@@ -1520,8 +1941,8 @@ text-justify
             sm:h-[64px]
             sm:w-[64px]
 
-            lg:h-[70px]
-            lg:w-[70px]
+            lg:h-[60px]
+            lg:w-[60px]
           "
         >
           <Send
@@ -1544,7 +1965,7 @@ text-justify
           <h2
             className="
               text-[17px]
-              font-extrabold
+              font-semibold
               leading-[1.15]
               tracking-[-0.018em]
               text-white
@@ -1568,7 +1989,7 @@ text-justify
 
               sm:text-[10.5px]
 
-              lg:text-[11px]
+              lg:text-[13px]
             "
           >
             Join hundreds of universities worldwide and host your journals on
@@ -1618,7 +2039,7 @@ text-justify
               bg-white
               px-6
               text-[10px]
-              font-extrabold
+              font-bold
               text-[#1769E0]
               shadow-[0_5px_14px_rgba(0,0,0,0.10)]
               transition-all
@@ -1632,8 +2053,8 @@ text-justify
 
               lg:min-h-[46px]
               lg:min-w-[158px]
-              lg:px-7
-              lg:text-[10.5px]
+              lg:px-5
+              lg:text-[13px]
             "
           >
             Host Your Journal
@@ -1658,8 +2079,8 @@ text-justify
               border
               border-white
               bg-white/5
-              px-6
-              text-[10px]
+              px-4
+              text-[12px]
               font-bold
               text-white
               shadow-[0_5px_14px_rgba(0,0,0,0.05)]
@@ -1676,8 +2097,8 @@ text-justify
 
               lg:min-h-[46px]
               lg:min-w-[158px]
-              lg:px-7
-              lg:text-[10.5px]
+              lg:px-4
+              lg:text-[13.5px]
             "
           >
             Request a Demo
