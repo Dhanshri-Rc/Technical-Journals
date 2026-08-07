@@ -1,0 +1,10 @@
+# Netlify SPA rewrite configuration.
+# Place this file at the project root (rename to netlify.toml) before deploying.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
