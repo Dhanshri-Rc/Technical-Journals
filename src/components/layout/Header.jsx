@@ -36,7 +36,7 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-4">
+        <div className="flex items-center justify-between h-[70px] gap-4">
           <Link to="/" className="flex items-center gap-2 shrink-0" aria-label={`${SITE.name} home`}>
             <img src={logo} alt={`${SITE.name} logo`} className="h-11 w-auto object-contain" />
             <div className="hidden sm:flex flex-col leading-none">
