@@ -160,7 +160,7 @@ function FooterCol({ title, links = [] }) {
           <li key={`${title}-${link.to}-${link.label}`}>
             <Link
               to={link.to}
-              className="group relative inline-block py-0.5 text-[13px] leading-2 text-slate-300 transition-colors duration-200 hover:text-white focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+              className="group relative inline-block py-1 text-[13px] leading-2 text-slate-300 transition-colors duration-200 hover:text-white focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             >
               {link.label}
 
