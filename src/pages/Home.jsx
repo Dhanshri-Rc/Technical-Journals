@@ -1,124 +1,346 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useMemo, useState } from "react";
 import {
   ArrowRight,
   BarChart3,
   BookOpen,
+  Building2,
+  ChartNoAxesCombined,
+  CheckCircle2,
   FileText,
   Globe2,
   GraduationCap,
   Headphones,
-  HeartPulse,
+  Landmark,
+  Languages,
+  LineChart,
   LockKeyhole,
-  Network,
-  Orbit,
-  SearchCheck,
+  Search,
+  Send,
+  SendIcon,
+  Settings2,
   ShieldCheck,
-  Target,
+  Star,
   Users,
   Workflow,
-  Eye,
-  BookMarked,
-  LineChart,
-  Landmark,
-  Send,
-  ChartNoAxesCombined,
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  Quote,
 } from "lucide-react";
 
 import Seo from "../components/common/Seo";
-import homeBg from "../assets/images/homebg.png";
+import { SITE } from "../data/site";
+import heroBg from "../assets/images/hbg.png";
+import solutionsImg from "../assets/images/solution.png";
+import h1 from "../assets/images/h1.png";
+import h2 from "../assets/images/h2.png";
+import h3 from "../assets/images/h3.png";
+import h4 from "../assets/images/h4.png";
 import l1 from "../assets/images/l1.png";
 import l2 from "../assets/images/l2.png";
 import l3 from "../assets/images/l3.png";
 import l4 from "../assets/images/l4.png";
 import l5 from "../assets/images/l5.png";
 import l6 from "../assets/images/l6.png";
-import { SITE } from "../data/site";
-import sdg3 from "../assets/images/h1.png";
-import sdg4 from "../assets/images/h2.png";
-import sdg9 from "../assets/images/h3.png";
-import sdg17 from "../assets/images/h4.png";
+import j1 from "../assets/images/j1.png";
+import j2 from "../assets/images/j2.png";
+import j3 from "../assets/images/j3.png";
+import j4 from "../assets/images/j4.png";
+import j5 from "../assets/images/j5.png";
 
-const sdgs = [
+export default function Home() {
+  const ease = [0.22, 1, 0.36, 1];
+
+  const reveal = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    show: {
+      opacity: 1,
+      y: 0,
+    },
+  };
+
+  /* =========================================================
+     STATS
+  ========================================================= */
+
+ const stats = [
+  {
+    icon: BookOpen,
+    value: "100+",
+    title: "University Journals",
+    subtitle: "Hosted",
+    iconBg: "bg-[#1769E0]",
+    glow: "shadow-[0_0_22px_rgba(23,105,224,0.50)]",
+  },
+  {
+    icon: FileText,
+    value: "10,000+",
+    title: "Articles Published",
+    subtitle: "",
+    iconBg: "bg-[#18B8C8]",
+    glow: "shadow-[0_0_22px_rgba(24,184,200,0.48)]",
+  },
+  {
+    icon: Globe2,
+    value: "50+",
+    title: "Countries",
+    subtitle: "",
+    iconBg: "bg-[#FF6B27]",
+    glow: "shadow-[0_0_22px_rgba(255,107,39,0.48)]",
+  },
+  {
+    icon: Landmark,
+    value: "500+",
+    title: "Universities",
+    subtitle: "Worldwide",
+    iconBg: "bg-[#7058D9]",
+    glow: "shadow-[0_0_22px_rgba(112,88,217,0.48)]",
+  },
+  {
+    icon: ShieldCheck,
+    value: "99.9%",
+    title: "Uptime & Reliable",
+    subtitle: "Performance",
+    iconBg: "bg-[#1769E0]",
+    glow: "shadow-[0_0_22px_rgba(23,105,224,0.50)]",
+  },
+];
+
+  /* =========================================================
+     JOURNALS
+  ========================================================= */
+
+const journals = [
+  {
+    id: 1,
+    image: j1,
+    title: "International Journal of Computer Science",
+    category: "Computer Science",
+    issn: "ISSN: 2456-9940",
+    detailsLink: "/journals",
+    journalLink: "/journals",
+  },
+  {
+    id: 2,
+    image: j2,
+    title: "Journal of Environmental Studies",
+    category: "Environmental Science",
+    issn: "ISSN: 2456-8821",
+    detailsLink: "/journals",
+    journalLink: "/journals",
+  },
   {
     id: 3,
-    image: sdg3,
-    alt: "SDG 3 Good Health and Well-Being",
+    image: j3,
+    title: "Journal of Electrical Engineering",
+    category: "Electrical Engineering",
+    issn: "ISSN: 2456-4782",
+    detailsLink: "/journals",
+    journalLink: "/journals",
   },
   {
     id: 4,
-    image: sdg4,
-    alt: "SDG 4 Quality Education",
+    image: j4,
+    title: "International Journal of Mechanical Engineering",
+    category: "Mechanical Engineering",
+    issn: "ISSN: 2456-1290",
+    detailsLink: "/journals",
+    journalLink: "/journals",
   },
   {
-    id: 9,
-    image: sdg9,
-    alt: "SDG 9 Industry Innovation and Infrastructure",
+    id: 5,
+    image: j5,
+    title: "Journal of Advanced Materials Research",
+    category: "Materials Science",
+    issn: "ISSN: 2456-5999",
+    detailsLink: "/journals",
+    journalLink: "/journals",
+  },
+{
+    id: 1,
+    image: j1,
+    title: "International Journal of Computer Science",
+    category: "Computer Science",
+    issn: "ISSN: 2456-9940",
+    detailsLink: "/journals",
+    journalLink: "/journals",
   },
   {
-    id: 17,
-    image: sdg17,
-    alt: "SDG 17 Partnerships for the Goals",
+    id: 2,
+    image: j2,
+    title: "Journal of Environmental Studies",
+    category: "Environmental Science",
+    issn: "ISSN: 2456-8821",
+    detailsLink: "/journals",
+    journalLink: "/journals",
   },
+  {
+    id: 3,
+    image: j3,
+    title: "Journal of Electrical Engineering",
+    category: "Electrical Engineering",
+    issn: "ISSN: 2456-4782",
+    detailsLink: "/journals",
+    journalLink: "/journals",
+  },
+  {
+    id: 4,
+    image: j4,
+    title: "International Journal of Mechanical Engineering",
+    category: "Mechanical Engineering",
+    issn: "ISSN: 2456-1290",
+    detailsLink: "/journals",
+    journalLink: "/journals",
+  },
+ 
 ];
 
-const ease = [0.22, 1, 0.36, 1];
+const [journalSearch, setJournalSearch] = useState("");
+const [journalPage, setJournalPage] = useState(0);
+const [journalDirection, setJournalDirection] = useState(1);
 
-const reveal = {
-  hidden: {
-    opacity: 0,
-    y: 22,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-  },
+const journalsPerPage = 5;
+
+const filteredJournals = useMemo(() => {
+  const searchValue = journalSearch
+    .trim()
+    .toLowerCase();
+
+  if (!searchValue) {
+    return journals;
+  }
+
+  return journals.filter((journal) => {
+    return (
+      journal.title
+        .toLowerCase()
+        .includes(searchValue) ||
+      journal.category
+        .toLowerCase()
+        .includes(searchValue) ||
+      journal.issn
+        .toLowerCase()
+        .includes(searchValue)
+    );
+  });
+}, [journalSearch]);
+
+const journalPageCount = Math.max(
+  1,
+  Math.ceil(
+    filteredJournals.length / journalsPerPage
+  )
+);
+
+const safeJournalPage = Math.min(
+  journalPage,
+  journalPageCount - 1
+);
+
+const visibleJournals = filteredJournals.slice(
+  safeJournalPage * journalsPerPage,
+  safeJournalPage * journalsPerPage +
+    journalsPerPage
+);
+
+const handleJournalSearch = (event) => {
+  setJournalSearch(event.target.value);
+  setJournalPage(0);
+  setJournalDirection(1);
 };
 
-const stats = [
+const previousJournalPage = () => {
+  setJournalDirection(-1);
+
+  setJournalPage((currentPage) => {
+    if (currentPage <= 0) {
+      return journalPageCount - 1;
+    }
+
+    return currentPage - 1;
+  });
+};
+
+const nextJournalPage = () => {
+  setJournalDirection(1);
+
+  setJournalPage((currentPage) => {
+    if (
+      currentPage >=
+      journalPageCount - 1
+    ) {
+      return 0;
+    }
+
+    return currentPage + 1;
+  });
+};
+
+const goToJournalPage = (page) => {
+  setJournalDirection(
+    page > safeJournalPage ? 1 : -1
+  );
+
+  setJournalPage(page);
+};
+
+  /* =========================================================
+     SERVICES
+  ========================================================= */
+
+  const services = [
   {
-    value: "100+",
-    label: "University Journals",
-    sub: "Hosted",
-    icon: BookOpen,
-    iconBg: "bg-[#0B4AD8]",
-    iconRing: "ring-[#DCE7FF]",
-  },
-  {
-    value: "10,000+",
-    label: "Articles",
-    sub: "Published",
     icon: FileText,
-    iconBg: "bg-[#10A83B]",
-    iconRing: "ring-[#DCF6E4]",
+    title: "Journal Hosting",
+    desc: "Secure and scalable hosting exclusively for university journals.",
+    bg: "bg-[#E8F0FF]",
+    color: "text-[#1769E0]",
+    linkColor: "text-[#1769E0]",
   },
   {
-    value: "50+",
-    label: "Countries",
-    sub: "Worldwide",
-    icon: Globe2,
-    iconBg: "bg-[#FF7A00]",
-    iconRing: "ring-[#FFF0DE]",
+    icon: Workflow,
+    title: "Editorial Workflow",
+    desc: "Streamline submission, review, editing, and publication seamlessly.",
+    bg: "bg-[#EAF7ED]",
+    color: "text-[#1FA24A]",
+    linkColor: "text-[#1FA24A]",
   },
   {
-    value: "500+",
-    label: "Universities",
-    sub: "Trust Us",
-    icon: Landmark,
-    iconBg: "bg-[#6E20C9]",
-    iconRing: "ring-[#EFE1FF]",
+    icon: BarChart3,
+    title: "Indexing & Visibility",
+    desc: "Get indexed in major databases and increase global research visibility.",
+    bg: "bg-[#FFF0E4]",
+    color: "text-[#F97316]",
+    linkColor: "text-[#23974A]",
   },
   {
-    value: "99.9%",
-    label: "Uptime & Reliable",
-    sub: "Performance",
-    icon: ShieldCheck,
-    iconBg: "bg-[#0757D8]",
-    iconRing: "ring-[#DCE8FF]",
+    icon: LockKeyhole,
+    title: "Security & Compliance",
+    desc: "Enterprise-grade security with regular backups and data protection.",
+    bg: "bg-[#F0EAFF]",
+    color: "text-[#7255D9]",
+    linkColor: "text-[#23974A]",
+  },
+  {
+    icon: Users,
+    title: "Author & Reviewer Tools",
+    desc: "Intuitive tools for authors, reviewers, and editors to collaborate efficiently.",
+    bg: "bg-[#E7F6FA]",
+    color: "text-[#1597B7]",
+    linkColor: "text-[#23974A]",
   },
 ];
 
-const trustItems = [
+  /* =========================================================
+     TRUST
+  ========================================================= */
+
+ const trustItems = [
   {
     icon: ShieldCheck,
     title: "Exclusive Platform",
@@ -163,848 +385,923 @@ const trustItems = [
   },
 ];
 
-const services = [
+  /* =========================================================
+     UNIVERSITIES
+  ========================================================= */
+
+ const universities = [
+   {
+     name: "University of Oxford",
+     logo: l1,
+   },
+   {
+     name: "National University of Singapore",
+     logo: l2,
+   },
+   {
+     name: "University of Melbourne",
+     logo: l3,
+   },
+   {
+     name: "University of Toronto",
+     logo: l4,
+   },
+   {
+     name: "Technical University of Munich",
+     logo: l5,
+   },
+   {
+     name: "University of Cape Town",
+     logo: l6,
+   },
+ ];
+ const universityReveal = {
+   hidden: {
+     opacity: 0,
+     y: 18,
+   },
+   show: {
+     opacity: 1,
+     y: 0,
+   },
+ };
+
+  /* =========================================================
+     SOLUTIONS
+  ========================================================= */
+
+ const solutions = [
   {
     icon: FileText,
-    title: "Journal Hosting",
-    desc: "Reliable and scalable hosting for peer-reviewed journals with custom domains and branding.",
-    iconBg: "bg-[#EAF2FF]",
-    iconColor: "text-[#146CDB]",
+    title: "Institutional Repository Integration",
+    desc: "Connect journals with your institutional repository for long-term preservation.",
+    bg: "bg-[#EEF4FF]",
+    color: "text-[#3B82F6]",
   },
   {
-    icon: Workflow,
-    title: "Editorial Workflow",
-    desc: "Streamline submission, review, editing, and publication with smart workflows.",
-    iconBg: "bg-[#EAF7ED]",
-    iconColor: "text-[#22A447]",
+    icon: Building2,
+    title: "Custom Branding",
+    desc: "Showcase your university identity with custom domains and branding.",
+    bg: "bg-[#EEF5FF]",
+    color: "text-[#2563EB]",
   },
   {
     icon: BarChart3,
-    title: "Indexing & Visibility",
-    desc: "Get indexed in major databases and increase the visibility of your research.",
-    iconBg: "bg-[#FFF1E5]",
-    iconColor: "text-[#F97816]",
+    title: "Detailed Analytics",
+    desc: "Track submissions, downloads, citations, and performance in real-time.",
+    bg: "bg-[#EEF4F1]",
+    color: "text-[#5F8C76]",
   },
   {
-    icon: LockKeyhole,
-    title: "Security & Compliance",
-    desc: "Robust security, regular backups, and adherence to publishing ethics and standards.",
-    iconBg: "bg-[#F2EBFF]",
-    iconColor: "text-[#7635D5]",
-  },
-  {
-    icon: Users,
-    title: "Author & Reviewer",
-    desc: "Intuitive tools for authors, reviewers, and editors to collaborate efficiently.",
-    iconBg: "bg-[#EAF4FF]",
-    iconColor: "text-[#1682DC]",
-  },
-  {
-    icon: ChartNoAxesCombined,
-    title: "Reports & Analytics",
-    desc: "Track performance, downloads, citations, and other key metrics in real-time.",
-    iconBg: "bg-[#FFF0F2]",
-    iconColor: "text-[#F21942]",
+    icon: Languages,
+    title: "Multi-language Support",
+    desc: "Reach a global audience with multilingual interface and support.",
+    bg: "bg-[#FFF0E9]",
+    color: "text-[#FF6B35]",
   },
 ];
 
-const universities = [
+  /* =========================================================
+     TESTIMONIALS
+  ========================================================= */
+
+ const testimonials = [
   {
-    name: "University of Oxford",
-    logo: l1,
+    quote:
+      "Technical Journals has transformed the way we manage our publications. The platform is secure, easy to use, and has significantly increased our global visibility.",
+    name: "Prof. Sarah Johnson",
+    university: "University of Oxford",
+    image: h1,
   },
   {
-    name: "National University of Singapore",
-    logo: l2,
+    quote:
+      "The editorial workflow is seamless, and the support team is exceptional. Highly recommended for any university looking to elevate its research publishing.",
+    name: "Dr. Michael Tan",
+    university: "National University of Singapore",
+    image: h2,
   },
   {
-    name: "University of Melbourne",
-    logo: l3,
+    quote:
+      "A robust and reliable platform built exclusively for universities. It supports our mission to disseminate research for a better world.",
+    name: "Prof. Anika Patel",
+    university: "University of Toronto",
+    image: h3,
+  },
+
+  // Extra testimonials for working carousel pages
+  {
+    quote:
+      "The platform has helped our editorial team simplify peer review and provide a much better experience for researchers and authors.",
+    name: "Dr. Emily Carter",
+    university: "University of Melbourne",
+    image: h4,
   },
   {
-    name: "University of Toronto",
-    logo: l4,
+    quote:
+      "We value the platform's reliability, global accessibility, and excellent support throughout the complete publishing workflow.",
+    name: "Prof. Daniel Lee",
+    university: "Technical University of Munich",
+    image: h1,
   },
   {
-    name: "Technical University of Munich",
-    logo: l5,
-  },
-  {
-    name: "University of Cape Town",
-    logo: l6,
+    quote:
+      "Technical Journals gives our institution the tools and visibility required to expand the impact of our academic publications.",
+    name: "Prof. Maria Khan",
+    university: "University of Cape Town",
+    image: h2,
   },
 ];
-const universityReveal = {
-  hidden: {
-    opacity: 0,
-    y: 18,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-  },
-};
 
+const [testimonialPage, setTestimonialPage] = useState(0);
 
-function SectionTitle({ children }) {
-  return (
-    <div className="mb-7 text-center sm:mb-8">
-      <h2 className="text-[21px] font-bold leading-tight text-[#14295F] sm:text-[24px] lg:text-[27px]">
-        {children}
-      </h2>
-      <div className="mx-auto mt-2 h-[3px] w-12 rounded-full bg-[#1F6DFF]" />
-    </div>
-  );
-}
+const testimonialsPerPage = 3;
 
-const FeatureMini = ({ icon: Icon, title, desc }) => {
-  return (
-    <motion.div
-      whileHover={{
-        y: -4,
-        scale: 1.015,
-      }}
-      transition={{
-        duration: 0.28,
-        ease,
-      }}
-      className="group flex items-start gap-3"
-    >
-      <div
-        className="
-          flex h-[38px] w-[38px] shrink-0 items-center justify-center
-          rounded-full border-[1.5px] border-[#4C8EFF]
-          bg-white/85 shadow-[0_3px_12px_rgba(23,105,224,0.08)]
-          transition-all duration-300
-          group-hover:border-[#1769E0]
-          group-hover:bg-[#1769E0]
-          group-hover:shadow-[0_8px_22px_rgba(23,105,224,0.20)]
-        "
-      >
-        <Icon
-          strokeWidth={1.8}
-          className="
-            h-[23px] w-[23px] text-[#1769E0]
-            transition-all duration-300
-            group-hover:scale-110
-            group-hover:text-white
-          "
-        />
-      </div>
+const testimonialPages = Math.ceil(
+  testimonials.length / testimonialsPerPage
+);
 
-      <div className="pt-[2px]">
-        <h3 className="text-[12px] font-bold leading-[1.3] text-[#172B54] sm:text-[13px]">
-          {title}
-        </h3>
+const visibleTestimonials = testimonials.slice(
+  testimonialPage * testimonialsPerPage,
+  testimonialPage * testimonialsPerPage + testimonialsPerPage
+);
 
-        <p className="mt-[5px] max-w-[150px] text-[9.5px] font-medium leading-[1.55] text-[#64728A] sm:text-[10.5px]">
-          {desc}
-        </p>
-      </div>
-    </motion.div>
+const nextTestimonials = () => {
+  setTestimonialPage((prev) =>
+    prev === testimonialPages - 1 ? 0 : prev + 1
   );
 };
 
-export default function Home() {
+const previousTestimonials = () => {
+  setTestimonialPage((prev) =>
+    prev === 0 ? testimonialPages - 1 : prev - 1
+  );
+};
+
+
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: SITE?.name || "Technical Journals",
     url: SITE?.url || "/",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${SITE?.url || ""}/journals?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
   };
 
   return (
     <>
       <Seo
-        title="Empowering Academic Publishing Exclusively for Universities"
-        description="Technical Journals is a secure, scalable and innovative journal hosting platform built exclusively for universities."
+        title="Secure Hosting. Seamless Publishing. Stronger Research Impact."
+        description="Secure and scalable journal hosting exclusively for universities."
         path="/"
         jsonLd={jsonLd}
       />
 
-      <main className="overflow-x-hidden bg-white font-sans text-[#24324A]">
-        {/* HERO */}
-         <section
-      className="
-        relative isolate w-full overflow-hidden
-        bg-[#F8FBFF]
-        min-h-[520px]
-        sm:min-h-[540px]
-        md:min-h-[560px]
-        lg:min-h-[500px]
-        xl:min-h-[520px]
-      "
-    >
-      {/* BACKGROUND IMAGE */}
-      <div
-        className="
-          absolute inset-0 -z-20
-          bg-no-repeat
-
-          max-lg:bg-[length:auto_100%]
-          max-lg:bg-[85%_center]
-
-          lg:bg-cover
-          lg:bg-center
-          xl:bg-right
-        "
-        style={{
-          backgroundImage: `url(${homeBg})`,
-        }}
-      />
-
-   
-
-      {/* Mobile extra overlay */}
-      <div className="absolute inset-0 -z-[5] bg-white/75 lg:hidden" />
-
-      <div
-        className="
-          mx-auto flex
-          min-h-[520px]
-          w-full
-          max-w-[1280px]
-          items-center
-
-          px-5 py-10
-
-          sm:min-h-[540px]
-          sm:px-7
-          sm:py-11
-
-          md:min-h-[560px]
-          md:px-9
-
-          lg:min-h-[500px]
-          lg:px-10
-          lg:py-8
-
-          xl:min-h-[520px]
-          xl:px-[56px]
-        "
-      >
-        <motion.div
-          variants={reveal}
-          initial="hidden"
-          animate="show"
-          transition={{
-            duration: 0.65,
-            ease,
-          }}
-          className="
-            relative z-10
-            w-full
-            max-w-[570px]
-
-            lg:w-[47%]
-            lg:max-w-[545px]
-          "
-        >
-          {/* Small heading */}
-          <motion.p
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: 0.5,
-              delay: 0.08,
-              ease,
-            }}
-            className="
-              relative
-              mb-[19px]
-              inline-flex
-              items-center
-              text-[10px]
-              font-bold
-              uppercase
-              tracking-[0.015em]
-              text-[#1769E0]
-    
-              sm:text-[10.5px]
-              lg:text-[13px]
-            "
-          >
-            <span className="absolute -bottom-[5px] left-0 h-[2.5px] w-[25px] bg-[#F58220] rounded-full" />
-            About Technical Journals
-          </motion.p>
-
-          {/* Main heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.6,
-              delay: 0.12,
-              ease,
-            }}
-            className="
-              max-w-[530px]
-              text-[34px]
-              font-bold
-              leading-[1.08]
-              tracking-[-0.015em]
-              text-[#10275C]
-
-              sm:text-[40px]
-              md:text-[44px]
-
-              lg:text-[47px]
-              lg:leading-[1.04]
-
-              xl:text-[43px]
-            "
-          >
-            Empowering Academic
-            <br />
-            Publishing.{" "}
-            <span className="text-[#1769E8]">
-              Exclusively
-            </span>
-            <br />
-            for Universities.
-          </motion.h1>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.6,
-              delay: 0.2,
-              ease,
-            }}
-            className="
-              mt-[26px]
-              max-w-[520px]
-              text-[11px]
-              font-medium
-              leading-[1.82]
-              text-[#53627A]
-
-              sm:text-[12px]
-
-              md:text-[13px]
-
-              lg:max-w-[415px]
-              lg:text-[14px]
-              lg:leading-[1.8]
-              text-justify 
-            "
-          >
-            Technical Journals is a secure, scalable, and innovative platform
-            built exclusively for universities to host, manage, and publish
-            peer-reviewed journals. We provide end-to-end tools and
-            infrastructure to enhance research visibility, streamline editorial
-            workflows, and uphold the highest publishing standards.
-          </motion.p>
-
-          {/* Feature row */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.6,
-              delay: 0.28,
-              ease,
-            }}
-            className="
-              mt-[36px]
-              grid
-              max-w-[420px]
-              grid-cols-1
-              
-
-              xs:grid-cols-2
-
-              sm:grid-cols-2
-            
-            "
-          >
-            <FeatureMini
-              icon={ShieldCheck}
-              title="Secure & Trusted"
-              desc="Enterprise-grade security and 99.9% uptime guarantee."
-            />
-
-            <FeatureMini
-              icon={Globe2}
-              title="Global Visibility"
-              desc="Increase research and citation impact worldwide."
-            />
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-
-        {/* STATS */}
-       <section
-      className="
-        relative z-20
-        mx-auto
-        -mt-[6px]
-        w-full
-        max-w-[1220px]
-        px-4
-        sm:px-5
-        lg:px-6
-      "
-    >
-      <motion.div
-        variants={reveal}
-        initial="hidden"
-        whileInView="show"
-        viewport={{
-          once: true,
-          amount: 0.25,
-        }}
-        transition={{
-          duration: 0.55,
-          ease,
-        }}
-        className="
-          overflow-hidden
-          rounded-[13px]
-          border border-[#E5EBF3]
-          bg-white
-          shadow-[0_9px_30px_rgba(24,58,108,0.10)]
-        "
-      >
-        <div
-          className="
-            grid
-            grid-cols-1
-
-            sm:grid-cols-2
-
-            lg:grid-cols-5
-          "
-        >
-          {stats.map((item, index) => {
-            const Icon = item.icon;
-
-            return (
-              <motion.div
-                key={item.value}
-                whileHover={{
-                  y: -4,
-                  scale: 1.01,
-                }}
-                transition={{
-                  duration: 0.22,
-                  ease,
-                }}
-                className={`
-                  group
-                  relative
-                  flex
-                  min-h-[95px]
-                  items-center
-                  justify-start
-                  gap-[12px]
-                  px-5
-                  py-[18px]
-
-                  sm:min-h-[100px]
-                  sm:px-6
-
-                  lg:min-h-[116px]
-                  lg:justify-center
-                  lg:px-[18px]
-
-                  xl:px-[24px]
-
-                  ${
-                    index !== stats.length - 1
-                      ? `
-                        border-b border-[#E7ECF3]
-                        sm:border-b
-                        lg:border-b-0
-                        lg:border-r
-                        lg:border-[#E3E9F1]
-                      `
-                      : ""
-                  }
-                `}
-              >
-                {/* Icon */}
-                <motion.span
-                  whileHover={{
-                    rotate: 4,
-                    scale: 1.08,
-                  }}
-                  transition={{
-                    duration: 0.22,
-                    ease,
-                  }}
-                  className={`
-                    grid
-                    h-[48px]
-                    w-[48px]
-                    shrink-0
-                    place-items-center
-                    rounded-full
-
-                    ${item.iconBg}
-
-                    ring-[5px]
-                    ${item.iconRing}
-
-                    shadow-[0_4px_12px_rgba(20,61,126,0.12)]
-
-                    transition-all
-                    duration-300
-
-                    
-                  `}
-                >
-                  <Icon
-                    size={23}
-                    strokeWidth={2}
-                    className="text-white"
-                  />
-                </motion.span>
-
-                {/* Content */}
-                <div className="min-w-0">
-                  <p
-                    className="
-                      whitespace-nowrap
-                      text-[19px]
-                      font-bold
-                      leading-none
-                      tracking-[-0.02em]
-                      text-[#102B5C]
-
-                      sm:text-[20px]
-
-                      lg:text-[18px]
-
-                      xl:text-[19px]
-                    "
-                  >
-                    {item.value}
-                  </p>
-
-                  <p
-                    className="
-                      mt-[6px]
-                      whitespace-nowrap
-                      text-[10px]
-                      font-bold
-                      leading-[1.15]
-                      text-[#223D6A]
-
-                      xl:text-[12px]
-                    "
-                  >
-                    {item.label}
-                  </p>
-
-                  <p
-                    className="
-                      mt-[2px]
-                      whitespace-nowrap
-                      text-[9.5px]
-                      font-semibold
-                      leading-[1.15]
-                      text-[#536681]
-
-                      xl:text-[11px]
-                    "
-                  >
-                    {item.sub}
-                  </p>
-                </div>
-
-                {/* soft hover glow */}
-                <div
-                  className="
-                    pointer-events-none
-                    absolute
-                    inset-0
-                    bg-gradient-to-b
-                    from-[#F8FBFF]/0
-                    to-[#EEF5FF]/0
-                    opacity-0
-                    transition-all
-                    duration-300
-                    
-                  "
-                />
-              </motion.div>
-            );
-          })}
-        </div>
-      </motion.div>
-    </section>
-
-        {/* MISSION / VISION */}
-         <section className="w-full px-4 py-8 sm:px-6 lg:px-8">
-      <motion.div
-        variants={reveal}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.25 }}
-        transition={{ duration: 0.5, ease }}
-        className="
-          mx-auto
-          grid
-          w-full
-          max-w-[1170px]
-          overflow-hidden
-          rounded-[11px]
-          border
-          border-[#D9E5F2]
-          bg-[linear-gradient(90deg,#F9FCFF_0%,#F7FAFF_50%,#F8FBFF_100%)]
-          shadow-[0_4px_14px_rgba(33,79,136,0.04)]
-          
-          md:grid-cols-2
-        "
-      >
-        {/* Mission */}
-        <motion.div
-          whileHover={{ y: -2 }}
-          transition={{ duration: 0.22, ease }}
-          className="
-            group
-            flex
-            items-center
-            gap-5
-            px-5
-            py-3
-
-            sm:px-7
-            
-
-            md:min-h-[174px]
-            md:px-8
-            
-
-            lg:gap-6
-            lg:px-10
-          "
-        >
-          <motion.div
-            whileHover={{ scale: 1.07, rotate: -3 }}
-            transition={{ duration: 0.25, ease }}
-            className="
-              grid
-              h-[82px]
-              w-[82px]
-              shrink-0
-              place-items-center
-              rounded-full
-              bg-[#E6F6E9]
-              text-[#10A43B]
-              transition-all
-              duration-300
-              group-hover:shadow-[0_8px_22px_rgba(16,164,59,0.14)]
-
-              sm:h-[86px]
-              sm:w-[86px]
-            "
-          >
-            <Target
-              size={46}
-              strokeWidth={2.3}
-              className="text-[#0AA33A]"
-            />
-          </motion.div>
-
-          <div className="min-w-0">
-            <h3
-              className="
-                text-[18px]
-                font-bold
-                leading-none
-                text-[#12962D]
-
-                sm:text-[20px]
-              "
-            >
-              Our Mission
-            </h3>
-
-            <p
-              className="
-                mt-[10px]
-                max-w-[390px]
-                text-[12px]
-                font-medium
-                leading-[1.7]
-                text-[#4F5E75]
-
-                sm:text-[13.5px]
-              "
-            >
-              To empower universities worldwide by providing a dedicated
-              platform for academic journals that ensures secure hosting,
-              efficient workflows, and global visibility for research.
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Vision */}
-        <motion.div
-          whileHover={{ y: -2 }}
-          transition={{ duration: 0.22, ease }}
-          className="
-            group
-            relative
-            flex
-            items-center
-            gap-5
-            border-t
-            border-[#DCE5EF]
-            px-5
-            py-3
-
-          
-
-            md:min-h-[164px]
-            md:border-l
-            md:border-t-0
-            md:px-8
-            md:py-5
-
-            lg:gap-6
-            lg:px-10
-          "
-        >
-          <motion.div
-            whileHover={{ scale: 1.07, rotate: 3 }}
-            transition={{ duration: 0.25, ease }}
-            className="
-              grid
-              h-[82px]
-              w-[82px]
-              shrink-0
-              place-items-center
-              rounded-full
-              bg-[#E8F0FF]
-              text-[#1769E0]
-              transition-all
-              duration-300
-              group-hover:shadow-[0_8px_22px_rgba(23,105,224,0.14)]
-
-              sm:h-[86px]
-              sm:w-[86px]
-            "
-          >
-            <Eye
-              size={46}
-              strokeWidth={2.15}
-              className="text-[#1769E0]"
-            />
-          </motion.div>
-
-          <div className="min-w-0">
-            <h3
-              className="
-                text-[18px]
-                font-bold
-                leading-none
-                text-[#1769E0]
-
-                sm:text-[20px]
-              "
-            >
-              Our Vision
-            </h3>
-
-            <p
-              className="
-                mt-[10px]
-                max-w-[390px]
-                text-[10px]
-                font-medium
-                leading-[1.7]
-                text-[#4F5E75]
-
-                sm:text-[10.5px]
-              "
-            >
-              To be the world&apos;s most trusted and preferred journal
-              hosting platform for universities, driving innovation in
-              academic publishing and advancing knowledge for a better future.
-            </p>
-          </div>
-        </motion.div>
-      </motion.div>
-    </section>
-
-       {/* WHY UNIVERSITIES TRUST */}
-<section className="w-full bg-white py-5">
-  <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8">
-
-    {/* Heading */}
+      <main className="overflow-x-hidden bg-white text-[#203451]">
+{/* =====================================================
+    HERO SECTION
+===================================================== */}
+<section
+  className="
+    relative
+    isolate
+    w-full
+    overflow-hidden
+    bg-[#F7FBFF]
+
+    min-h-[560px]
+sm:min-h-[540px]
+ md:min-h-[520px]
+lg:h-[510px]
+ lg:min-h-[510px]
+ xl:h-[510px]
+    xl:min-h-[510px]
+  "
+>
+  {/* BACKGROUND IMAGE */}
+  <div
+    className="
+      absolute
+      inset-0
+      -z-20
+      bg-cover
+      bg-no-repeat
+
+      bg-[76%_center]
+
+      sm:bg-[73%_center]
+
+      md:bg-[70%_center]
+
+      lg:bg-[68%_center]
+
+      xl:bg-right
+    "
+    style={{
+      backgroundImage: `url(${heroBg})`,
+    }}
+  />
+
+ 
+
+  {/* MAIN CONTENT */}
+  <div
+    className="
+      mx-auto
+      grid
+      h-full
+      w-full
+      max-w-[1240px]
+      items-center
+
+      px-5
+      py-8
+
+      sm:px-7
+      sm:py-8
+
+      md:px-8
+
+      lg:h-[500px]
+      lg:grid-cols-[46%_54%]
+      lg:px-12
+      lg:py-0
+
+      xl:grid-cols-[44%_56%]
+      
+    "
+  >
+    {/* LEFT CONTENT */}
     <motion.div
-      initial={{ opacity: 0, y: 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.4 }}
+      initial={{
+        opacity: 0,
+        x: -28,
+      }}
+      animate={{
+        opacity: 1,
+        x: 0,
+      }}
       transition={{
-        duration: 0.5,
+        duration: 0.65,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="mb-8 text-center sm:mb-9"
+      className="
+        relative
+        z-10
+        max-w-[560px]
+      "
     >
-      <h2
+      {/* TOP BADGE */}
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: -8,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 0.45,
+          delay: 0.08,
+        }}
         className="
-          text-[21px]
-          font-[600]
-          leading-tight
-          tracking-[-0.025em]
-          text-[#08245A]
-
-          sm:text-[24px]
-          lg:text-[26px]
+          mb-4
+          inline-flex
+          items-center
+          gap-2
+          rounded-full
+          border
+          border-[#83b4f4]
+          bg-white/90
+          px-3
+          py-[6px]
+          shadow-[0_4px_14px_rgba(18,68,135,.08)]
+          backdrop-blur-sm
         "
       >
-        Why Universities Trust Technical Journals
-      </h2>
+        <GraduationCap
+          className="
+            h-[13px]
+            w-[13px]
+            text-[#0566f7]
+          "
+          strokeWidth={2}
+        />
 
-      {/* exact multicolor underline */}
+        <span
+          className="
+            text-[8px]
+            font-bold
+            uppercase
+            tracking-[.04em]
+            text-[#3a7ddc]
+
+            sm:text-[8.5px]
+          "
+        >
+          Exclusive to Universities
+        </span>
+      </motion.div>
+
+      {/* HEADING */}
+      <h1
+        className="
+          max-w-[560px]
+          text-[36px]
+          font-[600]
+          leading-[1.06]
+          tracking-[-0.035em]
+          text-[#10275D]
+
+          sm:text-[42px]
+
+          md:text-[45px]
+
+          lg:text-[44px]
+
+          
+        "
+      >
+        Secure{" "}
+        <span className="text-[#169447]">
+          Hosting.
+        </span>
+
+        <br />
+
+        Seamless{" "}
+        <span className="text-[#6144CF]">
+          Publishing.
+        </span>
+
+        <br />
+
+        Stronger{" "}
+        <span className="text-[#1769E0]">
+          Research Impact.
+        </span>
+      </h1>
+
+      {/* DESCRIPTION */}
+      <p
+        className="
+          mt-4
+          max-w-[385px]
+          text-[13px]
+          font-medium
+          leading-[1.8]
+          text-[#58677C]
+
+          sm:text-[11.5px]
+
+          lg:max-w-[415px]
+          lg:text-[13.5px]
+
+          xl:text-[14px]
+        "
+      >
+        Technical Journals provides secure, reliable, and scalable hosting
+        exclusively for university journals. Empower your institution with a
+        platform designed for academic excellence and global visibility.
+      </p>
+
+      {/* BUTTONS ONLY - NO BOTTOM FEATURE SECTION */}
       <div
         className="
-          mx-auto
-          mt-3
+          mt-5
           flex
-          h-[3.5px]
-          w-[82px]
-          overflow-hidden
-          rounded-full
-          sm:w-[98px]
+          flex-col
+          gap-3
+
+          sm:flex-row
         "
       >
-        <span className="h-full flex-[2.2] bg-[#1769E0]" />
-        <span className="h-full flex-1 bg-[#FF5A4E]" />
-        <span className="h-full flex-1 bg-[#FFC43D]" />
-        <span className="h-full flex-1 bg-[#25C7D9]" />
-        <span className="h-full flex-[2.2] bg-[#1769E0]" />
+        {/* HOST JOURNAL */}
+        <motion.div
+          whileHover={{
+            y: -3,
+          }}
+          whileTap={{
+            scale: 0.98,
+          }}
+          className="w-full sm:w-auto"
+        >
+          <Link
+            to="/register"
+            className="
+              group
+              inline-flex
+              min-h-[40px]
+              w-full
+              items-center
+              justify-center
+              gap-3
+              rounded-[4px]
+              bg-[#1769E0]
+              px-6
+              text-[12px]
+              font-semibold
+              text-white
+              shadow-[0_7px_16px_rgba(23,105,224,.18)]
+              transition-all
+              duration-300
+
+              hover:bg-[#0E58C8]
+              hover:shadow-[0_10px_22px_rgba(23,105,224,.23)]
+
+              sm:w-auto
+              sm:min-w-[148px]
+              sm:text-[13px]
+            "
+          >
+            Host Your Journal
+
+            <ArrowRight
+              className="
+                h-[13px]
+                w-[13px]
+                transition-transform
+                duration-300
+                group-hover:translate-x-1
+              "
+              strokeWidth={2.3}
+            />
+          </Link>
+        </motion.div>
+
+        {/* EXPLORE JOURNALS */}
+        <motion.div
+          whileHover={{
+            y: -3,
+          }}
+          whileTap={{
+            scale: 0.98,
+          }}
+          className="w-full sm:w-auto"
+        >
+          <Link
+            to="/journals"
+            className="
+              group
+              inline-flex
+              min-h-[40px]
+              w-full
+              items-center
+              justify-center
+              gap-3
+              rounded-[4px]
+              border
+              border-[#65B879]
+              bg-white
+              px-6
+              text-[12px]
+              font-semibold
+              text-[#219653]
+              shadow-[0_4px_10px_rgba(36,130,65,.04)]
+              transition-all
+              duration-300
+
+              hover:bg-[#219653]
+              hover:text-white
+              hover:shadow-[0_8px_18px_rgba(33,150,83,.15)]
+
+              sm:w-auto
+              sm:min-w-[148px]
+              sm:text-[13px]
+            "
+          >
+            Explore Journals
+
+            <ArrowRight
+              className="
+                h-[13px]
+                w-[13px]
+                transition-transform
+                duration-300
+                group-hover:translate-x-1
+              "
+              strokeWidth={2.3}
+            />
+          </Link>
+        </motion.div>
       </div>
+
+
+{/* =====================================================
+    BOTTOM 3 FEATURES
+    Add this directly below the buttons
+===================================================== */}
+<motion.div
+  initial="hidden"
+  animate="show"
+  variants={{
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.3,
+      },
+    },
+  }}
+  className="
+    mt-5
+    grid
+    w-full
+    max-w-[555px]
+    grid-cols-1
+    gap-2
+
+    sm:grid-cols-3
+    sm:gap-2
+
+    md:mt-9
+
+    lg:mt-9
+    lg:max-w-[540px]
+    lg:gap-2
+  "
+>
+  {/* Secure by Design */}
+  <motion.div
+    variants={{
+      hidden: {
+        opacity: 0,
+        y: 12,
+      },
+      show: {
+        opacity: 1,
+        y: 0,
+      },
+    }}
+    transition={{
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1],
+    }}
+    whileHover={{
+      y: -4,
+    }}
+    className="
+      group
+      flex
+      min-w-0
+      items-start
+      gap-3
+    "
+  >
+    <motion.span
+      whileHover={{
+        scale: 1.08,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 280,
+        damping: 18,
+      }}
+      className="
+        grid
+        h-[38px]
+        w-[38px]
+        shrink-0
+        place-items-center
+        rounded-full
+        border
+        border-[#95bff5]
+        bg-[#e2eaf6]
+        text-[#0665f4]
+        shadow-[0_4px_12px_rgba(23,105,224,0.07)]
+
+        sm:h-[36px]
+        sm:w-[36px]
+
+        lg:h-[38px]
+        lg:w-[38px]
+      "
+    >
+      <ShieldCheck
+        className="
+          h-[19px]
+          w-[19px]
+
+          sm:h-[18px]
+          sm:w-[18px]
+
+          lg:h-[19px]
+          lg:w-[19px]
+        "
+        strokeWidth={2.2}
+      />
+    </motion.span>
+
+    <div className="min-w-0">
+      <p
+        className="
+          text-[10px]
+          font-bold
+          leading-[1.25]
+          text-[#17366B]
+
+          sm:text-[8px]
+
+          lg:text-[11.5px]
+        "
+      >
+        Secure by Design
+      </p>
+
+      <p
+        className="
+          mt-1
+          max-w-[125px]
+          text-[8px]
+          font-medium
+          leading-[1.5]
+          text-[#525e70]
+
+          sm:text-[6.3px]
+
+          lg:text-[9px]
+        "
+      >
+        Enterprise-grade security
+        <br className="hidden lg:block" />
+        and data protection
+      </p>
+    </div>
+  </motion.div>
+
+  {/* 100% University Focused */}
+  <motion.div
+    variants={{
+      hidden: {
+        opacity: 0,
+        y: 12,
+      },
+      show: {
+        opacity: 1,
+        y: 0,
+      },
+    }}
+    transition={{
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1],
+    }}
+    whileHover={{
+      y: -4,
+    }}
+    className="
+      group
+      flex
+      min-w-0
+      items-start
+      gap-3
+    "
+  >
+    <motion.span
+      whileHover={{
+        scale: 1.08,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 280,
+        damping: 18,
+      }}
+      className="
+        grid
+        h-[38px]
+        w-[38px]
+        shrink-0
+        place-items-center
+        rounded-full
+        border
+        border-[#98dbf6]
+        bg-[#d5eef7]
+        text-[#23bef7]
+        shadow-[0_4px_12px_rgba(37,168,216,0.07)]
+
+        sm:h-[36px]
+        sm:w-[36px]
+
+        lg:h-[38px]
+        lg:w-[38px]
+      "
+    >
+      <GraduationCap
+        className="
+          h-[21px]
+          w-[21px]
+
+          sm:h-[20px]
+          sm:w-[20px]
+
+          lg:h-[21px]
+          lg:w-[21px]
+        "
+        strokeWidth={2.2}
+      />
+    </motion.span>
+
+    <div className="min-w-0">
+      <p
+        className="
+          text-[10px]
+          font-bold
+          leading-[1.25]
+          text-[#17366B]
+
+          sm:text-[8px]
+
+          lg:text-[11.5px]
+        "
+      >
+        University Focused
+      </p>
+
+      <p
+        className="
+          mt-1
+          max-w-[125px]
+          text-[8px]
+          font-medium
+          leading-[1.5]
+         text-[#525e70]
+
+          sm:text-[6.3px]
+
+          lg:text-[9px]
+        "
+      >
+        Only for university 
+        <br className="hidden lg:block" />
+        journals worldwide
+      </p>
+    </div>
+  </motion.div>
+
+  {/* 99.9% Uptime */}
+  <motion.div
+    variants={{
+      hidden: {
+        opacity: 0,
+        y: 12,
+      },
+      show: {
+        opacity: 1,
+        y: 0,
+      },
+    }}
+    transition={{
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1],
+    }}
+    whileHover={{
+      y: -4,
+    }}
+    className="
+      group
+      flex
+      min-w-0
+      items-start
+      gap-3
+    "
+  >
+    <motion.span
+      whileHover={{
+        scale: 1.08,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 280,
+        damping: 18,
+      }}
+      className="
+        grid
+        h-[38px]
+        w-[38px]
+        shrink-0
+        place-items-center
+        rounded-full
+        border
+        border-[#9fdbf5]
+        bg-[#e1f1f7]
+        text-[#1798C8]
+        shadow-[0_4px_12px_rgba(23,152,200,0.07)]
+
+        sm:h-[36px]
+        sm:w-[36px]
+
+        lg:h-[38px]
+        lg:w-[38px]
+      "
+    >
+      <LockKeyhole
+        className="
+          h-[19px]
+          w-[19px]
+
+          sm:h-[18px]
+          sm:w-[18px]
+
+          lg:h-[19px]
+          lg:w-[19px]
+        "
+        strokeWidth={2.2}
+      />
+    </motion.span>
+
+    <div className="min-w-0">
+      <p
+        className="
+          text-[9px]
+          font-bold
+          leading-[1.25]
+          text-[#17366B]
+
+          sm:text-[8px]
+
+          lg:text-[11.5px]
+        "
+      >
+        99.9% Uptime
+      </p>
+
+      <p
+        className="
+          mt-1
+          max-w-[125px]
+          text-[8px]
+          font-medium
+          leading-[1.5]
+          text-[#525e70]
+
+          sm:text-[6.3px]
+
+          lg:text-[9px]
+        "
+      >
+        Reliable hosting you
+        <br className="hidden lg:block" />
+        can always count on
+      </p>
+    </div>
+  </motion.div>
+</motion.div>
+
     </motion.div>
 
-    {/* Trust items */}
-    <motion.div
-      initial="hidden"
-      whileInView="show"
-      viewport={{
-        once: true,
-        amount: 0.15,
-      }}
-      variants={{
-        hidden: {},
-        show: {
-          transition: {
-            staggerChildren: 0.06,
-          },
-        },
-      }}
+ 
+    <div className="hidden lg:block" />
+  </div>
+</section>
+
+       {/* =====================================================
+    STATISTICS BAR
+===================================================== */}
+<section
+  className="
+    relative
+    z-20
+    w-full
+    bg-white
+    px-4
+    py-5
+
+    sm:px-6
+    sm:py-6
+
+    lg:px-10
+  "
+>
+  <motion.div
+    initial={{
+      opacity: 0,
+      y: 18,
+      scale: 0.99,
+    }}
+    whileInView={{
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    }}
+    viewport={{
+      once: true,
+      amount: 0.25,
+    }}
+    transition={{
+      duration: 0.55,
+      ease: [0.22, 1, 0.36, 1],
+    }}
+    className="
+      mx-auto
+      w-full
+      max-w-[1140px]
+      overflow-hidden
+      rounded-[16px]
+      border
+      border-[#113A78]
+      bg-[linear-gradient(100deg,#06245D_0%,#06275F_46%,#082C67_100%)]
+      shadow-[0_10px_28px_rgba(4,31,78,0.14)]
+    "
+  >
+    <div
       className="
         grid
         grid-cols-1
@@ -1013,56 +1310,58 @@ export default function Home() {
 
         md:grid-cols-3
 
-        lg:grid-cols-6
+        lg:grid-cols-5
       "
     >
-      {trustItems.map((item, index) => {
+      {stats.map((item, index) => {
         const Icon = item.icon;
 
         return (
-          <motion.article
-            key={item.title}
-            variants={{
-              hidden: {
-                opacity: 0,
-                y: 18,
-                scale: 0.97,
-              },
-              show: {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-              },
+          <motion.div
+            key={item.value}
+            initial={{
+              opacity: 0,
+              y: 12,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
             }}
             transition={{
-              duration: 0.45,
+              duration: 0.42,
+              delay: index * 0.06,
               ease: [0.22, 1, 0.36, 1],
             }}
             whileHover={{
-              y: -6,
+              y: -4,
             }}
             className={`
               group
               relative
               flex
-              min-h-[182px]
-              flex-col
+              min-h-[105px]
               items-center
               justify-start
-              px-5
-              py-4
-              text-center
+              gap-4
+              px-6
+              py-5
 
-              sm:min-h-[190px]
+              sm:min-h-[110px]
+              sm:px-5
 
-              lg:min-h-[174px]
-              lg:px-4
+              lg:min-h-[104px]
+              lg:px-6
+
+              xl:px-8
 
               ${
-                index !== trustItems.length - 1
+                index !== stats.length - 1
                   ? `
                     border-b
-                    border-[#E5EAF1]
+                    border-white/10
 
                     sm:[&:nth-child(odd)]:border-r
 
@@ -1078,23 +1377,23 @@ export default function Home() {
               }
             `}
           >
-            {/* subtle hover background */}
+            {/* HOVER BACKGROUND */}
             <div
               className="
                 pointer-events-none
                 absolute
-                inset-1
-                rounded-[10px]
-                bg-[#F8FBFF]
+                inset-0
+                bg-white/[0.035]
                 opacity-0
                 transition-opacity
                 duration-300
+
                 group-hover:opacity-100
               "
             />
 
-            {/* icon */}
-            <motion.div
+            {/* ICON */}
+            <motion.span
               whileHover={{
                 scale: 1.1,
                 rotate: 2,
@@ -1102,135 +1401,1071 @@ export default function Home() {
               transition={{
                 type: "spring",
                 stiffness: 280,
-                damping: 18,
+                damping: 17,
               }}
               className={`
                 relative
                 z-10
                 grid
-                h-[52px]
-                w-[52px]
+                h-[50px]
+                w-[50px]
                 shrink-0
                 place-items-center
                 rounded-full
+                text-white
 
-                sm:h-[55px]
-                sm:w-[55px]
+                sm:h-[50px]
+                sm:w-[50px]
+
+                lg:h-[50px]
+                lg:w-[50px]
+
+                xl:h-[50px]
+                xl:w-[50px]
 
                 ${item.iconBg}
-                ${item.iconColor}
+                ${item.glow}
               `}
             >
               <Icon
                 className="
-                  h-[26px]
-                  w-[26px]
+                  h-[25px]
+                  w-[25px]
 
-                  sm:h-[29px]
-                  sm:w-[29px]
+                  sm:h-[27px]
+                  sm:w-[27px]
                 "
-                strokeWidth={2.3}
+                strokeWidth={1.9}
               />
-            </motion.div>
+            </motion.span>
 
-            {/* title */}
-            <h3
+            {/* TEXT */}
+            <div
               className="
                 relative
                 z-10
-                mt-4
-                text-[12px]
-                font-bold
-                leading-[1.25]
-                text-[#102D63]
-
-                sm:text-[12px]
-                lg:text-[13px]
-                xl:text-[14px]
+                min-w-0
+                text-left
               "
             >
-              {item.title}
-            </h3>
+              <p
+                className="
+                  whitespace-nowrap
+                  text-[22px]
+                  font-semibold
+                  leading-none
+                  tracking-[-0.025em]
+                  text-white
 
-            {/* description */}
-            <p
-              className="
-                relative
-                z-10
-                mx-auto
-                mt-2
-                max-w-[145px]
-                text-[8.5px]
-                font-medium
-                leading-[1.65]
-                text-[#5F6F87]
+                  sm:text-[21px]
 
-                sm:text-[9px]
+                  lg:text-[20px]
 
-                xl:text-[11px]
-              "
-            >
-              {item.desc}
-            </p>
-          </motion.article>
+                  xl:text-[21px]
+                "
+              >
+                {item.value}
+              </p>
+
+              <p
+                className="
+                  mt-2
+                  text-[10px]
+                  font-semibold
+                  leading-[1.25]
+                  text-white/95
+
+                  sm:text-[10.5px]
+
+                  lg:text-[9px]
+
+                  xl:text-[10.5px]
+                "
+              >
+                {item.title}
+              </p>
+
+              {item.subtitle && (
+                <p
+                  className="
+                    mt-[3px]
+                    text-[9px]
+                    font-medium
+                    leading-[1.2]
+                    text-white/85
+
+                    lg:text-[9.5px]
+
+                    xl:text-[10.5px]
+                  "
+                >
+                  {item.subtitle}
+                </p>
+              )}
+            </div>
+          </motion.div>
         );
       })}
-    </motion.div>
-  </div>
+    </div>
+  </motion.div>
 </section>
 
-       {/* WHAT WE OFFER */}
-<section className="w-full bg-white py-6">
-  <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8">
+{/* =====================================================
+    EXPLORE UNIVERSITY JOURNALS
+===================================================== */}
+<section
+  className="
+    relative
+    w-full
+    overflow-hidden
+    bg-white
+    py-9
 
-    {/* Heading */}
+    sm:py-10
+
+    lg:py-8
+  "
+>
+  <div
+    className="
+      mx-auto
+      w-full
+      max-w-[1200px]
+      px-4
+
+      sm:px-6
+
+      lg:px-10
+
+      
+    "
+  >
+    {/* =================================================
+        TOP AREA
+    ================================================= */}
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.35 }}
+      initial={{
+        opacity: 0,
+        y: 14,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.3,
+      }}
       transition={{
         duration: 0.5,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="mb-8 text-center sm:mb-9"
+      className="
+        mb-6
+        flex
+        flex-col
+        gap-5
+
+        md:flex-row
+        md:items-end
+        md:justify-between
+      "
+    >
+      {/* LEFT HEADING */}
+      <div>
+        <h2
+          className="
+            text-[23px]
+            font-[600]
+            leading-[1.15]
+            tracking-[-0.02em]
+            text-[#102D63]
+
+            sm:text-[23px]
+
+            lg:text-[25px]
+          "
+        >
+          Explore University Journals
+        </h2>
+
+        <p
+          className="
+            mt-2
+            text-[11px]
+            font-medium
+            leading-[1.5]
+            text-[#6B7789]
+
+            sm:text-[12px]
+          "
+        >
+          Discover peer-reviewed research
+          across diverse disciplines.
+        </p>
+      </div>
+
+      {/* SEARCH + VIEW ALL */}
+      <div
+        className="
+          flex
+          w-full
+          flex-col
+          gap-3
+
+          sm:flex-row
+
+          md:w-auto
+          md:items-center
+        "
+      >
+        {/* SEARCH */}
+        <div
+          className="
+            flex
+            h-[40px]
+            w-full
+            items-center
+            overflow-hidden
+            rounded-[6px]
+            border
+            border-[#DDE4EF]
+            bg-white
+            shadow-[0_2px_8px_rgba(26,62,110,0.04)]
+
+            sm:w-[315px]
+
+            lg:w-[350px]
+          "
+        >
+          <input
+            type="text"
+            value={journalSearch}
+            onChange={handleJournalSearch}
+            placeholder="Search journals by title, subject or ISSN..."
+            aria-label="Search journals"
+            className="
+              min-w-0
+              flex-1
+              bg-transparent
+              px-4
+              text-[10px]
+              font-medium
+              text-[#43546A]
+              outline-none
+
+              placeholder:text-[#97A3B3]
+
+              sm:text-[11px]
+            "
+          />
+
+          <button
+            type="button"
+            aria-label="Search journals"
+            className="
+              grid
+              h-full
+              w-[43px]
+              shrink-0
+              place-items-center
+              border-l
+              border-[#E5EAF2]
+              bg-white
+              text-[#344A75]
+              transition-all
+              duration-300
+
+              hover:bg-[#F4F8FF]
+              hover:text-[#1769E0]
+            "
+          >
+            <Search
+              size={15}
+              strokeWidth={2.1}
+            />
+          </button>
+        </div>
+
+        {/* VIEW ALL JOURNALS */}
+        <motion.div
+          whileHover={{
+            y: -2,
+          }}
+          whileTap={{
+            scale: 0.98,
+          }}
+          className="w-full sm:w-auto"
+        >
+          <Link
+            to="/journals"
+            className="
+              inline-flex
+              h-[40px]
+              w-full
+              items-center
+              justify-center
+              rounded-[5px]
+              bg-[#1769E0]
+              px-4
+              text-[12px]
+              font-[600]
+              text-white
+              shadow-[0_5px_13px_rgba(23,105,224,0.16)]
+              transition-all
+              duration-300
+
+              hover:-translate-y-[1px]
+              hover:bg-[#0C58C5]
+              hover:shadow-[0_8px_18px_rgba(23,105,224,0.22)]
+
+              sm:w-auto
+              sm:min-w-[122px]
+
+              lg:min-w-[128px]
+              lg:text-[12.5px]
+            "
+          >
+            View All Journals
+          </Link>
+        </motion.div>
+      </div>
+    </motion.div>
+
+    {/* =================================================
+        JOURNAL CAROUSEL
+    ================================================= */}
+    <div className="relative">
+      {/* LEFT ARROW */}
+      {journalPageCount > 1 && (
+        <motion.button
+          type="button"
+          onClick={previousJournalPage}
+          aria-label="Previous journals"
+          whileHover={{
+            scale: 1.08,
+            x: -2,
+          }}
+          whileTap={{
+            scale: 0.94,
+          }}
+          className="
+            absolute
+            left-[-22px]
+            top-1/2
+            z-30
+            hidden
+            h-[38px]
+            w-[38px]
+            -translate-y-1/2
+            place-items-center
+            rounded-full
+            border
+            border-[#DCE4F0]
+            bg-white
+            text-[#58739B]
+            shadow-[0_5px_16px_rgba(28,61,108,0.10)]
+            transition-all
+            duration-300
+
+            hover:border-[#BBD0EC]
+            hover:text-[#1769E0]
+
+            xl:grid
+          "
+        >
+          <ChevronLeft
+            size={16}
+            strokeWidth={2.1}
+          />
+        </motion.button>
+      )}
+
+      {/* ===============================================
+          JOURNAL CARDS / EMPTY RESULT
+      =============================================== */}
+      {visibleJournals.length > 0 ? (
+        <div className="overflow-hidden">
+          <AnimatePresence
+            mode="wait"
+            initial={false}
+          >
+            <motion.div
+              key={`${safeJournalPage}-${journalSearch}`}
+              initial={{
+                opacity: 0,
+                x:
+                  journalDirection > 0
+                    ? 28
+                    : -28,
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+              }}
+              exit={{
+                opacity: 0,
+                x:
+                  journalDirection > 0
+                    ? -28
+                    : 28,
+              }}
+              transition={{
+                duration: 0.38,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="
+                grid
+                grid-cols-1
+                gap-4
+
+                sm:grid-cols-2
+
+                md:grid-cols-3
+
+                lg:grid-cols-5
+
+                xl:gap-[10px]
+              "
+            >
+              {visibleJournals.map(
+                (journal, index) => (
+                  <motion.article
+                    key={journal.id}
+                    initial={{
+                      opacity: 0,
+                      y: 18,
+                      scale: 0.985,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                    }}
+                    transition={{
+                      duration: 0.4,
+                      delay: index * 0.045,
+                      ease: [
+                        0.22,
+                        1,
+                        0.36,
+                        1,
+                      ],
+                    }}
+                    whileHover={{
+                      y: -7,
+                      boxShadow:
+                        "0 16px 34px rgba(22,61,112,0.11)",
+                    }}
+                    className="
+                      group
+                      flex
+                      min-h-[274px]
+                      flex-col
+                      overflow-hidden
+                      rounded-[9px]
+                      border
+                      border-[#E0E7F0]
+                      bg-white
+                      p-[8px]
+                      transition-colors
+                      duration-300
+
+                      hover:border-[#C2D5ED]
+                    "
+                  >
+                    {/* IMAGE */}
+                    <div
+                      className="
+                        relative
+                        h-[110px]
+                        shrink-0
+                        overflow-hidden
+                        rounded-[5px]
+                        bg-[#EFF3F7]
+
+                        sm:h-[115px]
+
+                        lg:h-[122px]
+
+                        xl:h-[122px]
+                      "
+                    >
+                      <img
+                        src={journal.image}
+                        alt={journal.title}
+                        loading="lazy"
+                        draggable="false"
+                        className="
+                          h-full
+                          w-full
+                          object-cover
+                          transition-transform
+                          duration-500
+                          ease-out
+
+                          group-hover:scale-[1.055]
+                        "
+                      />
+
+                      <div
+                        className="
+                          pointer-events-none
+                          absolute
+                          inset-0
+                          bg-[#0B2A63]/0
+                          transition-colors
+                          duration-300
+
+                          group-hover:bg-[#0B2A63]/[0.035]
+                        "
+                      />
+                    </div>
+
+                    {/* CONTENT */}
+                    <div
+                      className="
+                        flex
+                        flex-1
+                        flex-col
+                        px-1
+                        pb-1
+                        pt-3
+                      "
+                    >
+                      {/* TITLE */}
+                      <h3
+                        className="
+                          min-h-[36px]
+                          text-[14px]
+                          font-[600]
+                          leading-[1.3]
+                          text-[#17366B]
+
+                          sm:text-[13px]
+
+                          lg:text-[14px]
+
+                          xl:text-[14px]
+                        "
+                      >
+                        {journal.title}
+                      </h3>
+
+                      {/* CATEGORY */}
+                      <p
+                        className="
+                          mt-2
+                          text-[10px]
+                          font-medium
+                          leading-tight
+                          text-[#66768C]
+
+                          lg:text-[10.5px]
+
+                          xl:text-[11px]
+                        "
+                      >
+                        {journal.category}
+                      </p>
+
+                      {/* ISSN */}
+                      <p
+                        className="
+                          mt-2
+                          text-[10.5px]
+                          font-medium
+                          leading-tight
+                          text-[#758397]
+
+                          xl:text-[11px]
+                        "
+                      >
+                        {journal.issn}
+                      </p>
+
+                      {/* BUTTONS */}
+                      <div
+                        className="
+                          mt-auto
+                          flex
+                          gap-2
+                          pt-4
+                        "
+                      >
+                        <Link
+                          to={
+                            journal.detailsLink
+                          }
+                          className="
+                            inline-flex
+                            min-h-[28px]
+                            flex-1
+                            items-center
+                            justify-center
+                            rounded-[4px]
+                            border
+                            border-[#9DC0EC]
+                            bg-white
+                            px-2
+                            text-center
+                            text-[10px]
+                            font-[600]
+                            text-[#1769E0]
+                            transition-all
+                            duration-300
+
+                            hover:border-[#1769E0]
+                            hover:bg-[#1769E0]
+                            hover:text-white
+                            hover:shadow-[0_4px_10px_rgba(23,105,224,0.12)]
+
+                            sm:text-[11.5px]
+                          "
+                        >
+                          View Details
+                        </Link>
+
+                        <Link
+                          to={
+                            journal.journalLink
+                          }
+                          className="
+                            inline-flex
+                            min-h-[28px]
+                            flex-1
+                            items-center
+                            justify-center
+                            rounded-[4px]
+                            border
+                            border-[#95D1A7]
+                            bg-white
+                            px-2
+                            text-center
+                            text-[10px]
+                            font-[600]
+                            text-[#219653]
+                            transition-all
+                            duration-300
+
+                            hover:border-[#219653]
+                            hover:bg-[#219653]
+                            hover:text-white
+                            hover:shadow-[0_4px_10px_rgba(33,150,83,0.12)]
+
+                            sm:text-[11.5px]
+                          "
+                        >
+                          Visit Journal
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.article>
+                )
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      ) : (
+        /* NO SEARCH RESULTS */
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 10,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          className="
+            flex
+            min-h-[220px]
+            flex-col
+            items-center
+            justify-center
+            rounded-[10px]
+            border
+            border-dashed
+            border-[#D9E3EF]
+            bg-[#FBFDFF]
+            px-5
+            text-center
+          "
+        >
+          <span
+            className="
+              grid
+              h-12
+              w-12
+              place-items-center
+              rounded-full
+              bg-[#EAF2FF]
+              text-[#1769E0]
+            "
+          >
+            <Search
+              size={19}
+              strokeWidth={2}
+            />
+          </span>
+
+          <p
+            className="
+              mt-4
+              text-[12px]
+              font-bold
+              text-[#17366B]
+            "
+          >
+            No journals found
+          </p>
+
+          <p
+            className="
+              mt-1
+              text-[9px]
+              text-[#758397]
+            "
+          >
+            Try another title, subject,
+            or ISSN.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => {
+              setJournalSearch("");
+              setJournalPage(0);
+            }}
+            className="
+              mt-4
+              rounded-[4px]
+              border
+              border-[#AFC9E9]
+              bg-white
+              px-4
+              py-2
+              text-[8px]
+              font-bold
+              text-[#1769E0]
+              transition
+
+              hover:bg-[#1769E0]
+              hover:text-white
+            "
+          >
+            Clear Search
+          </button>
+        </motion.div>
+      )}
+
+      {/* RIGHT ARROW */}
+      {journalPageCount > 1 && (
+        <motion.button
+          type="button"
+          onClick={nextJournalPage}
+          aria-label="Next journals"
+          whileHover={{
+            scale: 1.08,
+            x: 2,
+          }}
+          whileTap={{
+            scale: 0.94,
+          }}
+          className="
+            absolute
+            right-[-18px]
+            top-1/2
+            z-30
+            hidden
+            h-[38px]
+            w-[38px]
+            -translate-y-1/2
+            place-items-center
+            rounded-full
+            border
+            border-[#DCE4F0]
+            bg-white
+            text-[#58739B]
+            shadow-[0_5px_16px_rgba(28,61,108,0.10)]
+            transition-all
+            duration-300
+
+            hover:border-[#BBD0EC]
+            hover:text-[#1769E0]
+
+            xl:grid
+          "
+        >
+          <ArrowRight
+            size={16}
+            strokeWidth={2.1}
+          />
+        </motion.button>
+      )}
+    </div>
+
+    {/* =================================================
+        WORKING PAGINATION DOTS
+    ================================================= */}
+    {filteredJournals.length > 0 &&
+      journalPageCount > 1 && (
+        <div
+          className="
+            mt-5
+            flex
+            items-center
+            justify-center
+            gap-[6px]
+          "
+        >
+          {Array.from({
+            length: journalPageCount,
+          }).map((_, index) => (
+            <motion.button
+              key={index}
+              type="button"
+              onClick={() =>
+                goToJournalPage(index)
+              }
+              whileHover={{
+                scale: 1.12,
+              }}
+              whileTap={{
+                scale: 0.92,
+              }}
+              aria-label={`Show journal page ${
+                index + 1
+              }`}
+              aria-current={
+                safeJournalPage === index
+                  ? "page"
+                  : undefined
+              }
+              className={`
+                h-[6px]
+                rounded-full
+                transition-all
+                duration-300
+
+                ${
+                  safeJournalPage === index
+                    ? `
+                      w-[17px]
+                      bg-[#1769E0]
+                      shadow-[0_2px_5px_rgba(23,105,224,0.20)]
+                    `
+                    : `
+                      w-[9px]
+                      bg-[#C8D0DB]
+
+                      hover:bg-[#96A5B9]
+                    `
+                }
+              `}
+            />
+          ))}
+        </div>
+      )}
+
+    {/* =================================================
+        MOBILE / TABLET CAROUSEL CONTROLS
+
+        Desktop uses side arrows.
+        These buttons prevent the carousel from becoming
+        unusable on widths where side arrows are hidden.
+    ================================================= */}
+    {journalPageCount > 1 && (
+      <div
+        className="
+          mt-4
+          flex
+          items-center
+          justify-center
+          gap-3
+
+          xl:hidden
+        "
+      >
+        <motion.button
+          type="button"
+          onClick={previousJournalPage}
+          aria-label="Previous journals"
+          whileTap={{
+            scale: 0.94,
+          }}
+          className="
+            grid
+            h-9
+            w-9
+            place-items-center
+            rounded-full
+            border
+            border-[#DCE4F0]
+            bg-white
+            text-[#58739B]
+            shadow-sm
+            transition-all
+
+            hover:border-[#1769E0]
+            hover:bg-[#F5F9FF]
+            hover:text-[#1769E0]
+          "
+        >
+          <ArrowLeft
+            size={15}
+            strokeWidth={2}
+          />
+        </motion.button>
+
+        <span
+          className="
+            min-w-[58px]
+            text-center
+            text-[8px]
+            font-semibold
+            text-[#718096]
+          "
+        >
+          {safeJournalPage + 1} /{" "}
+          {journalPageCount}
+        </span>
+
+        <motion.button
+          type="button"
+          onClick={nextJournalPage}
+          aria-label="Next journals"
+          whileTap={{
+            scale: 0.94,
+          }}
+          className="
+            grid
+            h-9
+            w-9
+            place-items-center
+            rounded-full
+            border
+            border-[#DCE4F0]
+            bg-white
+            text-[#58739B]
+            shadow-sm
+            transition-all
+
+            hover:border-[#1769E0]
+            hover:bg-[#F5F9FF]
+            hover:text-[#1769E0]
+          "
+        >
+          <ArrowRight
+            size={15}
+            strokeWidth={2}
+          />
+        </motion.button>
+      </div>
+    )}
+  </div>
+</section>
+
+
+     {/* =====================================================
+    EVERYTHING YOU NEED
+===================================================== */}
+<section
+  className="
+    w-full
+    border-y
+    border-[#EEF2F6]
+    bg-white
+    py-9
+
+    sm:py-10
+
+    lg:py-11
+  "
+>
+  <div
+    className="
+      mx-auto
+      w-full
+      max-w-[1230px]
+      px-4
+
+      sm:px-6
+
+      lg:px-10
+
+      xl:px-12
+    "
+  >
+    {/* =================================================
+        HEADING
+    ================================================= */}
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 14,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.35,
+      }}
+      transition={{
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="
+        mb-7
+        text-center
+
+        sm:mb-8
+      "
     >
       <h2
         className="
-          text-[22px]
-          font-[600]
-          leading-tight
-          tracking-[-0.025em]
-          text-[#08245A]
-
-          sm:text-[26px]
-          lg:text-[26px]
+          text-[21px]
+                font-[600]
+                leading-tight
+                tracking-[-0.025em]
+                text-[#08245A]
+      
+                sm:text-[24px]
+                lg:text-[26px]
         "
       >
-        What We Offer to Universities
+        Everything You Need to Publish and Manage Journals
       </h2>
 
-      {/* Multicolor line exactly like reference */}
+      {/* SAME MULTICOLOR UNDERLINE */}
       <div
         className="
           mx-auto
           mt-3
           flex
           h-[3.5px]
-          w-[82px]
+          w-[92px]
           overflow-hidden
           rounded-full
-          sm:w-[98px]
         "
       >
-        <span className="h-full flex-[2.2] bg-[#1769E0]" />
+        <span className="h-full flex-[2] bg-[#1769E0]" />
+
         <span className="h-full flex-1 bg-[#FF5A4E]" />
+
         <span className="h-full flex-1 bg-[#FFC43D]" />
+
         <span className="h-full flex-1 bg-[#25C7D9]" />
-        <span className="h-full flex-[2.2] bg-[#1769E0]" />
+
+        <span className="h-full flex-[2] bg-[#7255D9]" />
       </div>
     </motion.div>
 
-    {/* Cards */}
+    {/* =================================================
+        SERVICE CARDS
+    ================================================= */}
     <motion.div
       initial="hidden"
       whileInView="show"
@@ -1252,10 +2487,12 @@ export default function Home() {
         gap-4
 
         sm:grid-cols-2
+
         md:grid-cols-3
 
-        xl:grid-cols-6
-        xl:gap-[14px]
+        lg:grid-cols-5
+
+        xl:gap-[10px]
       "
     >
       {services.map((item) => {
@@ -1267,9 +2504,10 @@ export default function Home() {
             variants={{
               hidden: {
                 opacity: 0,
-                y: 22,
-                scale: 0.98,
+                y: 18,
+                scale: 0.985,
               },
+
               show: {
                 opacity: 1,
                 y: 0,
@@ -1277,39 +2515,40 @@ export default function Home() {
               },
             }}
             transition={{
-              duration: 0.48,
+              duration: 0.46,
               ease: [0.22, 1, 0.36, 1],
             }}
             whileHover={{
               y: -7,
-              boxShadow: "0 16px 35px rgba(22, 64, 120, 0.11)",
+              boxShadow:
+                "0 16px 34px rgba(22,61,112,0.10)",
             }}
             className="
               group
               flex
-              min-h-[216px]
+              min-h-[215px]
               flex-col
-              items-center
-              rounded-[12px]
+              rounded-[10px]
               border
-              border-[#E4EAF2]
+              border-[#E2E8F1]
               bg-white
-              px-4
-              py-5
-              text-center
+              p-5
               transition-colors
               duration-300
 
-              hover:border-[#CADAF0]
+              hover:border-[#C6D7EC]
 
-              sm:min-h-[220px]
+              sm:min-h-[210px]
 
-              xl:min-h-[216px]
-              xl:px-[10px]
+              lg:min-h-[215px]
+              lg:p-4
+
+              xl:min-h-[215px]
+              xl:p-5
             "
           >
-            {/* Icon circle */}
-            <motion.div
+            {/* ICON */}
+            <motion.span
               whileHover={{
                 scale: 1.08,
                 rotate: 2,
@@ -1321,94 +2560,100 @@ export default function Home() {
               }}
               className={`
                 grid
-                h-[60px]
-                w-[60px]
+                h-[50px]
+                w-[50px]
                 shrink-0
                 place-items-center
-                rounded-full
+                rounded-[10px]
 
-                sm:h-[60px]
-                sm:w-[60px]
+                sm:h-[52px]
+                sm:w-[52px]
 
-                ${item.iconBg}
-                ${item.iconColor}
+                ${item.bg}
+                ${item.color}
               `}
             >
               <Icon
                 className="
-                  h-[29px]
-                  w-[29px]
+                  h-[24px]
+                  w-[24px]
 
-                  sm:h-[31px]
-                  sm:w-[31px]
+                  sm:h-[25px]
+                  sm:w-[25px]
                 "
-                strokeWidth={2.3}
+                strokeWidth={2.1}
               />
-            </motion.div>
+            </motion.span>
 
-            {/* Title */}
+            {/* TITLE */}
             <h3
               className="
-                mt-5
-                text-[13px]
-                font-bold
+                mt-4
+                text-[14px]
+                font-[600]
                 leading-[1.25]
-                text-[#102D63]
+                text-[#17366B]
 
                 sm:text-[14.5px]
+
+                lg:text-[15px]
+
+                xl:text-[15.5px]
               "
             >
               {item.title}
             </h3>
 
-            {/* Description */}
+            {/* DESCRIPTION */}
             <p
               className="
-                mx-auto
-                mt-5
-                max-w-[165px]
+                mt-3
                 flex-1
                 text-[12px]
                 font-medium
-                leading-[1.75]
-                text-[#56667F]
+                leading-[1.65]
+                text-[#66758A]
 
-                sm:text-[12.5px]
-                xl:text-[12px]
+                sm:text-[11.5px]
+
+                lg:text-[12px]
+
+                xl:text-[12.5px]
               "
             >
               {item.desc}
             </p>
 
-            {/* Learn More */}
+            {/* LEARN MORE */}
             {/* <Link
               to="/services"
-              className="
-                mt-6
+              className={`
+                mt-5
                 inline-flex
+                w-fit
                 items-center
-                justify-center
                 gap-2
-                text-[10.5px]
-                font-extrabold
-                text-[#1769E0]
+                text-[8px]
+                font-bold
                 transition-all
                 duration-300
 
                 group-hover:gap-3
-                group-hover:text-[#0B55C3]
 
-                sm:text-[11px]
-              "
+                sm:text-[8.5px]
+
+                ${item.linkColor}
+              `}
             >
               Learn More
 
               <ArrowRight
                 className="
-                  h-[15px]
-                  w-[15px]
+                  h-[11px]
+                  w-[11px]
                   transition-transform
                   duration-300
+
                   group-hover:translate-x-1
                 "
                 strokeWidth={2.4}
@@ -1421,440 +2666,1282 @@ export default function Home() {
   </div>
 </section>
 
-     
-       {/* Trusted Universities */}
-<section className="w-full bg-white py-8">
-  <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8 ">
+        {/* =====================================================
+            TRUST
+        ===================================================== */}
 
-    {/* Heading */}
+      <section className="w-full bg-white py-5">
+        <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8">
+      
+          {/* Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{
+              duration: 0.5,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="mb-8 text-center sm:mb-9"
+          >
+            <h2
+              className="
+                text-[21px]
+                font-[600]
+                leading-tight
+                tracking-[-0.025em]
+                text-[#08245A]
+      
+                sm:text-[24px]
+                lg:text-[26px]
+              "
+            >
+              Why Universities Trust Technical Journals
+            </h2>
+      
+            {/* exact multicolor underline */}
+            <div
+              className="
+                mx-auto
+                mt-3
+                flex
+                h-[3.5px]
+                w-[82px]
+                overflow-hidden
+                rounded-full
+                sm:w-[98px]
+              "
+            >
+              <span className="h-full flex-[2.2] bg-[#1769E0]" />
+              <span className="h-full flex-1 bg-[#FF5A4E]" />
+              <span className="h-full flex-1 bg-[#FFC43D]" />
+              <span className="h-full flex-1 bg-[#25C7D9]" />
+              <span className="h-full flex-[2.2] bg-[#1769E0]" />
+            </div>
+          </motion.div>
+      
+          {/* Trust items */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{
+              once: true,
+              amount: 0.15,
+            }}
+            variants={{
+              hidden: {},
+              show: {
+                transition: {
+                  staggerChildren: 0.06,
+                },
+              },
+            }}
+            className="
+              grid
+              grid-cols-1
+      
+              sm:grid-cols-2
+      
+              md:grid-cols-3
+      
+              lg:grid-cols-6
+            "
+          >
+            {trustItems.map((item, index) => {
+              const Icon = item.icon;
+      
+              return (
+                <motion.article
+                  key={item.title}
+                  variants={{
+                    hidden: {
+                      opacity: 0,
+                      y: 18,
+                      scale: 0.97,
+                    },
+                    show: {
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                    },
+                  }}
+                  transition={{
+                    duration: 0.45,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  whileHover={{
+                    y: -6,
+                  }}
+                  className={`
+                    group
+                    relative
+                    flex
+                    min-h-[182px]
+                    flex-col
+                    items-center
+                    justify-start
+                    px-5
+                    py-4
+                    text-center
+      
+                    sm:min-h-[190px]
+      
+                    lg:min-h-[174px]
+                    lg:px-4
+      
+                    ${
+                      index !== trustItems.length - 1
+                        ? `
+                          border-b
+                          border-[#E5EAF1]
+      
+                          sm:[&:nth-child(odd)]:border-r
+      
+                          md:border-b
+                          md:border-r
+                          md:[&:nth-child(3n)]:border-r-0
+      
+                          lg:border-b-0
+                          lg:border-r
+                          lg:[&:nth-child(3n)]:border-r
+                        `
+                        : ""
+                    }
+                  `}
+                >
+                  {/* subtle hover background */}
+                  <div
+                    className="
+                      pointer-events-none
+                      absolute
+                      inset-1
+                      rounded-[10px]
+                      bg-[#F8FBFF]
+                      opacity-0
+                      transition-opacity
+                      duration-300
+                      group-hover:opacity-100
+                    "
+                  />
+      
+                  {/* icon */}
+                  <motion.div
+                    whileHover={{
+                      scale: 1.1,
+                      rotate: 2,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 280,
+                      damping: 18,
+                    }}
+                    className={`
+                      relative
+                      z-10
+                      grid
+                      h-[52px]
+                      w-[52px]
+                      shrink-0
+                      place-items-center
+                      rounded-full
+      
+                      sm:h-[55px]
+                      sm:w-[55px]
+      
+                      ${item.iconBg}
+                      ${item.iconColor}
+                    `}
+                  >
+                    <Icon
+                      className="
+                        h-[26px]
+                        w-[26px]
+      
+                        sm:h-[29px]
+                        sm:w-[29px]
+                      "
+                      strokeWidth={2.3}
+                    />
+                  </motion.div>
+      
+                  {/* title */}
+                  <h3
+                    className="
+                      relative
+                      z-10
+                      mt-4
+                      text-[12px]
+                      font-bold
+                      leading-[1.25]
+                      text-[#102D63]
+      
+                      sm:text-[12px]
+                      lg:text-[13px]
+                      xl:text-[14px]
+                    "
+                  >
+                    {item.title}
+                  </h3>
+      
+                  {/* description */}
+                  <p
+                    className="
+                      relative
+                      z-10
+                      mx-auto
+                      mt-2
+                      max-w-[145px]
+                      text-[8.5px]
+                      font-medium
+                      leading-[1.65]
+                      text-[#5F6F87]
+      
+                      sm:text-[9px]
+      
+                      xl:text-[11px]
+                    "
+                  >
+                    {item.desc}
+                  </p>
+                </motion.article>
+              );
+            })}
+          </motion.div>
+        </div>
+      </section>
+
+        {/* =====================================================
+            UNIVERSITY LOGOS
+        ===================================================== */}
+
+      <section className="w-full bg-white py-8">
+        <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8 ">
+      
+          {/* Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{
+              duration: 0.5,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="mb-6 text-center sm:mb-7 lg:mb-8"
+          >
+            <h2
+              className="
+                text-[21px]
+                font-[600]
+                leading-[1.2]
+                tracking-[-0.025em]
+                text-[#08245A]
+                sm:text-[25px]
+                md:text-[26px]
+                lg:text-[26px]
+              "
+            >
+              Trusted by Leading Universities Worldwide
+            </h2>
+      
+            {/* Exact multicolor underline */}
+            <div
+              className="
+                mx-auto
+                mt-3
+                flex
+                h-[3.5px]
+                w-[82px]
+                overflow-hidden
+                rounded-full
+                sm:w-[98px]
+              "
+            >
+              <span className="h-full flex-[2.2] bg-[#1769E0]" />
+              <span className="h-full flex-1 bg-[#FF5A4E]" />
+              <span className="h-full flex-1 bg-[#FFC43D]" />
+              <span className="h-full flex-1 bg-[#25C7D9]" />
+              <span className="h-full flex-[2.2] bg-[#1769E0]" />
+            </div>
+          </motion.div>
+      
+          {/* Logo Container */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.18 }}
+            variants={{
+              hidden: {},
+              show: {
+                transition: {
+                  staggerChildren: 0.07,
+                },
+              },
+            }}
+            className="
+              overflow-hidden
+              rounded-[14px]
+              border
+              border-[#E4EAF3]
+              bg-white
+              shadow-[0_3px_14px_rgba(15,43,89,0.025)]
+            "
+          >
+            <div
+              className="
+                grid
+                grid-cols-1
+                sm:grid-cols-2
+                md:grid-cols-3
+                lg:grid-cols-6
+              "
+            >
+              {universities.map((uni, index) => (
+                <motion.div
+                  key={uni.name}
+                  variants={universityReveal}
+                  transition={{
+                    duration: 0.45,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  whileHover={{
+                    y: -3,
+                    backgroundColor: "#F8FBFF",
+                  }}
+                  className={`
+                    group
+                    relative
+                    flex
+                    min-h-[94px]
+                    items-center
+                    justify-center
+                    px-5
+                    py-5
+                    transition-colors
+                    duration-300
+      
+                    ${
+                      index !== universities.length - 1
+                        ? `
+                          border-b
+                          border-[#E5EAF2]
+      
+                          sm:[&:not(:nth-child(2n))]:border-r
+      
+                          md:border-b
+                          md:border-r
+                          md:[&:nth-child(3n)]:border-r-0
+      
+                          lg:border-b-0
+                          lg:border-r
+                          lg:[&:nth-child(3n)]:border-r
+                          lg:last:border-r-0
+                        `
+                        : ""
+                    }
+                  `}
+                >
+                  {/* subtle hover glow */}
+                  <div
+                    className="
+                      pointer-events-none
+                      absolute
+                      inset-0
+                      opacity-0
+                      transition-opacity
+                      duration-300
+                      group-hover:opacity-100
+                      bg-[radial-gradient(circle_at_center,rgba(23,105,224,0.055),transparent_68%)]
+                    "
+                  />
+      
+                  <motion.img
+                    src={uni.logo}
+                    alt={`${uni.name} logo`}
+                    loading="lazy"
+                    draggable="false"
+                    whileHover={{ scale: 1.045 }}
+                    transition={{
+                      duration: 0.25,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="
+                      relative
+                      z-10
+                      block
+                      h-auto
+                      w-auto
+                      max-h-[48px]
+                      max-w-[190px]
+                      object-contain
+      
+                      sm:max-h-[50px]
+                      sm:max-w-[185px]
+      
+                      md:max-h-[52px]
+                      md:max-w-[180px]
+      
+                      lg:max-h-[48px]
+                      lg:max-w-[155px]
+      
+                    
+                    "
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+        {/* =====================================================
+            SOLUTIONS
+        ===================================================== */}
+
+      {/* =====================================================
+    SOLUTIONS TAILORED FOR UNIVERSITIES
+===================================================== */}
+<section
+  className="
+    w-full
+    bg-white
+    py-9
+
+    sm:py-10
+
+    lg:py-11
+  "
+>
+  <div
+    className="
+      mx-auto
+      w-full
+      max-w-[1440px]
+      px-4
+
+      sm:px-6
+
+      lg:px-10
+
+      xl:px-12
+    "
+  >
+    {/* =================================================
+        HEADING
+    ================================================= */}
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.4 }}
+      initial={{
+        opacity: 0,
+        y: 14,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.35,
+      }}
       transition={{
         duration: 0.5,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="mb-6 text-center sm:mb-7 lg:mb-8"
+      className="
+        mb-7
+        text-center
+
+        sm:mb-8
+      "
     >
       <h2
         className="
-          text-[21px]
-          font-[600]
-          leading-[1.2]
-          tracking-[-0.025em]
-          text-[#08245A]
-          sm:text-[25px]
-          md:text-[26px]
-          lg:text-[26px]
+          text-[19px]
+          font-bold
+          leading-tight
+          tracking-[-0.02em]
+          text-[#1769E0]
+
+          sm:text-[21px]
+
+          lg:text-[22px]
         "
       >
-        Trusted by Leading Universities Worldwide
+        Solutions Tailored for Universities
       </h2>
 
-      {/* Exact multicolor underline */}
+      {/* MULTICOLOR UNDERLINE */}
       <div
         className="
           mx-auto
           mt-3
           flex
-          h-[3.5px]
-          w-[82px]
+          h-[3px]
+          w-[70px]
           overflow-hidden
           rounded-full
-          sm:w-[98px]
         "
       >
-        <span className="h-full flex-[2.2] bg-[#1769E0]" />
+        <span className="h-full flex-[2] bg-[#1769E0]" />
+
         <span className="h-full flex-1 bg-[#FF5A4E]" />
+
         <span className="h-full flex-1 bg-[#FFC43D]" />
+
         <span className="h-full flex-1 bg-[#25C7D9]" />
-        <span className="h-full flex-[2.2] bg-[#1769E0]" />
+
+        <span className="h-full flex-[2] bg-[#7255D9]" />
       </div>
     </motion.div>
 
-    {/* Logo Container */}
+    {/* =================================================
+        MAIN SOLUTION BOX
+    ================================================= */}
     <motion.div
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.18 }}
-      variants={{
-        hidden: {},
-        show: {
-          transition: {
-            staggerChildren: 0.07,
-          },
-        },
+      initial={{
+        opacity: 0,
+        y: 18,
+        scale: 0.99,
       }}
-      className="
-        overflow-hidden
-        rounded-[14px]
-        border
-        border-[#E4EAF3]
-        bg-white
-        shadow-[0_3px_14px_rgba(15,43,89,0.025)]
-      "
-    >
-      <div
-        className="
-          grid
-          grid-cols-1
-          sm:grid-cols-2
-          md:grid-cols-3
-          lg:grid-cols-6
-        "
-      >
-        {universities.map((uni, index) => (
-          <motion.div
-            key={uni.name}
-            variants={universityReveal}
-            transition={{
-              duration: 0.45,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            whileHover={{
-              y: -3,
-              backgroundColor: "#F8FBFF",
-            }}
-            className={`
-              group
-              relative
-              flex
-              min-h-[94px]
-              items-center
-              justify-center
-              px-5
-              py-5
-              transition-colors
-              duration-300
-
-              ${
-                index !== universities.length - 1
-                  ? `
-                    border-b
-                    border-[#E5EAF2]
-
-                    sm:[&:not(:nth-child(2n))]:border-r
-
-                    md:border-b
-                    md:border-r
-                    md:[&:nth-child(3n)]:border-r-0
-
-                    lg:border-b-0
-                    lg:border-r
-                    lg:[&:nth-child(3n)]:border-r
-                    lg:last:border-r-0
-                  `
-                  : ""
-              }
-            `}
-          >
-            {/* subtle hover glow */}
-            <div
-              className="
-                pointer-events-none
-                absolute
-                inset-0
-                opacity-0
-                transition-opacity
-                duration-300
-                group-hover:opacity-100
-                bg-[radial-gradient(circle_at_center,rgba(23,105,224,0.055),transparent_68%)]
-              "
-            />
-
-            <motion.img
-              src={uni.logo}
-              alt={`${uni.name} logo`}
-              loading="lazy"
-              draggable="false"
-              whileHover={{ scale: 1.045 }}
-              transition={{
-                duration: 0.25,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="
-                relative
-                z-10
-                block
-                h-auto
-                w-auto
-                max-h-[48px]
-                max-w-[190px]
-                object-contain
-
-                sm:max-h-[50px]
-                sm:max-w-[185px]
-
-                md:max-h-[52px]
-                md:max-w-[180px]
-
-                lg:max-h-[48px]
-                lg:max-w-[155px]
-
-              
-              "
-            />
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
-  </div>
-</section>
-
-       
-      {/* Sustainable Development */}
-<section className="w-full bg-white pb-5 sm:pb-6 lg:pb-7">
-  <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8 ">
-
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        scale: 1,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.18,
+      }}
       transition={{
         duration: 0.55,
         ease: [0.22, 1, 0.36, 1],
       }}
       className="
+        grid
         overflow-hidden
         rounded-[12px]
         border
-        border-[#DDE9DF]
-        bg-[linear-gradient(90deg,#F4FBF5_0%,#F7FBF7_45%,#F3F8F4_100%)]
-        shadow-[0_4px_16px_rgba(25,90,48,0.025)]
+        border-[#E3E9F1]
+        bg-white
+        shadow-[0_5px_20px_rgba(22,61,112,0.035)]
+
+        md:grid-cols-[34%_66%]
+
+        lg:grid-cols-[33%_67%]
       "
     >
-      <div
+      {/* =================================================
+          LEFT IMAGE
+      ================================================= */}
+      <motion.div
+        initial={{
+          opacity: 0,
+          x: -18,
+        }}
+        whileInView={{
+          opacity: 1,
+          x: 0,
+        }}
+        viewport={{
+          once: true,
+        }}
+        transition={{
+          duration: 0.55,
+          delay: 0.05,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="
+          group
+          relative
+          min-h-[250px]
+          overflow-hidden
+
+          sm:min-h-[280px]
+
+          md:min-h-[290px]
+
+          lg:min-h-[300px]
+        "
+      >
+        <img
+          src={solutionsImg}
+          alt="University research library"
+          loading="lazy"
+          className="
+            h-full
+            min-h-[250px]
+            w-full
+            object-cover
+            transition-transform
+            duration-700
+            ease-out
+
+            group-hover:scale-[1.035]
+
+            sm:min-h-[280px]
+
+            md:min-h-[290px]
+
+            lg:min-h-[300px]
+          "
+        />
+
+        {/* subtle image overlay */}
+        <div
+          className="
+            pointer-events-none
+            absolute
+            inset-0
+            bg-[#0B2A63]/0
+            transition-colors
+            duration-500
+
+            group-hover:bg-[#0B2A63]/[0.025]
+          "
+        />
+      </motion.div>
+
+      {/* =================================================
+          RIGHT CONTENT
+      ================================================= */}
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{
+          once: true,
+          amount: 0.2,
+        }}
+        variants={{
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: 0.07,
+              delayChildren: 0.08,
+            },
+          },
+        }}
         className="
           grid
-          items-center
-          gap-7
-          px-5
-          py-7
+          content-center
+          gap-1
+          p-5
 
-          sm:px-7
-          sm:py-8
+          sm:p-6
 
-          md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.45fr)]
-          md:gap-8
+          md:p-7
 
-          lg:grid-cols-[36%_64%]
           lg:px-8
           lg:py-7
-
-          xl:grid-cols-[40%_60%]
-          xl:px-10
-      "
+        "
       >
+        {solutions.map((item) => {
+          const Icon = item.icon;
 
-        {/* LEFT CONTENT */}
-        <motion.div
-          initial={{ opacity: 0, x: -18 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{
-            duration: 0.55,
-            delay: 0.08,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="max-w-[510px]"
-        >
-          <p
-            className="
-              text-[14px]
-              font-semibold
-              leading-none
-              text-[#179447]
-
-              sm:text-[16px]
-          "
-          >
-            Our Commitment to
-          </p>
-
-          <h2
-            className="
-              mt-1
-              text-[22px]
-              font-semibold
-              leading-[1.08]
-              tracking-[-0.025em]
-              text-[#159447]
-
-              sm:text-[24px]
-              lg:text-[24px]
-          "
-          >
-            Sustainable Development
-          </h2>
-
-          <p
-            className="
-              mt-2
-              max-w-[350px]
-              text-[9px]
-              font-medium
-              leading-[1.7]
-              text-[#5C6C62]
-text-justify
-              sm:text-[11px]
-              lg:text-[12.5px]
-          "
-          >
-            We support the United Nations Sustainable Development Goals
-            by promoting open knowledge, ethical publishing, and research
-            that addresses global challenges.
-          </p>
-
-          <motion.div
-            whileHover={{
-              x: 2,
-            }}
-            className="mt-4 inline-block"
-          >
-            <Link
-              to="/about"
-              className="
-                group
-                inline-flex
-                min-h-[38px]
-                items-center
-                justify-center
-                gap-2
-                rounded-[5px]
-                border
-                border-[#58B873]
-                bg-white
-                px-4
-                text-[12px]
-                font-bold
-                text-[#159447]
-                shadow-[0_2px_5px_rgba(20,120,60,0.03)]
-                transition-all
-                duration-300
-
-                hover:-translate-y-[1px]
-                hover:border-[#159447]
-                hover:bg-[#159447]
-                hover:text-white
-                hover:shadow-[0_6px_16px_rgba(21,148,71,0.15)]
-
-                sm:text-[13px]
-              "
-            >
-              Explore SDG Alignment
-
-              <ArrowRight
-                size={12}
-                strokeWidth={2.2}
-                className="
-                  transition-transform
-                  duration-300
-                  group-hover:translate-x-1
-                "
-              />
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        {/* RIGHT SDG CARDS */}
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{
-            once: true,
-            amount: 0.2,
-          }}
-          variants={{
-            hidden: {},
-            show: {
-              transition: {
-                staggerChildren: 0.07,
-                delayChildren: 0.08,
-              },
-            },
-          }}
-          className="
-            grid
-            grid-cols-2
-          
-
-            md:grid-cols-2
-
-            lg:grid-cols-4
-            
-          "
-        >
-          {sdgs.map((sdg) => (
+          return (
             <motion.div
-              key={sdg.id}
+              key={item.title}
               variants={{
                 hidden: {
                   opacity: 0,
-                  y: 18,
-                  scale: 0.97,
+                  x: 14,
                 },
+
                 show: {
                   opacity: 1,
-                  y: 0,
-                  scale: 1,
+                  x: 0,
                 },
               }}
               transition={{
-                duration: 0.45,
+                duration: 0.42,
                 ease: [0.22, 1, 0.36, 1],
               }}
               whileHover={{
-                y: -6,
-                scale: 1.025,
+                x: 5,
               }}
               className="
                 group
-                relative
                 flex
-                items-center
-                justify-center
+                items-start
+                gap-4
+                rounded-[8px]
+                px-2
+                py-3
+                transition-colors
+                duration-300
+
+                hover:bg-[#F8FBFF]
               "
             >
-              <img
-                src={sdg.image}
-                alt={sdg.alt}
-                loading="lazy"
-                draggable="false"
-                className="
-                  block
-                  h-auto
-                  w-full
-                  max-w-[180px]
-                  select-none
-                  rounded-[7px]
-                  object-contain
-                  shadow-[0_7px_16px_rgba(20,55,85,0.10)]
-                  transition-all
-                  duration-300
+              {/* ICON */}
+              <motion.span
+                whileHover={{
+                  scale: 1.08,
+                  rotate: 2,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 280,
+                  damping: 18,
+                }}
+                className={`
+                  grid
+                  h-[36px]
+                  w-[36px]
+                  shrink-0
+                  place-items-center
+                  rounded-full
 
-                  group-hover:shadow-[0_14px_28px_rgba(20,55,85,0.16)]
+                  sm:h-[38px]
+                  sm:w-[38px]
 
-                  sm:max-w-[190px]
+                  ${item.bg}
+                  ${item.color}
+                `}
+              >
+                <Icon
+                  className="
+                    h-[17px]
+                    w-[17px]
 
-                  md:max-w-[150px]
+                    sm:h-[18px]
+                    sm:w-[18px]
+                  "
+                  strokeWidth={2.1}
+                />
+              </motion.span>
 
-                  lg:max-w-none
-                  xl:max-w-[150px]
-                "
-              />
+              {/* TEXT */}
+              <div className="min-w-0 pt-[1px]">
+                <h3
+                  className="
+                    text-[9.5px]
+                    font-bold
+                    leading-[1.25]
+                    text-[#17366B]
+
+                    sm:text-[10px]
+
+                    lg:text-[10.5px]
+                  "
+                >
+                  {item.title}
+                </h3>
+
+                <p
+                  className="
+                    mt-1
+                    text-[8px]
+                    font-medium
+                    leading-[1.55]
+                    text-[#68768A]
+
+                    sm:text-[8.5px]
+
+                    lg:text-[9px]
+                  "
+                >
+                  {item.desc}
+                </p>
+              </div>
             </motion.div>
-          ))}
-        </motion.div>
-      </div>
+          );
+        })}
+      </motion.div>
     </motion.div>
-
   </div>
 </section>
 
-        {/* CTA */}
-      
-<section className="w-full overflow-hidden">
+        {/* =====================================================
+            TESTIMONIALS
+        ===================================================== */}
+
+     {/* =====================================================
+    WHAT OUR PARTNERS SAY
+===================================================== */}
+<section
+  className="
+    relative
+    w-full
+    overflow-hidden
+    bg-white
+    py-9
+
+    sm:py-10
+
+    lg:py-11
+  "
+>
+  <div
+    className="
+      mx-auto
+      w-full
+      max-w-[1440px]
+      px-4
+
+      sm:px-6
+
+      lg:px-10
+
+      xl:px-12
+    "
+  >
+    {/* =================================================
+        HEADING
+    ================================================= */}
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 14,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.35,
+      }}
+      transition={{
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="
+        mb-7
+        text-center
+
+        sm:mb-8
+      "
+    >
+      <h2
+        className="
+          text-[18px]
+          font-bold
+          leading-tight
+          tracking-[-0.02em]
+          text-[#102D63]
+
+          sm:text-[20px]
+
+          lg:text-[21px]
+        "
+      >
+        What Our Partners Say
+      </h2>
+
+      {/* SAME MULTICOLOR LINE */}
+      <div
+        className="
+          mx-auto
+          mt-3
+          flex
+          h-[3px]
+          w-[72px]
+          overflow-hidden
+          rounded-full
+        "
+      >
+        <span className="h-full flex-[2] bg-[#1769E0]" />
+
+        <span className="h-full flex-1 bg-[#FF5A4E]" />
+
+        <span className="h-full flex-1 bg-[#FFC43D]" />
+
+        <span className="h-full flex-1 bg-[#25C7D9]" />
+
+        <span className="h-full flex-[2] bg-[#7255D9]" />
+      </div>
+    </motion.div>
+
+    {/* =================================================
+        TESTIMONIAL AREA
+    ================================================= */}
+    <div className="relative">
+      {/* PREVIOUS BUTTON */}
+      {testimonialPages > 1 && (
+        <motion.button
+          type="button"
+          onClick={previousTestimonials}
+          aria-label="Previous testimonials"
+          whileHover={{
+            scale: 1.08,
+            x: -2,
+          }}
+          whileTap={{
+            scale: 0.94,
+          }}
+          className="
+            absolute
+            left-[-17px]
+            top-1/2
+            z-20
+            hidden
+            h-[38px]
+            w-[38px]
+            -translate-y-1/2
+            place-items-center
+            rounded-full
+            border
+            border-[#E0E7F0]
+            bg-white
+            text-[#627895]
+            shadow-[0_5px_16px_rgba(24,55,95,0.08)]
+            transition-colors
+            duration-300
+
+            hover:border-[#BCD0EB]
+            hover:text-[#1769E0]
+
+            xl:grid
+          "
+        >
+          <ChevronLeft
+            size={17}
+            strokeWidth={2.1}
+          />
+        </motion.button>
+      )}
+
+      {/* CARDS */}
+      <motion.div
+        key={testimonialPage}
+        initial={{
+          opacity: 0,
+          x: 18,
+        }}
+        animate={{
+          opacity: 1,
+          x: 0,
+        }}
+        transition={{
+          duration: 0.42,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="
+          grid
+          grid-cols-1
+          gap-4
+
+          md:grid-cols-3
+
+          lg:gap-5
+        "
+      >
+        {visibleTestimonials.map((item, index) => (
+          <motion.article
+            key={`${testimonialPage}-${item.name}`}
+            initial={{
+              opacity: 0,
+              y: 18,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.44,
+              delay: index * 0.06,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            whileHover={{
+              y: -6,
+              boxShadow:
+                "0 15px 32px rgba(26,63,111,0.10)",
+            }}
+            className="
+              group
+              flex
+              min-h-[210px]
+              flex-col
+              rounded-[10px]
+              border
+              border-[#E2E8F1]
+              bg-white
+              p-5
+              transition-colors
+              duration-300
+
+              hover:border-[#C6D6EB]
+
+              sm:min-h-[220px]
+              sm:p-6
+
+              md:min-h-[215px]
+              md:p-5
+
+              lg:min-h-[220px]
+              lg:p-6
+            "
+          >
+            {/* QUOTE ICON */}
+            <Quote
+              className="
+                h-[17px]
+                w-[17px]
+                fill-[#7791B5]
+                text-[#7791B5]
+                opacity-80
+              "
+              strokeWidth={1.8}
+            />
+
+            {/* QUOTE TEXT */}
+            <p
+              className="
+                mt-4
+                flex-1
+                text-[9px]
+                font-medium
+                leading-[1.7]
+                text-[#4F6078]
+
+                sm:text-[9.5px]
+
+                lg:text-[10px]
+              "
+            >
+              {item.quote}
+            </p>
+
+            {/* AUTHOR */}
+            <div
+              className="
+                mt-5
+                flex
+                items-center
+                gap-3
+              "
+            >
+              <motion.img
+                src={item.image}
+                alt={item.name}
+                loading="lazy"
+                whileHover={{
+                  scale: 1.07,
+                }}
+                className="
+                  h-[42px]
+                  w-[42px]
+                  shrink-0
+                  rounded-full
+                  border-2
+                  border-white
+                  object-cover
+                  shadow-[0_3px_10px_rgba(25,62,105,0.12)]
+
+                  sm:h-[44px]
+                  sm:w-[44px]
+                "
+              />
+
+              <div className="min-w-0">
+                <p
+                  className="
+                    truncate
+                    text-[8.5px]
+                    font-bold
+                    leading-[1.3]
+                    text-[#17366B]
+
+                    sm:text-[9px]
+
+                    lg:text-[9.5px]
+                  "
+                >
+                  {item.name}
+                </p>
+
+                <p
+                  className="
+                    mt-1
+                    truncate
+                    text-[7.5px]
+                    font-medium
+                    leading-tight
+                    text-[#758399]
+
+                    sm:text-[8px]
+                  "
+                >
+                  {item.university}
+                </p>
+              </div>
+            </div>
+          </motion.article>
+        ))}
+      </motion.div>
+
+      {/* NEXT BUTTON */}
+      {testimonialPages > 1 && (
+        <motion.button
+          type="button"
+          onClick={nextTestimonials}
+          aria-label="Next testimonials"
+          whileHover={{
+            scale: 1.08,
+            x: 2,
+          }}
+          whileTap={{
+            scale: 0.94,
+          }}
+          className="
+            absolute
+            right-[-17px]
+            top-1/2
+            z-20
+            hidden
+            h-[38px]
+            w-[38px]
+            -translate-y-1/2
+            place-items-center
+            rounded-full
+            border
+            border-[#E0E7F0]
+            bg-white
+            text-[#627895]
+            shadow-[0_5px_16px_rgba(24,55,95,0.08)]
+            transition-colors
+            duration-300
+
+            hover:border-[#BCD0EB]
+            hover:text-[#1769E0]
+
+            xl:grid
+          "
+        >
+          <ChevronRight
+            size={17}
+            strokeWidth={2.1}
+          />
+        </motion.button>
+      )}
+    </div>
+
+    {/* =================================================
+        WORKING PAGINATION
+    ================================================= */}
+    {testimonialPages > 1 && (
+      <div
+        className="
+          mt-6
+          flex
+          items-center
+          justify-center
+          gap-[6px]
+        "
+      >
+        {Array.from({
+          length: testimonialPages,
+        }).map((_, index) => (
+          <motion.button
+            key={index}
+            type="button"
+            onClick={() =>
+              setTestimonialPage(index)
+            }
+            whileHover={{
+              scale: 1.15,
+            }}
+            whileTap={{
+              scale: 0.9,
+            }}
+            aria-label={`Show testimonial page ${
+              index + 1
+            }`}
+            className={`
+              h-[6px]
+              rounded-full
+              transition-all
+              duration-300
+
+              ${
+                testimonialPage === index
+                  ? `
+                    w-[18px]
+                    bg-[#1769E0]
+                    shadow-[0_2px_5px_rgba(23,105,224,.20)]
+                  `
+                  : `
+                    w-[7px]
+                    bg-[#C8D0DB]
+
+                    hover:bg-[#91A0B5]
+                  `
+              }
+            `}
+          />
+        ))}
+      </div>
+    )}
+
+    {/* MOBILE NEXT / PREVIOUS */}
+    {testimonialPages > 1 && (
+      <div
+        className="
+          mt-5
+          flex
+          justify-center
+          gap-3
+
+          xl:hidden
+        "
+      >
+        <motion.button
+          type="button"
+          onClick={previousTestimonials}
+          whileTap={{
+            scale: 0.95,
+          }}
+          className="
+            grid
+            h-9
+            w-9
+            place-items-center
+            rounded-full
+            border
+            border-[#DDE5EF]
+            bg-white
+            text-[#5E7290]
+            transition
+
+            hover:border-[#1769E0]
+            hover:text-[#1769E0]
+          "
+        >
+          <ChevronLeft size={15} />
+        </motion.button>
+
+        <motion.button
+          type="button"
+          onClick={nextTestimonials}
+          whileTap={{
+            scale: 0.95,
+          }}
+          className="
+            grid
+            h-9
+            w-9
+            place-items-center
+            rounded-full
+            border
+            border-[#DDE5EF]
+            bg-white
+            text-[#5E7290]
+            transition
+
+            hover:border-[#1769E0]
+            hover:text-[#1769E0]
+          "
+        >
+          <ChevronRight size={15} />
+        </motion.button>
+      </div>
+    )}
+  </div>
+</section>
+
+        {/* =====================================================
+            CTA
+        ===================================================== */}
+
+       <section className="w-full overflow-hidden">
   <div
     className="
       relative
