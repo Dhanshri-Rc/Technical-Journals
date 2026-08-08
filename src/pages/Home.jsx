@@ -2197,7 +2197,7 @@ lg:h-[510px]
             xl:grid
           "
         >
-          <ArrowRight
+          <ChevronRight
             size={16}
             strokeWidth={2.1}
           />
@@ -2915,7 +2915,7 @@ lg:h-[510px]
         ===================================================== */}
 
       <section className="w-full bg-white py-8">
-        <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8 ">
+        <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8 ">
       
           {/* Heading */}
           <motion.div
@@ -3093,9 +3093,7 @@ lg:h-[510px]
         </div>
       </section>
 
-        {/* =====================================================
-            SOLUTIONS
-        ===================================================== */}
+    
 
       {/* =====================================================
     SOLUTIONS TAILORED FOR UNIVERSITIES
@@ -3104,25 +3102,19 @@ lg:h-[510px]
   className="
     w-full
     bg-white
-    py-9
-
-    sm:py-10
-
-    lg:py-11
+    py-6
   "
 >
   <div
     className="
       mx-auto
       w-full
-      max-w-[1440px]
+      max-w-[1210px]
       px-4
 
       sm:px-6
 
       lg:px-10
-
-      xl:px-12
     "
   >
     {/* =================================================
@@ -3154,15 +3146,15 @@ lg:h-[510px]
     >
       <h2
         className="
-          text-[19px]
-          font-bold
+          text-[24px]
+          font-[600]
           leading-tight
           tracking-[-0.02em]
           text-[#1769E0]
 
-          sm:text-[21px]
+          sm:text-[25px]
 
-          lg:text-[22px]
+          lg:text-[26px]
         "
       >
         Solutions Tailored for Universities
@@ -3174,8 +3166,8 @@ lg:h-[510px]
           mx-auto
           mt-3
           flex
-          h-[3px]
-          w-[70px]
+          h-[3.5px]
+          w-[92px]
           overflow-hidden
           rounded-full
         "
@@ -3225,7 +3217,7 @@ lg:h-[510px]
 
         md:grid-cols-[34%_66%]
 
-        lg:grid-cols-[33%_67%]
+        lg:grid-cols-[37%_63%]
       "
     >
       {/* =================================================
@@ -3322,14 +3314,10 @@ lg:h-[510px]
           grid
           content-center
           gap-1
-          p-5
-
-          sm:p-6
-
-          md:p-7
+        
 
           lg:px-8
-          lg:py-7
+         
         "
       >
         {solutions.map((item) => {
@@ -3412,14 +3400,14 @@ lg:h-[510px]
               <div className="min-w-0 pt-[1px]">
                 <h3
                   className="
-                    text-[9.5px]
-                    font-bold
+                    text-[14px]
+                    font-[600]
                     leading-[1.25]
                     text-[#17366B]
 
-                    sm:text-[10px]
+                    sm:text-[14px]
 
-                    lg:text-[10.5px]
+                    lg:text-[16px]
                   "
                 >
                   {item.title}
@@ -3428,14 +3416,14 @@ lg:h-[510px]
                 <p
                   className="
                     mt-1
-                    text-[8px]
+                    text-[12px]
                     font-medium
                     leading-[1.55]
                     text-[#68768A]
 
-                    sm:text-[8.5px]
+                    sm:text-[14px]
 
-                    lg:text-[9px]
+                    lg:text-[12px]
                   "
                 >
                   {item.desc}
@@ -3456,486 +3444,7 @@ lg:h-[510px]
      {/* =====================================================
     WHAT OUR PARTNERS SAY
 ===================================================== */}
-<section
-  className="
-    relative
-    w-full
-    overflow-hidden
-    bg-white
-    py-9
 
-    sm:py-10
-
-    lg:py-11
-  "
->
-  <div
-    className="
-      mx-auto
-      w-full
-      max-w-[1440px]
-      px-4
-
-      sm:px-6
-
-      lg:px-10
-
-      xl:px-12
-    "
-  >
-    {/* =================================================
-        HEADING
-    ================================================= */}
-    <motion.div
-      initial={{
-        opacity: 0,
-        y: 14,
-      }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-      }}
-      viewport={{
-        once: true,
-        amount: 0.35,
-      }}
-      transition={{
-        duration: 0.5,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-      className="
-        mb-7
-        text-center
-
-        sm:mb-8
-      "
-    >
-      <h2
-        className="
-          text-[18px]
-          font-bold
-          leading-tight
-          tracking-[-0.02em]
-          text-[#102D63]
-
-          sm:text-[20px]
-
-          lg:text-[21px]
-        "
-      >
-        What Our Partners Say
-      </h2>
-
-      {/* SAME MULTICOLOR LINE */}
-      <div
-        className="
-          mx-auto
-          mt-3
-          flex
-          h-[3px]
-          w-[72px]
-          overflow-hidden
-          rounded-full
-        "
-      >
-        <span className="h-full flex-[2] bg-[#1769E0]" />
-
-        <span className="h-full flex-1 bg-[#FF5A4E]" />
-
-        <span className="h-full flex-1 bg-[#FFC43D]" />
-
-        <span className="h-full flex-1 bg-[#25C7D9]" />
-
-        <span className="h-full flex-[2] bg-[#7255D9]" />
-      </div>
-    </motion.div>
-
-    {/* =================================================
-        TESTIMONIAL AREA
-    ================================================= */}
-    <div className="relative">
-      {/* PREVIOUS BUTTON */}
-      {testimonialPages > 1 && (
-        <motion.button
-          type="button"
-          onClick={previousTestimonials}
-          aria-label="Previous testimonials"
-          whileHover={{
-            scale: 1.08,
-            x: -2,
-          }}
-          whileTap={{
-            scale: 0.94,
-          }}
-          className="
-            absolute
-            left-[-17px]
-            top-1/2
-            z-20
-            hidden
-            h-[38px]
-            w-[38px]
-            -translate-y-1/2
-            place-items-center
-            rounded-full
-            border
-            border-[#E0E7F0]
-            bg-white
-            text-[#627895]
-            shadow-[0_5px_16px_rgba(24,55,95,0.08)]
-            transition-colors
-            duration-300
-
-            hover:border-[#BCD0EB]
-            hover:text-[#1769E0]
-
-            xl:grid
-          "
-        >
-          <ChevronLeft
-            size={17}
-            strokeWidth={2.1}
-          />
-        </motion.button>
-      )}
-
-      {/* CARDS */}
-      <motion.div
-        key={testimonialPage}
-        initial={{
-          opacity: 0,
-          x: 18,
-        }}
-        animate={{
-          opacity: 1,
-          x: 0,
-        }}
-        transition={{
-          duration: 0.42,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-        className="
-          grid
-          grid-cols-1
-          gap-4
-
-          md:grid-cols-3
-
-          lg:gap-5
-        "
-      >
-        {visibleTestimonials.map((item, index) => (
-          <motion.article
-            key={`${testimonialPage}-${item.name}`}
-            initial={{
-              opacity: 0,
-              y: 18,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{
-              duration: 0.44,
-              delay: index * 0.06,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            whileHover={{
-              y: -6,
-              boxShadow:
-                "0 15px 32px rgba(26,63,111,0.10)",
-            }}
-            className="
-              group
-              flex
-              min-h-[210px]
-              flex-col
-              rounded-[10px]
-              border
-              border-[#E2E8F1]
-              bg-white
-              p-5
-              transition-colors
-              duration-300
-
-              hover:border-[#C6D6EB]
-
-              sm:min-h-[220px]
-              sm:p-6
-
-              md:min-h-[215px]
-              md:p-5
-
-              lg:min-h-[220px]
-              lg:p-6
-            "
-          >
-            {/* QUOTE ICON */}
-            <Quote
-              className="
-                h-[17px]
-                w-[17px]
-                fill-[#7791B5]
-                text-[#7791B5]
-                opacity-80
-              "
-              strokeWidth={1.8}
-            />
-
-            {/* QUOTE TEXT */}
-            <p
-              className="
-                mt-4
-                flex-1
-                text-[9px]
-                font-medium
-                leading-[1.7]
-                text-[#4F6078]
-
-                sm:text-[9.5px]
-
-                lg:text-[10px]
-              "
-            >
-              {item.quote}
-            </p>
-
-            {/* AUTHOR */}
-            <div
-              className="
-                mt-5
-                flex
-                items-center
-                gap-3
-              "
-            >
-              <motion.img
-                src={item.image}
-                alt={item.name}
-                loading="lazy"
-                whileHover={{
-                  scale: 1.07,
-                }}
-                className="
-                  h-[42px]
-                  w-[42px]
-                  shrink-0
-                  rounded-full
-                  border-2
-                  border-white
-                  object-cover
-                  shadow-[0_3px_10px_rgba(25,62,105,0.12)]
-
-                  sm:h-[44px]
-                  sm:w-[44px]
-                "
-              />
-
-              <div className="min-w-0">
-                <p
-                  className="
-                    truncate
-                    text-[8.5px]
-                    font-bold
-                    leading-[1.3]
-                    text-[#17366B]
-
-                    sm:text-[9px]
-
-                    lg:text-[9.5px]
-                  "
-                >
-                  {item.name}
-                </p>
-
-                <p
-                  className="
-                    mt-1
-                    truncate
-                    text-[7.5px]
-                    font-medium
-                    leading-tight
-                    text-[#758399]
-
-                    sm:text-[8px]
-                  "
-                >
-                  {item.university}
-                </p>
-              </div>
-            </div>
-          </motion.article>
-        ))}
-      </motion.div>
-
-      {/* NEXT BUTTON */}
-      {testimonialPages > 1 && (
-        <motion.button
-          type="button"
-          onClick={nextTestimonials}
-          aria-label="Next testimonials"
-          whileHover={{
-            scale: 1.08,
-            x: 2,
-          }}
-          whileTap={{
-            scale: 0.94,
-          }}
-          className="
-            absolute
-            right-[-17px]
-            top-1/2
-            z-20
-            hidden
-            h-[38px]
-            w-[38px]
-            -translate-y-1/2
-            place-items-center
-            rounded-full
-            border
-            border-[#E0E7F0]
-            bg-white
-            text-[#627895]
-            shadow-[0_5px_16px_rgba(24,55,95,0.08)]
-            transition-colors
-            duration-300
-
-            hover:border-[#BCD0EB]
-            hover:text-[#1769E0]
-
-            xl:grid
-          "
-        >
-          <ChevronRight
-            size={17}
-            strokeWidth={2.1}
-          />
-        </motion.button>
-      )}
-    </div>
-
-    {/* =================================================
-        WORKING PAGINATION
-    ================================================= */}
-    {testimonialPages > 1 && (
-      <div
-        className="
-          mt-6
-          flex
-          items-center
-          justify-center
-          gap-[6px]
-        "
-      >
-        {Array.from({
-          length: testimonialPages,
-        }).map((_, index) => (
-          <motion.button
-            key={index}
-            type="button"
-            onClick={() =>
-              setTestimonialPage(index)
-            }
-            whileHover={{
-              scale: 1.15,
-            }}
-            whileTap={{
-              scale: 0.9,
-            }}
-            aria-label={`Show testimonial page ${
-              index + 1
-            }`}
-            className={`
-              h-[6px]
-              rounded-full
-              transition-all
-              duration-300
-
-              ${
-                testimonialPage === index
-                  ? `
-                    w-[18px]
-                    bg-[#1769E0]
-                    shadow-[0_2px_5px_rgba(23,105,224,.20)]
-                  `
-                  : `
-                    w-[7px]
-                    bg-[#C8D0DB]
-
-                    hover:bg-[#91A0B5]
-                  `
-              }
-            `}
-          />
-        ))}
-      </div>
-    )}
-
-    {/* MOBILE NEXT / PREVIOUS */}
-    {testimonialPages > 1 && (
-      <div
-        className="
-          mt-5
-          flex
-          justify-center
-          gap-3
-
-          xl:hidden
-        "
-      >
-        <motion.button
-          type="button"
-          onClick={previousTestimonials}
-          whileTap={{
-            scale: 0.95,
-          }}
-          className="
-            grid
-            h-9
-            w-9
-            place-items-center
-            rounded-full
-            border
-            border-[#DDE5EF]
-            bg-white
-            text-[#5E7290]
-            transition
-
-            hover:border-[#1769E0]
-            hover:text-[#1769E0]
-          "
-        >
-          <ChevronLeft size={15} />
-        </motion.button>
-
-        <motion.button
-          type="button"
-          onClick={nextTestimonials}
-          whileTap={{
-            scale: 0.95,
-          }}
-          className="
-            grid
-            h-9
-            w-9
-            place-items-center
-            rounded-full
-            border
-            border-[#DDE5EF]
-            bg-white
-            text-[#5E7290]
-            transition
-
-            hover:border-[#1769E0]
-            hover:text-[#1769E0]
-          "
-        >
-          <ChevronRight size={15} />
-        </motion.button>
-      </div>
-    )}
-  </div>
-</section>
 
         {/* =====================================================
             CTA
