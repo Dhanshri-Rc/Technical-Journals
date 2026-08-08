@@ -17,7 +17,7 @@ import { CONFERENCES } from "../data/site";
 
 // Keep enough cards on each page for a compact layout while ensuring
 // pagination is useful even when the conference list is relatively short.
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 5;
 
 const TYPE_OPTIONS = [
   "International Conference",
