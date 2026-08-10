@@ -128,7 +128,7 @@ export default function Header() {
             : "border-slate-100 bg-white"
         }`}
       >
-        <div className="mx-auto flex h-[72px] w-full max-w-[1440px] items-center justify-between px-4 sm:h-[78px] sm:px-6 lg:px-8 xl:px-12">
+        <div className="mx-auto flex h-[72px] w-full max-w-[1440px] items-center justify-between px-4 sm:h-[78px] sm:px-6 lg:px-8 ">
           {/* Logo */}
           <Link
             to="/"
@@ -138,7 +138,7 @@ export default function Header() {
             <motion.img
               src={logo}
               alt={`${SITE.name} logo`}
-              className="h-10 w-auto max-w-[180px] object-contain sm:h-12 sm:max-w-[220px]"
+              className="h-10 w-auto max-w-[180px] object-contain sm:h-14 sm:max-w-[220px]"
               whileHover={{ scale: 1.035 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
@@ -147,7 +147,7 @@ export default function Header() {
 
           {/* Desktop navigation */}
           <nav
-            className="hidden items-center gap-1 lg:flex xl:gap-2"
+            className="hidden items-center  lg:flex"
             aria-label="Primary navigation"
           >
             {NAV_LINKS.map((link) => (
@@ -163,7 +163,7 @@ export default function Header() {
                   className={({ isActive }) =>
                     `group relative inline-flex h-11 items-center rounded-lg px-3 text-[14px] font-semibold transition-colors duration-200 xl:px-4 ${
                       isActive
-                        ? "bg-blue-50 text-blue-700"
+                        ? " text-blue-700"
                         : "text-slate-700 hover:bg-slate-50 hover:text-blue-700"
                     }`
                   }
