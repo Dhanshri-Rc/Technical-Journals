@@ -29,14 +29,31 @@ import {
 
 import journalsBg from "../assets/images/journalBg.png";
 import journalCta from "../assets/images/journalCta.png";
+import j1 from "../assets/images/j1.png";
+import j2 from "../assets/images/j2.png";
+import j3 from "../assets/images/j3.png";
+import j4 from "../assets/images/j4.png";
+import j5 from "../assets/images/j5.png";
 import { JOURNALS } from "../data/site";
+
+const JOURNAL_IMAGES = [j1, j2, j3, j4, j5];
 
 const PAGE_SIZE = 9;
 
 const ALL_JOURNALS = Array.from({ length: 13 }, (_, groupIndex) =>
   JOURNALS.map((journal, journalIndex) => ({
     ...journal,
-    id: groupIndex === 0 ? journal.id : `${journal.id}-${groupIndex + 1}`,
+
+    // Assign cover according to its position in JOURNALS
+    image:
+      journal.image ||
+      JOURNAL_IMAGES[journalIndex % JOURNAL_IMAGES.length],
+
+    id:
+      groupIndex === 0
+        ? journal.id
+        : `${journal.id}-${groupIndex + 1}`,
+
     _key: `${journal.id}-${groupIndex}-${journalIndex}`,
   })),
 ).flat();
@@ -893,7 +910,10 @@ export default function Journals() {
                   {pagedJournals.map((journal, index) => {
                     const indexBadge = getIndexLabel(journal);
                     const cover =
-                      journal.image || journal.cover || journal.thumbnail;
+                      JOURNAL_IMAGES[journal.slug] ||
+                      journal.image ||
+                      journal.cover ||
+                      journal.thumbnail;
                     const title = journal.title || "University Journal";
                     const journalSubject =
                       journal.field ||
@@ -942,12 +962,23 @@ export default function Journals() {
                               : "flex min-w-0 gap-3"
                           }
                         >
-                          <div className="h-[135px] w-[92px] shrink-0 overflow-hidden rounded-[5px] bg-gradient-to-br from-[#052353] to-[#0870c9] sm:h-[145px]">
+                          <div
+                            className="
+    h-[135px] w-[92px] shrink-0 overflow-hidden
+    rounded-[5px] border border-[#dfe5ed] bg-white
+    sm:h-[145px]
+  "
+                          >
                             {cover ? (
                               <img
                                 src={cover}
-                                alt=""
-                                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                alt={`${title} journal cover`}
+                                loading="lazy"
+                                className="
+        h-full w-full object-contain p-1
+        transition-transform duration-500 ease-out
+        group-hover:scale-[1.04]
+      "
                               />
                             ) : (
                               <div className="grid h-full w-full place-items-center bg-[radial-gradient(circle_at_top,#1386da,#03183f_70%)]">
