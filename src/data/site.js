@@ -36,7 +36,6 @@ export const NAV_LINKS = [
 
 export const FOOTER_LINKS = {
   quickLinks: [
-    { label: "Home", to: "/" },
     { label: "Journals", to: "/journals" },
     { label: "Conferences", to: "/conferences" },
     { label: "Services", to: "/services" },
@@ -192,3 +191,9 @@ export const REVIEW_WORKFLOW = [
   { step: "4", title: "Review & Feedback", desc: "Reviewers evaluate and provide constructive feedback.", icon: "MessageSquare" },
   { step: "5", title: "Decision", desc: "The editor communicates the decision to the author.", icon: "CheckCircle2" },
 ];
+
+export const CONTACT_INFO = {
+  address: "71-75 Shelton Street, Covent Garden, London WC2H 9JQ, United Kingdom",
+  email: "info@technicaljournals.org",
+  phone: "+44 20 7946 0958",
+};
