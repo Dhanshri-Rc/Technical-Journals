@@ -46,13 +46,9 @@ const ALL_JOURNALS = Array.from({ length: 13 }, (_, groupIndex) =>
 
     // Assign cover according to its position in JOURNALS
     image:
-      journal.image ||
-      JOURNAL_IMAGES[journalIndex % JOURNAL_IMAGES.length],
+      journal.image || JOURNAL_IMAGES[journalIndex % JOURNAL_IMAGES.length],
 
-    id:
-      groupIndex === 0
-        ? journal.id
-        : `${journal.id}-${groupIndex + 1}`,
+    id: groupIndex === 0 ? journal.id : `${journal.id}-${groupIndex + 1}`,
 
     _key: `${journal.id}-${groupIndex}-${journalIndex}`,
   })),
@@ -716,7 +712,7 @@ export default function Journals() {
       </section>
 
       {/* Statistics */}
-      <section className="relative z-10 mx-auto -mt-10 w-full max-w-[1440px] px-4 sm:px-8 lg:px-16 xl:px-20">
+      <section className="relative z-10 mx-auto -mt-5 sm:-mt-10 w-full max-w-[1440px] px-4 sm:px-8 lg:px-16 xl:px-20">
         <div className="grid rounded-[11px] border border-[#e6ebf2] bg-white px-4 py-2 shadow-[0_8px_26px_rgba(10,35,75,0.08)] sm:grid-cols-2 lg:grid-cols-5 lg:px-6">
           {[
             {
@@ -930,8 +926,7 @@ export default function Journals() {
                       journal.publicationFrequency ||
                       (index % 2 === 0 ? "Quarterly" : "Bi-Monthly");
                     const journalIdentifier = journal.slug || journal.id;
-const detailsUrl = `/journals/${encodeURIComponent(journalIdentifier)}`;
-                  
+                    const detailsUrl = `/journals/${encodeURIComponent(journalIdentifier)}`;
 
                     return (
                       <motion.article
@@ -1036,18 +1031,18 @@ const detailsUrl = `/journals/${encodeURIComponent(journalIdentifier)}`;
                             </Link>
 
                             <Link
-  to={detailsUrl}
-  className="
+                              to={detailsUrl}
+                              className="
     inline-flex h-9 items-center justify-center gap-1
     rounded-[4px] border border-[#24a55b] px-2
     text-[11px] font-semibold text-[#168746]
     transition duration-300
     hover:bg-[#168746] hover:text-white
   "
->
-  Visit Journal
-  <ExternalLink className="h-3 w-3" />
-</Link>
+                            >
+                              Visit Journal
+                              <ExternalLink className="h-3 w-3" />
+                            </Link>
                           </div>
                         </div>
                       </motion.article>
