@@ -929,11 +929,9 @@ export default function Journals() {
                       journal.frequency ||
                       journal.publicationFrequency ||
                       (index % 2 === 0 ? "Quarterly" : "Bi-Monthly");
-                    const detailsUrl = journal.slug
-                      ? `/journals/${journal.slug}`
-                      : journal.detailsUrl || journal.to || "#";
-                    const website =
-                      journal.url || journal.website || journal.link || "#";
+                    const journalIdentifier = journal.slug || journal.id;
+const detailsUrl = `/journals/${encodeURIComponent(journalIdentifier)}`;
+                  
 
                     return (
                       <motion.article
@@ -1037,15 +1035,19 @@ export default function Journals() {
                               View Details
                             </Link>
 
-                            <a
-                              href={website}
-                              target={website === "#" ? undefined : "_blank"}
-                              rel={website === "#" ? undefined : "noreferrer"}
-                              className="inline-flex h-9 items-center justify-center gap-1 rounded-[4px] border border-[#24a55b] px-2 text-[11px] font-semibold text-[#168746] transition hover:bg-[#168746] hover:text-white"
-                            >
-                              Visit Journal
-                              <ExternalLink className="h-3 w-3" />
-                            </a>
+                            <Link
+  to={detailsUrl}
+  className="
+    inline-flex h-9 items-center justify-center gap-1
+    rounded-[4px] border border-[#24a55b] px-2
+    text-[11px] font-semibold text-[#168746]
+    transition duration-300
+    hover:bg-[#168746] hover:text-white
+  "
+>
+  Visit Journal
+  <ExternalLink className="h-3 w-3" />
+</Link>
                           </div>
                         </div>
                       </motion.article>
