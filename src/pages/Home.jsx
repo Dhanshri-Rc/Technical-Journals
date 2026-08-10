@@ -585,11 +585,11 @@ lg:h-[510px]
       bg-cover
       bg-no-repeat
 
-      bg-[76%_center]
+      bg-[45%_center]
 
-      sm:bg-[73%_center]
+      sm:bg-[53%_center]
 
-      md:bg-[70%_center]
+      md:bg-[35%_center]
 
       lg:bg-[68%_center]
 
@@ -994,14 +994,14 @@ lg:h-[510px]
     <div className="min-w-0">
       <p
         className="
-          text-[10px]
+          text-[11px]
           font-bold
           leading-[1.25]
           text-[#17366B]
 
-          sm:text-[8px]
+         
 
-          lg:text-[11.5px]
+          sm:text-[11.5px]
         "
       >
         Secure by Design
@@ -1016,14 +1016,14 @@ lg:h-[510px]
           leading-[1.5]
           text-[#525e70]
 
-          sm:text-[6.3px]
+        
 
-          lg:text-[9px]
+          sm:text-[9px]
         "
       >
-        Enterprise-grade security
-        <br className="hidden lg:block" />
-        and data protection
+        Enterprise-grade security 
+         <br className="hidden lg:block" />
+         and data protection
       </p>
     </div>
   </motion.div>
@@ -1102,14 +1102,14 @@ lg:h-[510px]
     <div className="min-w-0">
       <p
         className="
-          text-[10px]
+          text-[11px]
           font-bold
           leading-[1.25]
           text-[#17366B]
 
-          sm:text-[8px]
+          
 
-          lg:text-[11.5px]
+          sm:text-[11.5px]
         "
       >
         University Focused
@@ -1119,14 +1119,14 @@ lg:h-[510px]
         className="
           mt-1
           max-w-[125px]
-          text-[8px]
+          text-[9px]
           font-medium
           leading-[1.5]
          text-[#525e70]
 
-          sm:text-[6.3px]
+          
 
-          lg:text-[9px]
+          sm:text-[9px]
         "
       >
         Only for university 
@@ -1210,14 +1210,14 @@ lg:h-[510px]
     <div className="min-w-0">
       <p
         className="
-          text-[9px]
+          text-[11px]
           font-bold
           leading-[1.25]
           text-[#17366B]
 
-          sm:text-[8px]
+      
 
-          lg:text-[11.5px]
+          sm:text-[11.5px]
         "
       >
         99.9% Uptime
@@ -1227,14 +1227,14 @@ lg:h-[510px]
         className="
           mt-1
           max-w-[125px]
-          text-[8px]
+          text-[9px]
           font-medium
           leading-[1.5]
           text-[#525e70]
 
-          sm:text-[6.3px]
+        
 
-          lg:text-[9px]
+          sm:text-[9px]
         "
       >
         Reliable hosting you
@@ -1956,12 +1956,12 @@ lg:h-[510px]
                       <p
                         className="
                           mt-2
-                          text-[10px]
+                          text-[11px]
                           font-medium
                           leading-tight
                           text-[#66768C]
 
-                          lg:text-[10.5px]
+                          lg:text-[11px]
 
                           xl:text-[11px]
                         "
@@ -2870,12 +2870,12 @@ lg:h-[510px]
                       relative
                       z-10
                       mt-4
-                      text-[12px]
+                      text-[13px]
                       font-bold
                       leading-[1.25]
                       text-[#102D63]
       
-                      sm:text-[12px]
+                      sm:text-[13px]
                       lg:text-[13px]
                       xl:text-[14px]
                     "
@@ -2891,12 +2891,12 @@ lg:h-[510px]
                       mx-auto
                       mt-2
                       max-w-[145px]
-                      text-[8.5px]
+                      text-[11px]
                       font-medium
                       leading-[1.65]
                       text-[#5F6F87]
       
-                      sm:text-[9px]
+                      sm:text-[11px]
       
                       xl:text-[11px]
                     "
@@ -3400,12 +3400,12 @@ lg:h-[510px]
               <div className="min-w-0 pt-[1px]">
                 <h3
                   className="
-                    text-[14px]
+                    text-[15px]
                     font-[600]
                     leading-[1.25]
                     text-[#17366B]
 
-                    sm:text-[14px]
+                    sm:text-[15px]
 
                     lg:text-[16px]
                   "
@@ -3416,14 +3416,14 @@ lg:h-[510px]
                 <p
                   className="
                     mt-1
-                    text-[12px]
+                    text-[13px]
                     font-medium
                     leading-[1.55]
                     text-[#68768A]
 
-                    sm:text-[14px]
+                    sm:text-[12px]
 
-                    lg:text-[1px]
+                    lg:text-[13px]
                   "
                 >
                   {item.desc}
@@ -3624,7 +3624,7 @@ lg:h-[510px]
               rounded-[5px]
               bg-white
               px-6
-              text-[10px]
+              text-[12px]
               font-bold
               text-[#1769E0]
               shadow-[0_5px_14px_rgba(0,0,0,0.10)]
