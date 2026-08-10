@@ -8,11 +8,18 @@ import NotFound from "./NotFound";
 import { JOURNALS, SITE } from "../data/site";
 
 export default function JournalDetail() {
-  const { id } = useParams();
-  const baseId = id?.split("-").slice(0, -1).join("-");
-  const journal = JOURNALS.find((j) => j.id === id) || JOURNALS.find((j) => j.id === baseId);
+const { id } = useParams();
+const identifier = decodeURIComponent(id || "");
 
-  if (!journal) return <NotFound />;
+const journal = JOURNALS.find(
+  (item) =>
+    String(item.slug) === identifier ||
+    String(item.id) === identifier
+);
+
+if (!journal) {
+  return <NotFound />;
+}
 
   const jsonLd = {
     "@context": "https://schema.org",
