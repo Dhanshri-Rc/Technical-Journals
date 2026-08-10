@@ -21,6 +21,12 @@ import {
 } from "lucide-react";
 import Seo from "../components/common/Seo";
 import servicesBg from "../assets/images/servicebg.png";
+import l1 from "../assets/images/l1.png";
+import l2 from "../assets/images/l2.png";
+import l3 from "../assets/images/l3.png";
+import l4 from "../assets/images/l4.png";
+import l5 from "../assets/images/l5.png";
+import l6 from "../assets/images/l6.png";
 
 const STATS = [
   { icon: BookOpen, value: "100+", title: "University Journals", text: "Hosted", color: "bg-[#0756cf]" },
@@ -57,14 +63,46 @@ const PROCESS = [
   { icon: BarChart3, step: "05", title: "Ongoing Support", desc: "Continuous support, updates, and improvements to ensure your journal's success.", color: "#0756cf", bubble: "bg-[#e8f2ff]" },
 ];
 
-const UNIVERSITIES = [
-  { abbr: "OXFORD", name: "University of Oxford" },
-  { abbr: "NUS", name: "National University of Singapore" },
-  { abbr: "MELBOURNE", name: "The University of Melbourne" },
-  { abbr: "TORONTO", name: "University of Toronto" },
-  { abbr: "TUM", name: "Technical University of Munich" },
-  { abbr: "CAPE TOWN", name: "University of Cape Town" },
-];
+  /* =========================================================
+     UNIVERSITIES
+  ========================================================= */
+
+ const universities = [
+   {
+     name: "University of Oxford",
+     logo: l1,
+   },
+   {
+     name: "National University of Singapore",
+     logo: l2,
+   },
+   {
+     name: "University of Melbourne",
+     logo: l3,
+   },
+   {
+     name: "University of Toronto",
+     logo: l4,
+   },
+   {
+     name: "Technical University of Munich",
+     logo: l5,
+   },
+   {
+     name: "University of Cape Town",
+     logo: l6,
+   },
+ ];
+ const universityReveal = {
+   hidden: {
+     opacity: 0,
+     y: 18,
+   },
+   show: {
+     opacity: 1,
+     y: 0,
+   },
+ };
 
 const reveal = {
   hidden: { opacity: 0, y: 18 },
@@ -74,9 +112,9 @@ const reveal = {
 function SectionTitle({ children }) {
   return (
     <motion.div variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }} className="mb-8 text-center">
-      <h2 className="text-[22px] font-bold tracking-[-0.02em] text-[#071c46] sm:text-[25px]">{children}</h2>
+      <h2 className="text-[22px] font-[550] tracking-[-0.02em] text-[#071c46] sm:text-[25px]">{children}</h2>
       <div className="mx-auto mt-2 flex w-[74px] overflow-hidden rounded-full">
-        <span className="h-[2px] flex-1 bg-[#ef3d3d]" /><span className="h-[2px] flex-1 bg-[#f8a414]" /><span className="h-[2px] flex-1 bg-[#19a95b]" /><span className="h-[2px] flex-1 bg-[#2767d8]" />
+        <span className="h-[3px] flex-1 bg-[#ef3d3d]" /><span className="h-[3px] flex-1 bg-[#f8a414]" /><span className="h-[3px] flex-1 bg-[#19a95b]" /><span className="h-[3px] flex-1 bg-[#2767d8]" />
       </div>
     </motion.div>
   );
@@ -89,7 +127,7 @@ export default function ServicesPage() {
 
       <main className="overflow-hidden bg-white">
         <section
-          className="relative isolate min-h-[330px] overflow-hidden bg-[#03183f] text-white sm:min-h-[350px] lg:min-h-[390px]"
+          className="relative isolate min-h-[340px] overflow-hidden bg-[#03183f] text-white sm:min-h-[360px]"
           style={{
             backgroundImage: `linear-gradient(90deg,rgba(2,20,54,.97) 0%,rgba(2,20,54,.88) 35%,rgba(2,20,54,.18) 72%,rgba(2,20,54,.05) 100%),url(${servicesBg})`,
             backgroundPosition: "center",
@@ -97,47 +135,46 @@ export default function ServicesPage() {
             backgroundSize: "cover",
           }}
         >
-          <div className="mx-auto flex min-h-[330px] w-full max-w-[1440px] items-center px-5 py-12 sm:min-h-[350px] sm:px-8 lg:min-h-[390px] lg:px-16 xl:px-20">
+          <div className="mx-auto flex min-h-[340px] w-full max-w-[1440px] items-center px-5 py-12 sm:min-h-[360px] sm:px-8 lg:px-16 xl:px-20">
             <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.1 } } }} className="max-w-[570px]">
-              <motion.h1 variants={reveal} className="text-[30px] font-bold leading-tight tracking-[-0.025em] sm:text-[36px] lg:text-[40px]">Our Services</motion.h1>
-              <motion.p variants={reveal} className="mt-3 max-w-[500px] text-[13px] font-medium leading-6 text-white/95 sm:text-[15px] sm:leading-7">Comprehensive publishing and research support services exclusively for universities.</motion.p>
-              <motion.p variants={reveal} className="mt-5 max-w-[510px] text-[12px] leading-6 text-white/85 sm:text-[14px] sm:leading-7">Technical Journals provides secure, scalable, and innovative solutions to host, manage, and publish scholarly journals with global impact.</motion.p>
+              <motion.h1 variants={reveal} className="text-[31px] font-[600] leading-tight tracking-[-0.025em] sm:text-[38px]">Our Services</motion.h1>
+              <motion.p variants={reveal} className="mt-3 max-w-[450px] text-[14px] font-medium leading-6 text-white/95 sm:text-[16px] sm:leading-7">Comprehensive publishing and research support services exclusively for universities.</motion.p>
+              <motion.p variants={reveal} className="mt-5 max-w-[480px] text-[13px] leading-6 text-white/85 sm:text-[15px] sm:leading-7">Technical Journals provides secure, scalable, and innovative solutions to host, manage, and publish scholarly journals with global impact.</motion.p>
             </motion.div>
           </div>
         </section>
 
-        <section className="relative z-10 mx-auto -mt-3 w-full max-w-[1440px] px-4 sm:-mt-4 sm:px-8 lg:-mt-5 lg:px-16 xl:px-20">
+        <section className="relative z-10 mx-auto -mt-4 w-full max-w-[1440px] px-4 sm:-mt-4 sm:px-8 lg:-mt-5 lg:px-16 xl:px-20">
           <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.5 }} className="grid overflow-hidden rounded-[12px] border border-[#e5eaf1] bg-white px-3 py-4 shadow-[0_12px_35px_rgba(10,35,75,0.10)] sm:grid-cols-2 lg:grid-cols-5 lg:px-5 lg:py-6">
             {STATS.map((stat, index) => {
               const StatIcon = stat.icon;
               return (
                 <motion.div key={stat.title} whileHover={{ y: -3 }} className={`flex items-center gap-3 px-3 py-3 sm:px-5 ${index !== STATS.length - 1 ? "lg:border-r lg:border-[#dfe5ed]" : ""}`}>
-                  <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-full text-white ${stat.color}`}><StatIcon className="h-6 w-6" /></span>
-                  <div><strong className="block text-[19px] font-bold leading-none text-[#071c46]">{stat.value}</strong><span className="mt-1.5 block text-[10px] font-bold text-[#11274d]">{stat.title}</span><span className="mt-0.5 block text-[9px] text-[#526783]">{stat.text}</span></div>
+                  <span className={`grid h-14 w-14 shrink-0 place-items-center rounded-full text-white ${stat.color}`}><StatIcon className="h-8 w-8" /></span>
+                  <div><strong className="block text-[22px] font-[600] leading-none text-[#071c46]">{stat.value}</strong><span className="mt-1.5 block text-[14px] font-[550] text-[#11274d]">{stat.title}</span><span className="mt-0.5 block text-[12px] text-[#526783]">{stat.text}</span></div>
                 </motion.div>
               );
             })}
           </motion.div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 lg:px-16 lg:py-14 xl:px-20">
+        <section className="mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-8 lg:px-16 lg:py-10 xl:px-20">
           <SectionTitle>Our Core Services</SectionTitle>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {SERVICES.map((service, index) => {
               const ServiceIcon = service.icon;
               return (
-                <motion.article key={service.title} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} transition={{ delay: index * 0.04 }} whileHover={{ y: -7, boxShadow: "0 16px 35px rgba(9,35,78,.11)" }} className="group flex min-h-[270px] flex-col items-center rounded-[9px] border border-[#dfe5ed] bg-white px-5 py-6 text-center transition-colors hover:border-[#a9c5ec]">
+                <motion.article key={service.title} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} transition={{ delay: index * 0.04 }} whileHover={{ y: -7, boxShadow: "0 16px 35px rgba(9,35,78,.11)" }} className="group flex min-h-[240px] flex-col items-center rounded-[9px] border border-[#dfe5ed] bg-white px-5 py-6 text-center transition-colors hover:border-[#a9c5ec]">
                   <span className={`grid h-[62px] w-[62px] place-items-center rounded-full ${service.bubble}`} style={{ color: service.accent }}><ServiceIcon className="h-7 w-7 transition-transform duration-300 group-hover:scale-110" /></span>
-                  <h3 className="mt-5 text-[13px] font-bold text-[#071c46]">{service.title}</h3>
-                  <p className="mt-2 flex-1 text-[10px] leading-[1.8] text-[#4c607d]">{service.desc}</p>
-                  <a href="/contact" className="mt-4 inline-flex items-center gap-2 text-[10px] font-bold transition-all hover:gap-3" style={{ color: service.accent }}>Learn More <ArrowRight className="h-3.5 w-3.5" /></a>
+                  <h3 className="mt-5 text-[14px] font-[550] text-[#071c46]">{service.title}</h3>
+                  <p className="mt-2 flex-1 text-[13px] leading-[1.8] text-[#4c607d]">{service.desc}</p>
                 </motion.article>
               );
             })}
           </div>
         </section>
 
-        <section className="bg-[#fbfcfe] py-12 lg:py-14">
+        <section className="bg-[#fbfcfe] py-8 lg:py-10">
           <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-16 xl:px-20">
             <SectionTitle>Why Universities Choose Technical Journals</SectionTitle>
             <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-5 lg:gap-0">
@@ -145,8 +182,8 @@ export default function ServicesPage() {
                 const WhyIcon = item.icon;
                 return (
                   <motion.article key={item.title} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true }} whileHover={{ y: -5 }} className={`flex gap-3 px-4 py-2 ${index !== WHY.length - 1 ? "lg:border-r lg:border-[#e0e6ee]" : ""}`}>
-                    <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-full ${item.bubble}`} style={{ color: item.color }}><WhyIcon className="h-5 w-5" /></span>
-                    <div><h3 className="text-[10px] font-bold text-[#071c46]">{item.title}</h3><p className="mt-1.5 text-[9px] leading-4 text-[#536681]">{item.desc}</p></div>
+                    <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-full ${item.bubble}`} style={{ color: item.color }}><WhyIcon className="h-6 w-6" /></span>
+                    <div><h3 className="text-[13px] font-[500] text-[#071c46]">{item.title}</h3><p className="mt-1.5 text-[11px] leading-4 text-[#536681]">{item.desc}</p></div>
                   </motion.article>
                 );
               })}
@@ -154,18 +191,18 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 lg:px-16 lg:py-14 xl:px-20">
+        <section className="mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-8 lg:px-16 lg:py-10 xl:px-20">
           <SectionTitle>Our Service Process</SectionTitle>
-          <div className="relative grid gap-9 sm:grid-cols-2 lg:grid-cols-5 lg:gap-5">
+          <div className="relative grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-5">
             {PROCESS.map((item, index) => {
               const ProcessIcon = item.icon;
               return (
-                <motion.article key={item.step} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true }} whileHover={{ y: -5 }} className="relative px-3 text-center">
+                <motion.article key={item.step} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true }} whileHover={{ y: -5 }} className="relative px-2 text-center">
                   {index < PROCESS.length - 1 && <span className="absolute left-[72%] top-9 hidden w-[60%] border-t border-dashed border-[#7694c0] lg:block"><ArrowRight className="absolute -right-1 -top-[7px] h-3 w-3 text-[#7694c0]" /></span>}
-                  <span className={`relative z-10 mx-auto grid h-[76px] w-[76px] place-items-center rounded-full ${item.bubble}`} style={{ color: item.color }}><ProcessIcon className="h-8 w-8" /></span>
-                  <p className="mt-3 text-[11px] font-extrabold" style={{ color: item.color }}>{item.step}</p>
-                  <h3 className="mt-1 text-[11px] font-bold text-[#071c46]">{item.title}</h3>
-                  <p className="mx-auto mt-2 max-w-[190px] text-[9px] leading-4 text-[#536681]">{item.desc}</p>
+                  <span className={`relative z-10 mx-auto grid h-[70px] w-[70px] place-items-center rounded-full ${item.bubble}`} style={{ color: item.color }}><ProcessIcon className="h-8 w-8" /></span>
+                  <p className="mt-3 text-[15px] font-[600]" style={{ color: item.color }}>{item.step}</p>
+                  <h3 className="mt-1 text-[14px] font-[550] text-[#071c46]">{item.title}</h3>
+                  <p className="mx-auto mt-2 max-w-[170px] text-[12px] leading-4 text-[#536681]">{item.desc}</p>
                 </motion.article>
               );
             })}
@@ -174,13 +211,131 @@ export default function ServicesPage() {
 
         <section className="mx-auto w-full max-w-[1440px] px-4 pb-12 sm:px-8 lg:px-16 xl:px-20">
           <SectionTitle>Trusted by Leading Universities Worldwide</SectionTitle>
-          <motion.div variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid overflow-hidden rounded-[8px] border border-[#e1e7ef] bg-white grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
-            {UNIVERSITIES.map((university) => (
-              <motion.div key={university.name} whileHover={{ backgroundColor: "#f4f8ff", y: -2 }} className="flex min-h-[92px] items-center justify-center gap-2 border-b border-r border-[#e8ecf2] px-3 py-4 text-center sm:min-h-[100px]">
-                <Landmark className="h-7 w-7 shrink-0 text-[#164785]" />
-                <div><strong className="block text-[11px] font-extrabold leading-tight text-[#123d79]">{university.abbr}</strong><span className="mt-1 block text-[7px] leading-tight text-[#536681]">{university.name}</span></div>
-              </motion.div>
-            ))}
+          {/* Logo Container */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.18 }}
+            variants={{
+              hidden: {},
+              show: {
+                transition: {
+                  staggerChildren: 0.07,
+                },
+              },
+            }}
+            className="
+              overflow-hidden
+              rounded-[14px]
+              border
+              border-[#E4EAF3]
+              bg-white
+              shadow-[0_3px_14px_rgba(15,43,89,0.025)]
+            "
+          >
+            <div
+              className="
+                grid
+                grid-cols-1
+                sm:grid-cols-2
+                md:grid-cols-3
+                lg:grid-cols-6
+              "
+            >
+              {universities.map((uni, index) => (
+                <motion.div
+                  key={uni.name}
+                  variants={universityReveal}
+                  transition={{
+                    duration: 0.45,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  whileHover={{
+                    y: -3,
+                    backgroundColor: "#F8FBFF",
+                  }}
+                  className={`
+                    group
+                    relative
+                    flex
+                    min-h-[94px]
+                    items-center
+                    justify-center
+                    px-5
+                    py-5
+                    transition-colors
+                    duration-300
+      
+                    ${
+                      index !== universities.length - 1
+                        ? `
+                          border-b
+                          border-[#E5EAF2]
+      
+                          sm:[&:not(:nth-child(2n))]:border-r
+      
+                          md:border-b
+                          md:border-r
+                          md:[&:nth-child(3n)]:border-r-0
+      
+                          lg:border-b-0
+                          lg:border-r
+                          lg:[&:nth-child(3n)]:border-r
+                          lg:last:border-r-0
+                        `
+                        : ""
+                    }
+                  `}
+                >
+                  {/* subtle hover glow */}
+                  <div
+                    className="
+                      pointer-events-none
+                      absolute
+                      inset-0
+                      opacity-0
+                      transition-opacity
+                      duration-300
+                      group-hover:opacity-100
+                      bg-[radial-gradient(circle_at_center,rgba(23,105,224,0.055),transparent_68%)]
+                    "
+                  />
+      
+                  <motion.img
+                    src={uni.logo}
+                    alt={`${uni.name} logo`}
+                    loading="lazy"
+                    draggable="false"
+                    whileHover={{ scale: 1.045 }}
+                    transition={{
+                      duration: 0.25,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="
+                      relative
+                      z-10
+                      block
+                      h-auto
+                      w-auto
+                      max-h-[48px]
+                      max-w-[190px]
+                      object-contain
+      
+                      sm:max-h-[50px]
+                      sm:max-w-[185px]
+      
+                      md:max-h-[52px]
+                      md:max-w-[180px]
+      
+                      lg:max-h-[48px]
+                      lg:max-w-[155px]
+      
+                    
+                    "
+                  />
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </section>
 
@@ -188,10 +343,10 @@ export default function ServicesPage() {
           <motion.div variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className="relative overflow-hidden rounded-[10px] bg-[linear-gradient(100deg,#0749c7_0%,#06844d_31%,#f2a20b_59%,#f25a08_76%,#ed0038_100%)] px-5 py-7 text-white sm:px-8 lg:px-12">
             <div className="grid items-center gap-6 lg:grid-cols-[auto_minmax(0,1fr)_auto]">
               <span className="grid h-[70px] w-[70px] place-items-center rounded-full bg-white text-[#0756cf] shadow-[0_7px_20px_rgba(0,0,0,.16)]"><FilePenLine className="h-8 w-8" /></span>
-              <div><h2 className="text-[20px] font-bold sm:text-[23px]">Ready to Elevate Your University’s Research?</h2><p className="mt-2 max-w-[560px] text-[11px] leading-5 text-white/95 sm:text-[12px]">Join hundreds of universities worldwide and publish research with impact, visibility, and trust.</p></div>
+              <div><h2 className="text-[20px] font-[600] sm:text-[23px]">Ready to Elevate Your University’s Research?</h2><p className="mt-2 max-w-[400px] text-[13px] leading-5 text-white/95 sm:text-[14px]">Join hundreds of universities worldwide and publish research with impact, visibility, and trust.</p></div>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <motion.a whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }} href="/contact" className="inline-flex h-12 min-w-[170px] items-center justify-center rounded-[6px] bg-white px-5 text-[11px] font-bold text-[#0756cf] shadow-[0_7px_18px_rgba(0,0,0,.13)]">Host Your Journal</motion.a>
-                <motion.a whileHover={{ y: -3, backgroundColor: "rgba(255,255,255,.14)" }} whileTap={{ scale: 0.98 }} href="/contact" className="inline-flex h-12 min-w-[165px] items-center justify-center rounded-[6px] border border-white/80 px-5 text-[11px] font-bold text-white">Request a Demo</motion.a>
+                <motion.a whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }} href="/contact" className="inline-flex h-12 min-w-[170px] items-center justify-center rounded-[6px] bg-white px-5 text-[14px] font-[550] text-[#0756cf] shadow-[0_7px_18px_rgba(0,0,0,.13)]">Host Your Journal</motion.a>
+                <motion.a whileHover={{ y: -3, backgroundColor: "rgba(255,255,255,.14)" }} whileTap={{ scale: 0.98 }} href="/contact" className="inline-flex h-12 min-w-[165px] items-center justify-center rounded-[6px] border border-white/80 px-5 text-[14px] font-[550] text-white">Request a Demo</motion.a>
               </div>
             </div>
           </motion.div>

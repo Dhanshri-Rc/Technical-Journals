@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { MapPin, Mail, Phone } from "lucide-react";
+
 import {
   FacebookIcon,
   LinkedinIcon,
@@ -8,7 +10,11 @@ import {
 
 import logo from "../../assets/images/foot.png";
 import sdgGoals from "../../assets/images/fsidelogo.png";
-import { SITE, FOOTER_LINKS } from "../../data/site";
+import {
+  SITE,
+  FOOTER_LINKS,
+  CONTACT_INFO,
+} from "../../data/site";
 
 const socialLinks = [
   { Icon: FacebookIcon, key: "facebook", label: "Facebook" },
@@ -56,8 +62,7 @@ export default function Footer() {
 
                 return (
                   <a
-                    key={key}
-                    href={href}
+                    key={key} 
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
@@ -92,27 +97,88 @@ export default function Footer() {
             />
           </FooterSection>
 
-          {/* Our Commitment */}
-          <FooterSection className="sm:col-span-2 lg:col-span-1">
-            <FooterHeading>Our Commitment</FooterHeading>
+         {/* Get in Touch */}
+<FooterSection className="sm:col-span-2 lg:col-span-1">
+  <FooterHeading>Get in Touch</FooterHeading>
 
-            <p className="max-w-[270px] text-[13px] leading-[1.6] text-slate-300">
-              We are committed to advancing knowledge and supporting
-              sustainable development goals through research.
-            </p>
+  <ul className="space-y-3 text-[13px] text-slate-300">
+    {/* Address */}
+    <li className="group flex items-start gap-3 transition-colors duration-300 hover:text-white">
+      <span
+        className="
+          mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center
+          rounded-full border border-white/10 bg-white/[0.04]
+          text-[#1457ba]
+          transition-all duration-300
+          group-hover:border-[#1457ba]/60
+          group-hover:bg-[#1457ba]
+          group-hover:text-white
+          group-hover:shadow-[0_5px_14px_rgba(20,87,186,0.35)]
+        "
+      >
+        <MapPin className="h-4 w-4" />
+      </span>
 
-            <Link
-              to="/sdg-commitment"
-              className="group  inline-flex rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-              aria-label="View Sustainable Development Goals"
-            >
-              <img
-                src={sdgGoals}
-                alt="Sustainable Development Goals"
-                className="h-auto w-full max-w-[205px] -mt-4 -ml-4 object-contain opacity-95 transition-[opacity,filter] duration-300 group-hover:opacity-100 group-hover:drop-shadow-[0_5px_10px_rgba(0,0,0,0.2)]"
-              />
-            </Link>
-          </FooterSection>
+      <span className="leading-5 transition-colors duration-300">
+        {CONTACT_INFO.address}
+      </span>
+    </li>
+
+    {/* Email */}
+    <li>
+      <a
+        href={`mailto:${CONTACT_INFO.email}`}
+        className="group flex items-center gap-3 transition-colors duration-300 hover:text-white"
+      >
+        <span
+          className="
+            flex h-8 w-8 shrink-0 items-center justify-center
+            rounded-full border border-white/10 bg-white/[0.04]
+            text-[#1457ba]
+            transition-all duration-300
+            group-hover:border-[#1457ba]/60
+            group-hover:bg-[#1457ba]
+            group-hover:text-white
+            group-hover:shadow-[0_5px_14px_rgba(20,87,186,0.35)]
+          "
+        >
+          <Mail className="h-4 w-4" />
+        </span>
+
+        <span className="break-all transition-colors duration-300">
+          {CONTACT_INFO.email}
+        </span>
+      </a>
+    </li>
+
+    {/* Phone */}
+    <li>
+      <a
+        href={`tel:${CONTACT_INFO.phone}`}
+        className="group flex items-center gap-3 transition-colors duration-300 hover:text-white"
+      >
+        <span
+          className="
+            flex h-8 w-8 shrink-0 items-center justify-center
+            rounded-full border border-white/10 bg-white/[0.04]
+            text-[#1457ba]
+            transition-all duration-300
+            group-hover:border-[#1457ba]/60
+            group-hover:bg-[#1457ba]
+            group-hover:text-white
+            group-hover:shadow-[0_5px_14px_rgba(20,87,186,0.35)]
+          "
+        >
+          <Phone className="h-4 w-4" />
+        </span>
+
+        <span className="transition-colors duration-300">
+          {CONTACT_INFO.phone}
+        </span>
+      </a>
+    </li>
+  </ul>
+</FooterSection>
         </div>
       </div>
 
