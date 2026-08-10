@@ -164,7 +164,7 @@ export default function Header() {
                     `group relative inline-flex h-11 items-center rounded-lg px-3 text-[14px] font-semibold transition-colors duration-200 xl:px-4 ${
                       isActive
                         ? " text-blue-700"
-                        : "text-slate-700 hover:bg-slate-50 hover:text-blue-700"
+                        : "text-black  hover:text-blue-700"
                     }`
                   }
                 >
@@ -175,8 +175,8 @@ export default function Header() {
                       <span
                         className={`absolute bottom-1.5 left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-blue-700 transition-all duration-300 ${
                           isActive
-                            ? "w-[calc(100%-24px)]"
-                            : "w-0 group-hover:w-[calc(100%-24px)]"
+                            ? "w-[calc(100%-38px)]"
+                            : "w-0 group-hover:w-[calc(100%-38px)]"
                         }`}
                       />
                     </>
