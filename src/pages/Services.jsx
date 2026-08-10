@@ -74,9 +74,9 @@ const reveal = {
 function SectionTitle({ children }) {
   return (
     <motion.div variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }} className="mb-8 text-center">
-      <h2 className="text-[22px] font-bold tracking-[-0.02em] text-[#071c46] sm:text-[25px]">{children}</h2>
+      <h2 className="text-[22px] font-[550] tracking-[-0.02em] text-[#071c46] sm:text-[25px]">{children}</h2>
       <div className="mx-auto mt-2 flex w-[74px] overflow-hidden rounded-full">
-        <span className="h-[2px] flex-1 bg-[#ef3d3d]" /><span className="h-[2px] flex-1 bg-[#f8a414]" /><span className="h-[2px] flex-1 bg-[#19a95b]" /><span className="h-[2px] flex-1 bg-[#2767d8]" />
+        <span className="h-[3px] flex-1 bg-[#ef3d3d]" /><span className="h-[3px] flex-1 bg-[#f8a414]" /><span className="h-[3px] flex-1 bg-[#19a95b]" /><span className="h-[3px] flex-1 bg-[#2767d8]" />
       </div>
     </motion.div>
   );
@@ -89,7 +89,7 @@ export default function ServicesPage() {
 
       <main className="overflow-hidden bg-white">
         <section
-          className="relative isolate min-h-[330px] overflow-hidden bg-[#03183f] text-white sm:min-h-[350px] lg:min-h-[390px]"
+          className="relative isolate min-h-[340px] overflow-hidden bg-[#03183f] text-white sm:min-h-[360px]"
           style={{
             backgroundImage: `linear-gradient(90deg,rgba(2,20,54,.97) 0%,rgba(2,20,54,.88) 35%,rgba(2,20,54,.18) 72%,rgba(2,20,54,.05) 100%),url(${servicesBg})`,
             backgroundPosition: "center",
@@ -97,30 +97,30 @@ export default function ServicesPage() {
             backgroundSize: "cover",
           }}
         >
-          <div className="mx-auto flex min-h-[330px] w-full max-w-[1440px] items-center px-5 py-12 sm:min-h-[350px] sm:px-8 lg:min-h-[390px] lg:px-16 xl:px-20">
+          <div className="mx-auto flex min-h-[340px] w-full max-w-[1440px] items-center px-5 py-12 sm:min-h-[360px] sm:px-8 lg:px-16 xl:px-20">
             <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.1 } } }} className="max-w-[570px]">
-              <motion.h1 variants={reveal} className="text-[30px] font-bold leading-tight tracking-[-0.025em] sm:text-[36px] lg:text-[40px]">Our Services</motion.h1>
-              <motion.p variants={reveal} className="mt-3 max-w-[500px] text-[13px] font-medium leading-6 text-white/95 sm:text-[15px] sm:leading-7">Comprehensive publishing and research support services exclusively for universities.</motion.p>
-              <motion.p variants={reveal} className="mt-5 max-w-[510px] text-[12px] leading-6 text-white/85 sm:text-[14px] sm:leading-7">Technical Journals provides secure, scalable, and innovative solutions to host, manage, and publish scholarly journals with global impact.</motion.p>
+              <motion.h1 variants={reveal} className="text-[31px] font-[600] leading-tight tracking-[-0.025em] sm:text-[38px]">Our Services</motion.h1>
+              <motion.p variants={reveal} className="mt-3 max-w-[450px] text-[14px] font-medium leading-6 text-white/95 sm:text-[16px] sm:leading-7">Comprehensive publishing and research support services exclusively for universities.</motion.p>
+              <motion.p variants={reveal} className="mt-5 max-w-[480px] text-[13px] leading-6 text-white/85 sm:text-[15px] sm:leading-7">Technical Journals provides secure, scalable, and innovative solutions to host, manage, and publish scholarly journals with global impact.</motion.p>
             </motion.div>
           </div>
         </section>
 
-        <section className="relative z-10 mx-auto -mt-3 w-full max-w-[1440px] px-4 sm:-mt-4 sm:px-8 lg:-mt-5 lg:px-16 xl:px-20">
+        <section className="relative z-10 mx-auto -mt-4 w-full max-w-[1440px] px-4 sm:-mt-4 sm:px-8 lg:-mt-5 lg:px-16 xl:px-20">
           <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.5 }} className="grid overflow-hidden rounded-[12px] border border-[#e5eaf1] bg-white px-3 py-4 shadow-[0_12px_35px_rgba(10,35,75,0.10)] sm:grid-cols-2 lg:grid-cols-5 lg:px-5 lg:py-6">
             {STATS.map((stat, index) => {
               const StatIcon = stat.icon;
               return (
                 <motion.div key={stat.title} whileHover={{ y: -3 }} className={`flex items-center gap-3 px-3 py-3 sm:px-5 ${index !== STATS.length - 1 ? "lg:border-r lg:border-[#dfe5ed]" : ""}`}>
-                  <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-full text-white ${stat.color}`}><StatIcon className="h-6 w-6" /></span>
-                  <div><strong className="block text-[19px] font-bold leading-none text-[#071c46]">{stat.value}</strong><span className="mt-1.5 block text-[10px] font-bold text-[#11274d]">{stat.title}</span><span className="mt-0.5 block text-[9px] text-[#526783]">{stat.text}</span></div>
+                  <span className={`grid h-14 w-14 shrink-0 place-items-center rounded-full text-white ${stat.color}`}><StatIcon className="h-8 w-8" /></span>
+                  <div><strong className="block text-[22px] font-[600] leading-none text-[#071c46]">{stat.value}</strong><span className="mt-1.5 block text-[14px] font-[550] text-[#11274d]">{stat.title}</span><span className="mt-0.5 block text-[12px] text-[#526783]">{stat.text}</span></div>
                 </motion.div>
               );
             })}
           </motion.div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 lg:px-16 lg:py-14 xl:px-20">
+        <section className="mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-8 lg:px-16 lg:py-10 xl:px-20">
           <SectionTitle>Our Core Services</SectionTitle>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {SERVICES.map((service, index) => {
@@ -128,9 +128,8 @@ export default function ServicesPage() {
               return (
                 <motion.article key={service.title} variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} transition={{ delay: index * 0.04 }} whileHover={{ y: -7, boxShadow: "0 16px 35px rgba(9,35,78,.11)" }} className="group flex min-h-[270px] flex-col items-center rounded-[9px] border border-[#dfe5ed] bg-white px-5 py-6 text-center transition-colors hover:border-[#a9c5ec]">
                   <span className={`grid h-[62px] w-[62px] place-items-center rounded-full ${service.bubble}`} style={{ color: service.accent }}><ServiceIcon className="h-7 w-7 transition-transform duration-300 group-hover:scale-110" /></span>
-                  <h3 className="mt-5 text-[13px] font-bold text-[#071c46]">{service.title}</h3>
-                  <p className="mt-2 flex-1 text-[10px] leading-[1.8] text-[#4c607d]">{service.desc}</p>
-                  <a href="/contact" className="mt-4 inline-flex items-center gap-2 text-[10px] font-bold transition-all hover:gap-3" style={{ color: service.accent }}>Learn More <ArrowRight className="h-3.5 w-3.5" /></a>
+                  <h3 className="mt-5 text-[14px] font-[550] text-[#071c46]">{service.title}</h3>
+                  <p className="mt-2 flex-1 text-[13px] leading-[1.8] text-[#4c607d]">{service.desc}</p>
                 </motion.article>
               );
             })}

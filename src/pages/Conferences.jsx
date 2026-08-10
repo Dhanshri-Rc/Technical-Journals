@@ -387,7 +387,7 @@ export default function Conferences() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.08 }}
-              className="mt-3 max-w-[520px] text-[13px] leading-6 text-white/90 sm:text-[15px] sm:leading-7"
+              className="mt-3 max-w-[520px] text-[14px] leading-6 text-white/90 sm:text-[15px] sm:leading-7"
             >
               Discover and participate in leading conferences associated with
               Technical Journals. Share your research, connect with experts, and
