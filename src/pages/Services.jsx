@@ -145,12 +145,12 @@ export default function ServicesPage() {
         </section>
 
         <section className="relative z-10 mx-auto -mt-4 w-full max-w-[1440px] px-4 sm:-mt-4 sm:px-8 lg:-mt-5 lg:px-16 xl:px-20">
-          <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.5 }} className="grid overflow-hidden rounded-[12px] border border-[#e5eaf1] bg-white px-3 py-4 shadow-[0_12px_35px_rgba(10,35,75,0.10)] sm:grid-cols-2 lg:grid-cols-5 lg:px-5 lg:py-6">
+          <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.5 }} className="grid overflow-hidden rounded-[12px] border border-[#e5eaf1] bg-white px-3 py-2 shadow-[0_12px_35px_rgba(10,35,75,0.10)] sm:grid-cols-2 lg:grid-cols-5 lg:px-5 lg:py-4">
             {STATS.map((stat, index) => {
               const StatIcon = stat.icon;
               return (
                 <motion.div key={stat.title} whileHover={{ y: -3 }} className={`flex items-center gap-3 px-3 py-3 sm:px-5 ${index !== STATS.length - 1 ? "lg:border-r lg:border-[#dfe5ed]" : ""}`}>
-                  <span className={`grid h-14 w-14 shrink-0 place-items-center rounded-full text-white ${stat.color}`}><StatIcon className="h-8 w-8" /></span>
+                  <span className={`grid h-13 w-13 shrink-0 place-items-center rounded-full text-white ${stat.color}`}><StatIcon className="h-7 w-7" /></span>
                   <div><strong className="block text-[22px] font-[600] leading-none text-[#071c46]">{stat.value}</strong><span className="mt-1.5 block text-[14px] font-[550] text-[#11274d]">{stat.title}</span><span className="mt-0.5 block text-[12px] text-[#526783]">{stat.text}</span></div>
                 </motion.div>
               );
