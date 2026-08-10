@@ -445,7 +445,7 @@ export default function About() {
             className="
               max-w-[530px]
               text-[34px]
-              font-bold
+              font-[600]
               leading-[1.08]
               tracking-[-0.015em]
               text-[#10275C]

@@ -329,7 +329,7 @@ export default function ForUniversities() {
               className="
                 max-w-[460px]
                 text-[29px]
-                font-bold
+                font-[600]
                 leading-[1.25]
                 tracking-[-0.015em]
 
