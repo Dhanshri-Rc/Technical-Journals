@@ -26,11 +26,12 @@ export const STATS = [
 
 export const NAV_LINKS = [
   { label: "Home", to: "/" },
+  { label: "About Us", to: "/about" },
   { label: "Journals", to: "/journals" },
   { label: "Conferences", to: "/conferences" },
   { label: "Services", to: "/services" },
   { label: "For Universities", to: "/for-universities" },
-  { label: "About Us", to: "/about" },
+  
   { label: "Contact", to: "/contact" },
 ];
 

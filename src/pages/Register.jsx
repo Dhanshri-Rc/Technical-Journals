@@ -47,7 +47,7 @@ export default function Register() {
       <Seo title="Register" description="Create a Technical Journals account to submit manuscripts, review papers, or host your university's journal." path="/register" noindex />
       <div className="w-full max-w-md bg-white rounded-xl border border-slate-200 p-8">
         <div className="flex flex-col items-center mb-6">
-          <img src={logo} alt="Technical Journals logo" className="h-12 mb-3" />
+          <Link to="/"><img src={logo} alt="Technical Journals logo" className="h-12 mb-3" /></Link>
           <h1 className="font-display font-bold text-xl text-slate-900">Create Your Account</h1>
           <p className="text-sm text-slate-500 text-center">Join Technical Journals to submit, review, or host research.</p>
         </div>

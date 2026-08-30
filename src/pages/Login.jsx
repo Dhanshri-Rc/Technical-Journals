@@ -43,7 +43,7 @@ export default function Login() {
       <Seo title="Login" description="Log in to your Technical Journals account to manage submissions, reviews, and journal activity." path="/login" noindex />
       <div className="w-full max-w-md bg-white rounded-xl border border-slate-200 p-8">
         <div className="flex flex-col items-center mb-6">
-          <img src={logo} alt="Technical Journals logo" className="h-12 mb-3" />
+          <Link to="/"><img src={logo} alt="Technical Journals logo" className="h-12 mb-3" /></Link>
           <h1 className="font-display font-bold text-xl text-slate-900">Welcome Back</h1>
           <p className="text-sm text-slate-500">Log in to manage your journals and submissions.</p>
         </div>
