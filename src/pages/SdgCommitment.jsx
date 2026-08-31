@@ -1,6 +1,6 @@
 import Seo from "../components/common/Seo";
 import PageHero from "../components/common/PageHero";
-import networkBg from "../assets/backgrounds/network-bg.jpg";
+import networkBg from "../assets/images/contactbg.png";
 
 const SDGS = [
   { num: 3, title: "Good Health and Well-being", color: "bg-green-600", desc: "Supporting research that advances global health outcomes and medical knowledge." },

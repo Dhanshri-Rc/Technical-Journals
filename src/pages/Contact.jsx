@@ -14,6 +14,8 @@ import {
 import contactBg from "../assets/images/contactbg.png";
 import contactCta from "../assets/images/contactcta.png";
 import { FAQS, SITE } from "../data/site";
+import { submitContactForm } from "../services/contactService";
+import { ApiError } from "../services/api";
 
 const SUBJECTS = [
   "General Inquiry",
@@ -61,6 +63,7 @@ export default function Contact() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [serverError, setServerError] = useState("");
   const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
@@ -72,10 +75,10 @@ export default function Contact() {
     return (selected.length >= 6 ? selected.slice(0, 6) : FALLBACK_FAQS);
   }, []);
 
-  const email = SITE?.email || "info@technicaljournals.org";
+  const email = SITE?.email || "contact@technicaljournals.org";
   const supportEmail = SITE?.supportEmail || "support@technicaljournals.org";
-  const phone = SITE?.phone || "+44 20 7946 0958";
-  const address = SITE?.address || "71–75 Shelton Street, Covent Garden, London WC2H 9JQ, United Kingdom";
+  const phone = SITE?.phone || "9970294396";
+  const address = SITE?.address || "Central Railway Colony, Omkar Nagar, Nagpur, Maharashtra 440027";
 
   const details = [
     { icon: Mail, title: "Email Us", lines: [email, supportEmail], tone: "bg-[#eaf3ff] text-[#0865e8]" },
@@ -109,11 +112,13 @@ export default function Contact() {
     if (Object.keys(nextErrors).length) return;
 
     setLoading(true);
+    setServerError("");
     try {
-      // Replace this Promise with your production API request when available.
-      await new Promise((resolve) => window.setTimeout(resolve, 700));
+      await submitContactForm(values);
       setSent(true);
       setValues({ name: "", email: "", subject: "", message: "" });
+    } catch (err) {
+      setServerError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -177,6 +182,12 @@ export default function Contact() {
                 </motion.div>
               )}
             </AnimatePresence>
+
+            {serverError && (
+              <div className="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[11px] text-red-800">
+                {serverError}
+              </div>
+            )}
 
             <form onSubmit={onSubmit} noValidate className="mt-5 space-y-4">
               {[{ name: "name", label: "Full Name", type: "text", placeholder: "Enter your full name" }, { name: "email", label: "Email Address", type: "email", placeholder: "Enter your email address" }].map((field) => (

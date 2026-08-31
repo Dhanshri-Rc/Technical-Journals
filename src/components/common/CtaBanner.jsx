@@ -5,7 +5,7 @@ export default function CtaBanner({
   icon = "Send",
   title = "Ready to Host Your Journal?",
   subtitle = "Join hundreds of universities worldwide and give your research the platform it deserves.",
-  primary = { label: "Host Your Journal", to: "/register" },
+  primary = { label: "Host Your Journal", to: "/contact" },
   secondary = { label: "Schedule a Demo", to: "/contact" },
 }) {
   return (

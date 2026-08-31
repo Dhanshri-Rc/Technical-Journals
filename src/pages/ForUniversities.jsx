@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -15,60 +16,16 @@ import l6 from "../assets/images/l6.png";
 import l7 from "../assets/images/l7.png";
 import l8 from "../assets/images/l8.png";
 
+import { fetchUniversities } from "../services/universityService";
+import { resolveImageUrl } from "../services/api";
+
 /* =========================================================
-   UNIVERSITY DATA
+   UNIVERSITY DATA — loaded from MySQL via GET /api/universities.
+   Falls back to a local placeholder logo by position when a
+   university has no uploaded logo yet.
 ========================================================= */
 
-const UNIVERSITIES = [
-  {
-    logo: l1,
-    name: "University of Oxford",
-    country: "United Kingdom",
-    journals: 12,
-  },
-  {
-    logo: l2,
-    name: "National University of Singapore",
-    country: "Singapore",
-    journals: 8,
-  },
-  {
-    logo: l3,
-    name: "The University of Melbourne",
-    country: "Australia",
-    journals: 9,
-  },
-  {
-    logo: l4,
-    name: "University of Toronto",
-    country: "Canada",
-    journals: 15,
-  },
-  {
-    logo: l5,
-    name: "Technical University of Munich",
-    country: "Germany",
-    journals: 7,
-  },
-  {
-    logo: l6,
-    name: "University of Cape Town",
-    country: "South Africa",
-    journals: 6,
-  },
-  {
-    logo: l7,
-    name: "University of Sydney",
-    country: "Australia",
-    journals: 5,
-  },
-  {
-    logo: l8,
-    name: "King's College London",
-    country: "United Kingdom",
-    journals: 7,
-  },
-];
+const FALLBACK_LOGOS = [l1, l2, l3, l4, l5, l6, l7, l8];
 
 
 /* =========================================================
@@ -242,6 +199,30 @@ const fadeUp = {
 ========================================================= */
 
 export default function ForUniversities() {
+  const [UNIVERSITIES, setUniversities] = useState([]);
+  const [universitiesLoading, setUniversitiesLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    fetchUniversities({})
+      .then((rows) => {
+        if (!active) return;
+        setUniversities(
+          rows.map((u, index) => ({
+            ...u,
+            logo: resolveImageUrl(u.logo) || FALLBACK_LOGOS[index % FALLBACK_LOGOS.length],
+            name: u.name,
+            country: u.country,
+            journals: u.journals_count,
+          }))
+        );
+      })
+      .finally(() => {
+        if (active) setUniversitiesLoading(false);
+      });
+    return () => { active = false; };
+  }, []);
+
   return (
     <>
       <Seo
@@ -375,7 +356,7 @@ export default function ForUniversities() {
               "
             >
               <Link
-                to="/register"
+                to="/contact"
                 className="
                   inline-flex
                   h-[40px]
@@ -1730,7 +1711,7 @@ export default function ForUniversities() {
         {/* HOST YOUR JOURNAL */}
 
         <Link
-          to="/register"
+          to="/contact"
           className="
             group
             inline-flex
@@ -1744,7 +1725,7 @@ export default function ForUniversities() {
             bg-white
             px-[18px]
             text-[13px]
-            font-bold
+            font-semibold
             text-[#155DC8]
             shadow-[0_3px_10px_rgba(255,255,255,0.10)]
             transition-all

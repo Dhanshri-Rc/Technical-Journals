@@ -120,6 +120,19 @@ const SdgCommitment = lazy(() => import("./pages/SdgCommitment"));
 
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+const ProtectedRoute = lazy(() => import("./components/admin/ProtectedRoute"));
+const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
+const AdminDashboardHome = lazy(() => import("./pages/admin/AdminDashboardHome"));
+const AdminJournalsList = lazy(() => import("./pages/admin/AdminJournalsList"));
+const AdminJournalForm = lazy(() => import("./pages/admin/AdminJournalForm"));
+const AdminConferencesList = lazy(() => import("./pages/admin/AdminConferencesList"));
+const AdminConferenceForm = lazy(() => import("./pages/admin/AdminConferenceForm"));
+const AdminUniversitiesList = lazy(() => import("./pages/admin/AdminUniversitiesList"));
+const AdminUniversityForm = lazy(() => import("./pages/admin/AdminUniversityForm"));
+const AdminEnquiries = lazy(() => import("./pages/admin/AdminEnquiries"));
+const AdminManuscripts = lazy(() => import("./pages/admin/AdminManuscripts"));
+
+
 
 export default function App() {
   return (
@@ -264,6 +277,40 @@ export default function App() {
             element={<SdgCommitment />}
           />
 
+        </Route>
+
+
+        {/* =====================================================
+            ADMIN DASHBOARD — PROTECTED, OWN LAYOUT
+        ===================================================== */}
+
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminDashboardHome />} />
+
+          <Route path="journals" element={<AdminJournalsList />} />
+          <Route path="journals/create" element={<AdminJournalForm />} />
+          <Route path="journals/:id/edit" element={<AdminJournalForm />} />
+
+          <Route path="conferences" element={<AdminConferencesList />} />
+          <Route path="conferences/create" element={<AdminConferenceForm />} />
+          <Route path="conferences/:id/edit" element={<AdminConferenceForm />} />
+
+          <Route path="universities" element={<AdminUniversitiesList />} />
+          <Route path="universities/create" element={<AdminUniversityForm />} />
+          <Route path="universities/:id/edit" element={<AdminUniversityForm />} />
+
+          <Route path="enquiries" element={<AdminEnquiries />} />
+     <Route
+  path="manuscripts"
+  element={<AdminManuscripts />}
+/>
         </Route>
 
 

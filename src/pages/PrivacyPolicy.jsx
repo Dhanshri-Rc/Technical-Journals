@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
 import Seo from "../components/common/Seo";
 import PageHero from "../components/common/PageHero";
-import networkBg from "../assets/backgrounds/network-bg.jpg";
+import networkBg from "../assets/images/contactbg.png";
 import { SITE } from "../data/site";
 
 const SECTIONS = [

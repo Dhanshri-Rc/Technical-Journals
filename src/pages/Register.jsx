@@ -4,7 +4,8 @@ import { Eye, EyeOff, UserPlus } from "lucide-react";
 import Seo from "../components/common/Seo";
 import { Label, ErrorText, Input, Select, SubmitButton } from "../components/forms/FormField";
 import { validate, rules } from "../utils/validation";
-import { registerUser } from "../services/mockApi";
+import { registerUser } from "../services/authService";
+import { ApiError } from "../services/api";
 import logo from "../assets/logos/logo.png";
 
 export default function Register() {
@@ -33,13 +34,21 @@ export default function Register() {
     setErrors(errs);
     if (Object.keys(errs).length) return;
     setLoading(true);
-    const res = await registerUser(values);
-    setLoading(false);
-    if (!res.success) {
-      setServerError(res.message);
-      return;
+    try {
+      await registerUser({
+        name: values.name,
+        email: values.email,
+        university: values.university,
+        professionalRole: values.role,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      });
+      setLoading(false);
+      navigate("/login");
+    } catch (err) {
+      setLoading(false);
+      setServerError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
     }
-    navigate("/login");
   }
 
   return (

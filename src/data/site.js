@@ -5,8 +5,8 @@ export const SITE = {
   url: "https://www.technicaljournals.org",
   email: "info@technicaljournals.org",
   supportEmail: "support@technicaljournals.org",
-  phone: "+44 20 7946 0958",
-  address: "71-75 Shelton Street, Covent Garden, London WC2H 9JQ, United Kingdom",
+  phone: "9970294396",
+  address: "Central Railway Colony, Omkar Nagar, Nagpur, Maharashtra 440027",
   hours: "Mon - Fri: 9:00 AM - 6:00 PM (GMT)",
   social: {
     facebook: "https://facebook.com/technicaljournals",
@@ -39,7 +39,7 @@ export const FOOTER_LINKS = {
   quickLinks: [
     { label: "Journals", to: "/journals" },
     { label: "Conferences", to: "/conferences" },
-    { label: "Services", to: "/services" },
+    
     { label: "For Universities", to: "/for-universities" },
     { label: "About Us", to: "/about" },
     { label: "Contact Us", to: "/contact" },
@@ -50,7 +50,7 @@ export const FOOTER_LINKS = {
     { label: "Publication Ethics", to: "/publication-ethics" },
     { label: "Indexing & Abstracting", to: "/indexing" },
     { label: "FAQs", to: "/faq" },
-    { label: "Blog", to: "/blog" },
+  
   ],
   support: [
     { label: "Help Center", to: "/help-center" },
@@ -194,7 +194,7 @@ export const REVIEW_WORKFLOW = [
 ];
 
 export const CONTACT_INFO = {
-  address: "71-75 Shelton Street, Covent Garden, London WC2H 9JQ, United Kingdom",
-  email: "info@technicaljournals.org",
-  phone: "+44 20 7946 0958",
+  address: "Central Railway Colony, Omkar Nagar, Nagpur, Maharashtra 440027",
+  email: "contact@technicaljournals.org",
+  phone: "9970294396",
 };

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   BarChart3,
@@ -32,6 +32,9 @@ import {
 
 import Seo from "../components/common/Seo";
 import { SITE } from "../data/site";
+import { fetchFeaturedJournals } from "../services/journalService";
+import { fetchUniversities } from "../services/universityService";
+import { resolveImageUrl } from "../services/api";
 import heroBg from "../assets/images/hbg.png";
 import solutionsImg from "../assets/images/solution.png";
 import h1 from "../assets/images/h1.png";
@@ -115,90 +118,34 @@ export default function Home() {
      JOURNALS
   ========================================================= */
 
-const journals = [
-  {
-    id: 1,
-    image: j1,
-    title: "International Journal of Computer Science",
-    category: "Computer Science",
-    issn: "ISSN: 2456-9940",
-    detailsLink: "/journals",
-    journalLink: "/journals",
-  },
-  {
-    id: 2,
-    image: j2,
-    title: "Journal of Environmental Studies",
-    category: "Environmental Science",
-    issn: "ISSN: 2456-8821",
-    detailsLink: "/journals",
-    journalLink: "/journals",
-  },
-  {
-    id: 3,
-    image: j3,
-    title: "Journal of Electrical Engineering",
-    category: "Electrical Engineering",
-    issn: "ISSN: 2456-4782",
-    detailsLink: "/journals",
-    journalLink: "/journals",
-  },
-  {
-    id: 4,
-    image: j4,
-    title: "International Journal of Mechanical Engineering",
-    category: "Mechanical Engineering",
-    issn: "ISSN: 2456-1290",
-    detailsLink: "/journals",
-    journalLink: "/journals",
-  },
-  {
-    id: 5,
-    image: j5,
-    title: "Journal of Advanced Materials Research",
-    category: "Materials Science",
-    issn: "ISSN: 2456-5999",
-    detailsLink: "/journals",
-    journalLink: "/journals",
-  },
-{
-    id: 1,
-    image: j1,
-    title: "International Journal of Computer Science",
-    category: "Computer Science",
-    issn: "ISSN: 2456-9940",
-    detailsLink: "/journals",
-    journalLink: "/journals",
-  },
-  {
-    id: 2,
-    image: j2,
-    title: "Journal of Environmental Studies",
-    category: "Environmental Science",
-    issn: "ISSN: 2456-8821",
-    detailsLink: "/journals",
-    journalLink: "/journals",
-  },
-  {
-    id: 3,
-    image: j3,
-    title: "Journal of Electrical Engineering",
-    category: "Electrical Engineering",
-    issn: "ISSN: 2456-4782",
-    detailsLink: "/journals",
-    journalLink: "/journals",
-  },
-  {
-    id: 4,
-    image: j4,
-    title: "International Journal of Mechanical Engineering",
-    category: "Mechanical Engineering",
-    issn: "ISSN: 2456-1290",
-    detailsLink: "/journals",
-    journalLink: "/journals",
-  },
- 
-];
+const FALLBACK_JOURNAL_IMAGES = [j1, j2, j3, j4, j5];
+
+const [journals, setJournals] = useState([]);
+const [journalsLoading, setJournalsLoading] = useState(true);
+
+useEffect(() => {
+  let active = true;
+  fetchFeaturedJournals(10)
+    .then((rows) => {
+      if (!active) return;
+      setJournals(
+        rows.map((row, index) => ({
+          id: row.id,
+          slug: row.slug,
+          image: resolveImageUrl(row.cover_image) || FALLBACK_JOURNAL_IMAGES[index % FALLBACK_JOURNAL_IMAGES.length],
+          title: row.title,
+          category: row.subject_area || row.category || "",
+          issn: row.issn ? `ISSN: ${row.issn}` : "",
+          detailsLink: `/journals/${encodeURIComponent(row.slug || row.id)}`,
+          journalLink: `/journals/${encodeURIComponent(row.slug || row.id)}`,
+        }))
+      );
+    })
+    .finally(() => {
+      if (active) setJournalsLoading(false);
+    });
+  return () => { active = false; };
+}, []);
 
 const [journalSearch, setJournalSearch] = useState("");
 const [journalPage, setJournalPage] = useState(0);
@@ -228,7 +175,7 @@ const filteredJournals = useMemo(() => {
         .includes(searchValue)
     );
   });
-}, [journalSearch]);
+}, [journals, journalSearch]);
 
 const journalPageCount = Math.max(
   1,
@@ -389,32 +336,28 @@ const goToJournalPage = (page) => {
      UNIVERSITIES
   ========================================================= */
 
- const universities = [
-   {
-     name: "University of Oxford",
-     logo: l1,
-   },
-   {
-     name: "National University of Singapore",
-     logo: l2,
-   },
-   {
-     name: "University of Melbourne",
-     logo: l3,
-   },
-   {
-     name: "University of Toronto",
-     logo: l4,
-   },
-   {
-     name: "Technical University of Munich",
-     logo: l5,
-   },
-   {
-     name: "University of Cape Town",
-     logo: l6,
-   },
- ];
+const FALLBACK_UNI_LOGOS = [l1, l2, l3, l4, l5, l6];
+
+const [universities, setUniversitiesHome] = useState([]);
+
+useEffect(() => {
+  let active = true;
+  fetchUniversities({ featured: "true", limit: 6 })
+    .then((rows) => {
+      if (!active) return;
+      setUniversitiesHome(
+        rows.map((u, index) => ({
+          name: u.name,
+          logo: resolveImageUrl(u.logo) || FALLBACK_UNI_LOGOS[index % FALLBACK_UNI_LOGOS.length],
+        }))
+      );
+    })
+    .catch(() => {
+      // Section simply renders empty if this fails — rest of the page is unaffected.
+    });
+  return () => { active = false; };
+}, []);
+
  const universityReveal = {
    hidden: {
      opacity: 0,
@@ -786,7 +729,7 @@ lg:h-[510px]
           className="w-full sm:w-auto"
         >
           <Link
-            to="/register"
+            to="/contact"
             className="
               group
               inline-flex
@@ -3614,7 +3557,7 @@ lg:h-[510px]
           className="w-full sm:w-auto"
         >
           <Link
-            to="/register"
+            to="/contact"
             className="
               inline-flex
               min-h-[43px]

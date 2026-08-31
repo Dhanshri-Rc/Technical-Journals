@@ -8,7 +8,7 @@ import {
   YoutubeIcon,
 } from "../ui/SocialIcons";
 
-import logo from "../../assets/images/foot.png";
+import logo from "../../assets/images/flogo.png";
 
 import {
   SITE,
@@ -172,7 +172,7 @@ export default function Footer() {
                   max-w-[155px]
                   object-contain
 
-                  sm:max-w-[165px]
+                  sm:max-w-[185px]
                 "
               />
             </Link>
@@ -180,17 +180,17 @@ export default function Footer() {
 
             <p
               className="
-                mt-3
-                max-w-[280px]
+                mt-2
+                max-w-[230px]
                 text-[12px]
                 font-normal
                 leading-[1.7]
                 text-slate-300
 
-                sm:text-[13px]
+                sm:text-[12px]
               "
             >
-              A secure, scalable, and feature-rich platform exclusively for
+              A secure,and feature-rich platform exclusively for
               hosting peer-reviewed journals of universities worldwide.
             </p>
 
@@ -199,11 +199,11 @@ export default function Footer() {
 
             <div
               className="
-                mt-5
+                mt-3
                 flex
                 flex-wrap
                 items-center
-                gap-2.5
+                gap-3
               "
             >
               {socialLinks.map(({ Icon, key, label }) => {
@@ -222,8 +222,8 @@ export default function Footer() {
                     className="
                       group
                       grid
-                      h-8
-                      w-8
+                      h-7
+                      w-7
                       shrink-0
                       place-items-center
                       rounded-full
@@ -325,8 +325,8 @@ export default function Footer() {
 
               <ul
                 className="
-                  mt-5
-                  space-y-4
+                  mt-1
+                  space-y-1
                   text-[12px]
                   leading-[1.6]
                   text-slate-300

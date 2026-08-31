@@ -1,6 +1,6 @@
 import Seo from "./Seo";
 import PageHero from "./PageHero";
-import networkBg from "../../assets/backgrounds/network-bg.jpg";
+import networkBg from "../../assets/images/contactbg.png";
 
 export default function PolicyPage({ title, description, path, subtitle, sections }) {
   return (

@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, LogIn } from "lucide-react";
+import { Eye, EyeOff, LogIn, ShieldCheck, User as UserIcon } from "lucide-react";
 import Seo from "../components/common/Seo";
 import { Label, ErrorText, Input, SubmitButton } from "../components/forms/FormField";
 import { validate, rules } from "../utils/validation";
-import { loginUser } from "../services/mockApi";
+import { loginUser } from "../services/authService";
+import { ApiError } from "../services/api";
 import logo from "../assets/logos/logo.png";
 
 export default function Login() {
+  const [loginAs, setLoginAs] = useState("user");
   const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -28,14 +30,16 @@ export default function Login() {
     });
     setErrors(errs);
     if (Object.keys(errs).length) return;
+
     setLoading(true);
-    const res = await loginUser(values);
-    setLoading(false);
-    if (!res.success) {
-      setServerError(res.message || "There was an account created with this platform, but demo data resets between sessions. Please register first.");
-      return;
+    try {
+      const user = await loginUser({ email: values.email, password: values.password, loginAs });
+      setLoading(false);
+      navigate(user.role === "admin" ? "/admin" : "/");
+    } catch (err) {
+      setLoading(false);
+      setServerError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
     }
-    navigate("/");
   }
 
   return (
@@ -48,8 +52,29 @@ export default function Login() {
           <p className="text-sm text-slate-500">Log in to manage your journals and submissions.</p>
         </div>
 
+        <div className="grid grid-cols-2 gap-2 mb-6 p-1 bg-slate-100 rounded-lg">
+          <button
+            type="button"
+            onClick={() => setLoginAs("user")}
+            className={`flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-semibold transition ${
+              loginAs === "user" ? "bg-white text-blue-700 shadow-sm" : "text-slate-500"
+            }`}
+          >
+            <UserIcon className="w-4 h-4" /> User Login
+          </button>
+          <button
+            type="button"
+            onClick={() => setLoginAs("admin")}
+            className={`flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-semibold transition ${
+              loginAs === "admin" ? "bg-white text-blue-700 shadow-sm" : "text-slate-500"
+            }`}
+          >
+            <ShieldCheck className="w-4 h-4" /> Admin Login
+          </button>
+        </div>
+
         {serverError && (
-          <div className="mb-4 text-sm bg-amber-50 border border-amber-200 text-amber-800 rounded-md px-3 py-2.5">
+          <div className="mb-4 text-sm bg-red-50 border border-red-200 text-red-800 rounded-md px-3 py-2.5">
             {serverError}
           </div>
         )}
@@ -57,7 +82,7 @@ export default function Login() {
         <form onSubmit={onSubmit} noValidate className="space-y-5">
           <div>
             <Label htmlFor="email" required>Email Address</Label>
-            <Input id="email" name="email" type="email" autoComplete="email" value={values.email} onChange={onChange} placeholder="you@university.edu" error={errors.email} />
+            <Input id="email" name="email" type="email" autoComplete="email" value={values.email} onChange={onChange} placeholder={loginAs === "admin" ? "admin@technicaljournals.com" : "you@university.edu"} error={errors.email} />
             <ErrorText id="email-error">{errors.email}</ErrorText>
           </div>
           <div>
@@ -92,7 +117,7 @@ export default function Login() {
             <input type="checkbox" className="rounded border-slate-300 text-blue-700 focus:ring-blue-500" /> Remember me
           </label>
           <SubmitButton loading={loading} className="w-full">
-            <LogIn className="w-4 h-4" /> Login
+            <LogIn className="w-4 h-4" /> {loginAs === "admin" ? "Login as Admin" : "Login"}
           </SubmitButton>
         </form>
 

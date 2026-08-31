@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -24,15 +25,11 @@ import {
   Send,
   ChartNoAxesCombined,
 } from "lucide-react";
-
+import { fetchUniversities } from "../services/universityService";
+import { resolveImageUrl } from "../services/api";
 import Seo from "../components/common/Seo";
 import homeBg from "../assets/images/homebg.png";
-import l1 from "../assets/images/l1.png";
-import l2 from "../assets/images/l2.png";
-import l3 from "../assets/images/l3.png";
-import l4 from "../assets/images/l4.png";
-import l5 from "../assets/images/l5.png";
-import l6 from "../assets/images/l6.png";
+
 import { SITE } from "../data/site";
 import sdg3 from "../assets/images/h1.png";
 import sdg4 from "../assets/images/h2.png";
@@ -208,32 +205,7 @@ const services = [
   },
 ];
 
-const universities = [
-  {
-    name: "University of Oxford",
-    logo: l1,
-  },
-  {
-    name: "National University of Singapore",
-    logo: l2,
-  },
-  {
-    name: "University of Melbourne",
-    logo: l3,
-  },
-  {
-    name: "University of Toronto",
-    logo: l4,
-  },
-  {
-    name: "Technical University of Munich",
-    logo: l5,
-  },
-  {
-    name: "University of Cape Town",
-    logo: l6,
-  },
-];
+
 const universityReveal = {
   hidden: {
     opacity: 0,
@@ -306,6 +278,10 @@ const FeatureMini = ({ icon: Icon, title, desc }) => {
 };
 
 export default function About() {
+  const [universities, setUniversities] = useState([]);
+  const [universitiesLoading, setUniversitiesLoading] = useState(true);
+  const [universitiesError, setUniversitiesError] = useState("");
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -317,6 +293,55 @@ export default function About() {
       "query-input": "required name=search_term_string",
     },
   };
+
+useEffect(() => {
+  const controller = new AbortController();
+
+  async function loadUniversities() {
+    try {
+      setUniversitiesLoading(true);
+      setUniversitiesError("");
+
+      const data = await fetchUniversities(
+        {
+          featured: true,
+          limit: 6,
+        },
+        controller.signal
+      );
+
+      const normalizedUniversities = Array.isArray(data)
+        ? data.map((uni) => ({
+            ...uni,
+            logo: resolveImageUrl(uni.logo),
+          }))
+        : [];
+
+      setUniversities(normalizedUniversities);
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+
+      console.error(
+        "Unable to load universities:",
+        error
+      );
+
+      setUniversitiesError(
+        "Unable to load universities."
+      );
+
+      setUniversities([]);
+    } finally {
+      setUniversitiesLoading(false);
+    }
+  }
+
+  loadUniversities();
+
+  return () => {
+    controller.abort();
+  };
+}, []);
 
   return (
     <>
@@ -1423,14 +1448,18 @@ export default function About() {
 
      
        {/* Trusted Universities */}
+{/* Trusted Universities */}
 <section className="w-full bg-white py-8">
-  <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8 ">
+  <div className="mx-auto w-full max-w-[1230px] px-4 sm:px-6 lg:px-8">
 
     {/* Heading */}
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.4 }}
+      viewport={{
+        once: true,
+        amount: 0.4,
+      }}
       transition={{
         duration: 0.5,
         ease: [0.22, 1, 0.36, 1],
@@ -1444,6 +1473,7 @@ export default function About() {
           leading-[1.2]
           tracking-[-0.025em]
           text-[#08245A]
+
           sm:text-[25px]
           md:text-[26px]
           lg:text-[26px]
@@ -1452,7 +1482,7 @@ export default function About() {
         Trusted by Leading Universities Worldwide
       </h2>
 
-      {/* Exact multicolor underline */}
+      {/* Multicolor underline */}
       <div
         className="
           mx-auto
@@ -1462,6 +1492,7 @@ export default function About() {
           w-[82px]
           overflow-hidden
           rounded-full
+
           sm:w-[98px]
         "
       >
@@ -1473,132 +1504,213 @@ export default function About() {
       </div>
     </motion.div>
 
-    {/* Logo Container */}
-    <motion.div
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.18 }}
-      variants={{
-        hidden: {},
-        show: {
-          transition: {
-            staggerChildren: 0.07,
-          },
-        },
-      }}
-      className="
-        overflow-hidden
-        rounded-[14px]
-        border
-        border-[#E4EAF3]
-        bg-white
-        shadow-[0_3px_14px_rgba(15,43,89,0.025)]
-      "
-    >
+    {/* Loading */}
+    {universitiesLoading && (
       <div
         className="
           grid
+          overflow-hidden
+          rounded-[14px]
+          border
+          border-[#E4EAF3]
+          bg-white
+
           grid-cols-1
           sm:grid-cols-2
           md:grid-cols-3
           lg:grid-cols-6
         "
       >
-        {universities.map((uni, index) => (
-          <motion.div
-            key={uni.name}
-            variants={universityReveal}
-            transition={{
-              duration: 0.45,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            whileHover={{
-              y: -3,
-              backgroundColor: "#F8FBFF",
-            }}
-            className={`
-              group
-              relative
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div
+            key={index}
+            className="
               flex
               min-h-[94px]
               items-center
               justify-center
+              border-b
+              border-[#E5EAF2]
               px-5
               py-5
-              transition-colors
-              duration-300
 
-              ${
-                index !== universities.length - 1
-                  ? `
-                    border-b
-                    border-[#E5EAF2]
-
-                    sm:[&:not(:nth-child(2n))]:border-r
-
-                    md:border-b
-                    md:border-r
-                    md:[&:nth-child(3n)]:border-r-0
-
-                    lg:border-b-0
-                    lg:border-r
-                    lg:[&:nth-child(3n)]:border-r
-                    lg:last:border-r-0
-                  `
-                  : ""
-              }
-            `}
+              lg:border-b-0
+              lg:border-r
+              lg:last:border-r-0
+            "
           >
-            {/* subtle hover glow */}
-            <div
-              className="
-                pointer-events-none
-                absolute
-                inset-0
-                opacity-0
-                transition-opacity
-                duration-300
-                group-hover:opacity-100
-                bg-[radial-gradient(circle_at_center,rgba(23,105,224,0.055),transparent_68%)]
-              "
-            />
-
-            <motion.img
-              src={uni.logo}
-              alt={`${uni.name} logo`}
-              loading="lazy"
-              draggable="false"
-              whileHover={{ scale: 1.045 }}
-              transition={{
-                duration: 0.25,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="
-                relative
-                z-10
-                block
-                h-auto
-                w-auto
-                max-h-[48px]
-                max-w-[190px]
-                object-contain
-
-                sm:max-h-[50px]
-                sm:max-w-[185px]
-
-                md:max-h-[52px]
-                md:max-w-[180px]
-
-                lg:max-h-[48px]
-                lg:max-w-[155px]
-
-              
-              "
-            />
-          </motion.div>
+            <div className="h-[45px] w-[130px] animate-pulse rounded-md bg-slate-100" />
+          </div>
         ))}
       </div>
-    </motion.div>
+    )}
+
+    {/* Error */}
+    {!universitiesLoading &&
+      universitiesError && (
+        <div className="rounded-[12px] border border-red-100 bg-red-50 px-5 py-8 text-center text-sm text-red-600">
+          {universitiesError}
+        </div>
+      )}
+
+    {/* No universities */}
+    {!universitiesLoading &&
+      !universitiesError &&
+      universities.length === 0 && (
+        <div className="rounded-[12px] border border-[#E4EAF3] bg-[#F8FBFF] px-5 py-8 text-center text-sm text-[#60718A]">
+          No universities are currently available.
+        </div>
+      )}
+
+    {/* University logos */}
+    {!universitiesLoading &&
+      universities.length > 0 && (
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{
+            once: true,
+            amount: 0.18,
+          }}
+          variants={{
+            hidden: {},
+            show: {
+              transition: {
+                staggerChildren: 0.07,
+              },
+            },
+          }}
+          className="
+            overflow-hidden
+            rounded-[14px]
+            border
+            border-[#E4EAF3]
+            bg-white
+            shadow-[0_3px_14px_rgba(15,43,89,0.025)]
+          "
+        >
+          <div
+            className="
+              grid
+              grid-cols-1
+
+              sm:grid-cols-2
+
+              md:grid-cols-3
+
+              lg:grid-cols-6
+            "
+          >
+            {universities.map((uni, index) => (
+              <motion.div
+                key={uni.id || uni.slug || uni.name}
+                variants={universityReveal}
+                transition={{
+                  duration: 0.45,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                whileHover={{
+                  y: -3,
+                  backgroundColor: "#F8FBFF",
+                }}
+                className={`
+                  group
+                  relative
+                  flex
+                  min-h-[94px]
+                  items-center
+                  justify-center
+                  px-5
+                  py-5
+                  transition-colors
+                  duration-300
+
+                  ${
+                    index !== universities.length - 1
+                      ? `
+                        border-b
+                        border-[#E5EAF2]
+
+                        sm:[&:not(:nth-child(2n))]:border-r
+
+                        md:border-b
+                        md:border-r
+                        md:[&:nth-child(3n)]:border-r-0
+
+                        lg:border-b-0
+                        lg:border-r
+                        lg:[&:nth-child(3n)]:border-r
+                        lg:last:border-r-0
+                      `
+                      : ""
+                  }
+                `}
+              >
+                {/* Hover glow */}
+                <div
+                  className="
+                    pointer-events-none
+                    absolute
+                    inset-0
+                    bg-[radial-gradient(circle_at_center,rgba(23,105,224,0.055),transparent_68%)]
+                    opacity-0
+                    transition-opacity
+                    duration-300
+
+                    group-hover:opacity-100
+                  "
+                />
+
+                {/* Logo */}
+                {uni.logo ? (
+                  <motion.img
+                    src={uni.logo}
+                    alt={`${uni.name} logo`}
+                    loading="lazy"
+                    draggable="false"
+                    whileHover={{
+                      scale: 1.045,
+                    }}
+                    transition={{
+                      duration: 0.25,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="
+                      relative
+                      z-10
+                      block
+                      h-auto
+                      w-auto
+                      max-h-[48px]
+                      max-w-[190px]
+                      object-contain
+
+                      sm:max-h-[50px]
+                      sm:max-w-[185px]
+
+                      md:max-h-[52px]
+                      md:max-w-[180px]
+
+                      lg:max-h-[48px]
+                      lg:max-w-[155px]
+                    "
+                  />
+                ) : (
+                  /* Fallback if university has no logo */
+                  <div className="relative z-10 flex flex-col items-center gap-2 text-center">
+                    <Landmark className="h-7 w-7 text-[#1769E0]" />
+
+                    <span className="text-[10px] font-semibold leading-4 text-[#102D63]">
+                      {uni.short_name ||
+                        uni.name}
+                    </span>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
   </div>
 </section>
 
@@ -2023,7 +2135,7 @@ text-justify
           className="w-full sm:w-auto"
         >
           <Link
-            to="/register"
+            to="/contact"
             className="
               inline-flex
               min-h-[43px]

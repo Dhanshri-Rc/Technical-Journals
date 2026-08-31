@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
-  LogIn,
+ 
   Menu,
   Search,
   UserPlus,
@@ -12,6 +12,8 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { NAV_LINKS, SITE } from "../../data/site";
 import logo from "../../assets/images/TechnicalLogo.png";
+import mlogo from "../../assets/images/flogo.png";
+
 import SearchModal from "../common/SearchModal";
 
 const desktopLinkVariants = {
@@ -138,7 +140,7 @@ export default function Header() {
             <motion.img
               src={logo}
               alt={`${SITE.name} logo`}
-              className="h-10 w-auto max-w-[180px] object-contain sm:h-14 sm:max-w-[220px]"
+              className="h-12 w-auto max-w-[210px] object-contain sm:h-14 sm:max-w-[290px]"
               whileHover={{ scale: 1.035 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
@@ -161,7 +163,7 @@ export default function Header() {
                   to={link.to}
                   end={link.to === "/"}
                   className={({ isActive }) =>
-                    `group relative inline-flex h-11 items-center rounded-lg px-3 text-[14px] font-semibold transition-colors duration-200 xl:px-4 ${
+                    `group relative inline-flex h-11 items-center rounded-lg px-3 text-[15px] font-[600] transition-colors duration-200 xl:px-4 ${
                       isActive
                         ? " text-blue-700"
                         : "text-black  hover:text-blue-700"
@@ -186,36 +188,7 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Desktop actions */}
-          <div className="hidden items-center gap-2 lg:flex xl:gap-3">
-           
-
-            <motion.div
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Link
-                to="/login"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-blue-600 px-4 text-sm font-semibold text-blue-700 transition-all duration-200 hover:bg-blue-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-              >
-                <LogIn className="h-4 w-4" />
-                Login
-              </Link>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Link
-                to="/register"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 text-sm font-semibold text-white shadow-[0_8px_18px_rgba(29,78,216,0.2)] transition-all duration-200 hover:bg-blue-800 hover:shadow-[0_10px_24px_rgba(29,78,216,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-              >
-                <UserPlus className="h-4 w-4" />
-                Register
-              </Link>
-            </motion.div>
-          </div>
+        
 
           {/* Mobile controls */}
           <div className="flex items-center gap-1.5 lg:hidden">
@@ -264,7 +237,7 @@ export default function Header() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="absolute right-0 top-0 flex h-full w-[78%] max-w-[280px] flex-col bg-white shadow-[-20px_0_60px_rgba(15,23,42,0.2)]"
+              className="absolute right-0 top-0 flex h-full w-[78%] max-w-[250px] flex-col bg-white shadow-[-20px_0_60px_rgba(15,23,42,0.2)]"
             >
               {/* Drawer header */}
               <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-slate-200 px-5 sm:h-[78px]">
@@ -274,9 +247,9 @@ export default function Header() {
                   aria-label={`${SITE.name} home`}
                 >
                   <img
-                    src={logo}
+                    src={mlogo}
                     alt={`${SITE.name} logo`}
-                    className="h-10 w-auto max-w-[190px] object-contain"
+                    className="h-11 w-auto max-w-[200px] object-contain"
                   />
                 </Link>
 
@@ -335,31 +308,7 @@ export default function Header() {
                 </motion.div>
               </nav>
 
-              {/* Mobile actions */}
-              <motion.div
-                variants={mobileLinkVariants}
-                className="shrink-0 border-t border-slate-200 bg-slate-50/80 p-4"
-              >
-                <div className="grid grid-cols-2 gap-3">
-                  <Link
-                    to="/login"
-                    onClick={closeMobileMenu}
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-blue-600 bg-white text-sm font-semibold text-blue-700 transition-all hover:bg-blue-50 active:scale-[0.98]"
-                  >
-                    <LogIn className="h-4 w-4" />
-                    Login
-                  </Link>
-
-                  <Link
-                    to="/register"
-                    onClick={closeMobileMenu}
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-blue-700 text-sm font-semibold text-white shadow-md transition-all hover:bg-blue-800 active:scale-[0.98]"
-                  >
-                    <UserPlus className="h-4 w-4" />
-                    Register
-                  </Link>
-                </div>
-              </motion.div>
+            
             </motion.aside>
           </div>
         )}

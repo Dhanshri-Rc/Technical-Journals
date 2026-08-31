@@ -1,6 +1,6 @@
 import Seo from "../components/common/Seo";
 import PageHero from "../components/common/PageHero";
-import networkBg from "../assets/backgrounds/network-bg.jpg";
+import networkBg from "../assets/images/contactbg.png";
 import Icon from "../components/ui/Icon";
 
 const POSTS = [

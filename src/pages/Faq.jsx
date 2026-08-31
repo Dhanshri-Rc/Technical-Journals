@@ -5,7 +5,7 @@ import Seo from "../components/common/Seo";
 import PageHero from "../components/common/PageHero";
 import Accordion from "../components/ui/Accordion";
 import Icon from "../components/ui/Icon";
-import networkBg from "../assets/backgrounds/network-bg.jpg";
+import networkBg from "../assets/images/contactbg.png";
 import { FAQ_CATEGORIES, FAQS } from "../data/site";
 
 export default function Faq() {
