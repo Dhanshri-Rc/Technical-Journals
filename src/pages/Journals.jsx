@@ -54,47 +54,92 @@ import {
    FALLBACK JOURNAL IMAGES
 ========================================================= */
 
-const JOURNAL_IMAGES = [j1, j2, j3, j4, j5];
+const JOURNAL_IMAGES = [
+  j1,
+  j2,
+  j3,
+  j4,
+  j5,
+];
 
-const PAGE_SIZE = 9;
+/* =========================================================
+   PAGINATION
 
-const ALL_JOURNALS = Array.from({ length: 13 }, (_, groupIndex) =>
-  JOURNALS.map((journal, journalIndex) => ({
-    ...journal,
+   8 JOURNALS PER PAGE
+========================================================= */
 
-    // Assign cover according to its position in JOURNALS
+const PAGE_SIZE = 8;
+
+/* =========================================================
+   SORT MAP
+========================================================= */
+
+const SORT_MAP = {
+  relevance: "relevance",
+  "title-asc": "title_asc",
+  "title-desc": "title_desc",
+  subject: "relevance",
+};
+
+/* =========================================================
+   NORMALIZE JOURNAL
+========================================================= */
+
+function normalizeJournal(
+  row,
+  fallbackIndex = 0
+) {
+  return {
+    ...row,
+
+    field:
+      row.subject_area ||
+      row.subject ||
+      "",
+
+    subject:
+      row.subject_area ||
+      row.subject ||
+      "",
+
+    subjectArea:
+      row.subject_area ||
+      row.subject ||
+      "",
+
+    index:
+      row.indexing,
+
+    indexing:
+      row.indexing,
+
+    frequency:
+      row.frequency,
+
+    accessType:
+      row.access_type,
+
+    language:
+      row.language,
+
     image:
-      journal.image ||
-      JOURNAL_IMAGES[journalIndex % JOURNAL_IMAGES.length],
+      resolveImageUrl(
+        row.cover_image
+      ) ||
+      JOURNAL_IMAGES[
+        fallbackIndex %
+          JOURNAL_IMAGES.length
+      ],
 
-    id:
-      groupIndex === 0
-        ? journal.id
-        : `${journal.id}-${groupIndex + 1}`,
+    _key:
+      row.slug ||
+      row.id,
+  };
+}
 
-    _key: `${journal.id}-${groupIndex}-${journalIndex}`,
-  })),
-).flat();
-
-const INDEXING_OPTIONS = [
-  "Scopus Indexed",
-  "Web of Science",
-  "Google Scholar Indexed",
-  "DOAJ Indexed",
-  "UGC Approved",
-];
-
-const FREQUENCIES = [
-  "Quarterly",
-  "Bi-Monthly",
-  "Monthly",
-  "Semi-Annual",
-  "Annual",
-];
-
-const ACCESS_TYPES = ["Open Access", "Subscription", "Hybrid"];
-
-const LANGUAGES = ["English", "Hindi", "French", "Spanish"];
+/* =========================================================
+   HELPERS
+========================================================= */
 
 const getText = (value) =>
   String(value ?? "").trim();
@@ -991,9 +1036,46 @@ export default function Journals() {
         </div>
       </section>
 
-      {/* Statistics */}
-      <section className="relative z-10 mx-auto -mt-10 w-full max-w-[1440px] px-4 sm:px-8 lg:px-16 xl:px-20">
-        <div className="grid rounded-[11px] border border-[#e6ebf2] bg-white px-4 py-2 shadow-[0_8px_26px_rgba(10,35,75,0.08)] sm:grid-cols-2 lg:grid-cols-5 lg:px-6">
+      {/* =====================================================
+          STATISTICS
+      ===================================================== */}
+
+      <section
+        className="
+          relative
+          z-10
+          mx-auto
+          -mt-10
+          w-full
+          max-w-[1440px]
+          px-4
+
+          sm:px-8
+
+          lg:px-16
+
+          xl:px-20
+        "
+      >
+        <div
+          className="
+            grid
+            rounded-[11px]
+            border
+            border-[#e6ebf2]
+            bg-white
+            px-4
+            py-2
+            shadow-[0_8px_26px_rgba(10,35,75,0.08)]
+
+            sm:grid-cols-2
+
+            md:grid-cols-3
+
+            lg:grid-cols-5
+            lg:px-6
+          "
+        >
           {[
             {
               icon:
@@ -1664,62 +1746,414 @@ export default function Journals() {
                     const journalFrequency =
                       journal.frequency ||
                       journal.publicationFrequency ||
-                      (index % 2 === 0 ? "Quarterly" : "Bi-Monthly");
-                    const journalIdentifier = journal.slug || journal.id;
-const detailsUrl = `/journals/${encodeURIComponent(journalIdentifier)}`;
-                  
+                      "Publication Frequency";
 
-                    return (
-                      <motion.article
-                        key={journal._key}
-                        layout
-                        initial={{ opacity: 0, y: 14 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{
-                          duration: 0.35,
-                          delay: index * 0.035,
-                        }}
-                        whileHover={{
-                          y: -5,
-                          boxShadow: "0 14px 30px rgba(10,39,82,0.12)",
-                        }}
-                        className={`group overflow-hidden rounded-[9px] border border-[#dfe5ed] bg-white transition-colors hover:border-[#9dbce9] ${
-                          view === "list"
-                            ? "flex flex-col p-3 sm:flex-row sm:items-stretch"
-                            : "p-3"
-                        }`}
-                      >
-                        <div
-                          className={
-                            view === "list"
-                              ? "flex min-w-0 flex-1 gap-3"
-                              : "flex min-w-0 gap-3"
+                    const journalIdentifier =
+                      journal.slug ||
+                      journal.id;
+
+                    const detailsUrl =
+                      `/journals/${encodeURIComponent(
+                        journalIdentifier
+                      )}`;
+
+                    /* =========================================
+                       GRID CARD
+                    ========================================= */
+
+                    if (
+                      view ===
+                      "grid"
+                    ) {
+                      return (
+                        <motion.article
+                          key={
+                            journal._key
                           }
+                          layout
+                          initial={{
+                            opacity:
+                              0,
+                            y: 14,
+                            scale:
+                              0.985,
+                          }}
+                          animate={{
+                            opacity:
+                              1,
+                            y: 0,
+                            scale:
+                              1,
+                          }}
+                          transition={{
+                            duration:
+                              0.35,
+
+                            delay:
+                              index *
+                              0.03,
+                          }}
+                          whileHover={{
+                            y: -6,
+
+                            boxShadow:
+                              "0 15px 32px rgba(10,39,82,0.11)",
+                          }}
+                          className="
+                            group
+                            flex
+                            min-h-[320px]
+                            min-w-0
+                            flex-col
+                            overflow-hidden
+                            rounded-[9px]
+                            border
+                            border-[#dfe5ed]
+                            bg-white
+                            p-3
+                            transition-colors
+                            duration-300
+
+                            hover:border-[#9dbce9]
+                          "
                         >
+
+                          {/* COVER IMAGE
+                              SAME STYLE AS HOME PAGE */}
+
                           <div
                             className="
-    h-[135px] w-[92px] shrink-0 overflow-hidden
-    rounded-[5px] border border-[#dfe5ed] bg-white
-    sm:h-[145px]
-  "
+                              relative
+                              h-[110px]
+                              w-full
+                              shrink-0
+                              overflow-hidden
+                              rounded-[5px]
+                              bg-[#EFF3F7]
+
+                              sm:h-[115px]
+
+                              lg:h-[122px]
+
+                              xl:h-[122px]
+                            "
                           >
                             {cover ? (
                               <img
-                                src={cover}
+                                src={
+                                  cover
+                                }
                                 alt={`${title} journal cover`}
                                 loading="lazy"
+                                draggable="false"
                                 className="
-        h-full w-full object-contain p-1
-        transition-transform duration-500 ease-out
-        group-hover:scale-[1.04]
-      "
+                                  h-full
+                                  w-full
+                                  object-cover
+                                  transition-transform
+                                  duration-500
+                                  ease-out
+
+                                  group-hover:scale-[1.055]
+                                "
                               />
                             ) : (
-                              <div className="grid h-full w-full place-items-center bg-[radial-gradient(circle_at_top,#1386da,#03183f_70%)]">
+                              <div
+                                className="
+                                  grid
+                                  h-full
+                                  w-full
+                                  place-items-center
+                                  bg-[radial-gradient(circle_at_top,#1386da,#03183f_70%)]
+                                "
+                              >
                                 <BookOpen className="h-8 w-8 text-white/80" />
                               </div>
                             )}
+
+                            <div
+                              className="
+                                pointer-events-none
+                                absolute
+                                inset-0
+                                bg-[#0B2A63]/0
+                                transition-colors
+                                duration-300
+
+                                group-hover:bg-[#0B2A63]/[0.035]
+                              "
+                            />
                           </div>
+
+                          {/* CONTENT */}
+
+                          <div className="flex flex-1 flex-col pt-3">
+
+                            {/* BADGES */}
+
+                            <div className="flex min-w-0 flex-wrap items-center gap-2">
+                              <span
+                                title={
+                                  indexBadge.full
+                                }
+                                className={`
+                                  rounded
+                                  px-2
+                                  py-1
+                                  text-[10px]
+                                  font-[550]
+
+                                  ${indexBadge.className}
+                                `}
+                              >
+                                {
+                                  indexBadge.short
+                                }
+                              </span>
+
+                              <span className="min-w-0 truncate text-[10px] font-medium text-[#657792]">
+                                ISSN:{" "}
+                                {
+                                  issn
+                                }
+                              </span>
+                            </div>
+
+                            {/* TITLE */}
+
+                            <h2
+                              className="
+                                mt-3
+                                line-clamp-3
+                                min-h-[61px]
+                                text-[14px]
+                                font-[600]
+                                leading-[1.45]
+                                text-[#071c46]
+                              "
+                            >
+                              {
+                                title
+                              }
+                            </h2>
+
+                            {/* SUBJECT */}
+
+                            <p
+                              className="
+                                mt-2
+                                line-clamp-1
+                                text-[12px]
+                                font-medium
+                                text-[#3764a0]
+                              "
+                            >
+                              {
+                                journalSubject
+                              }
+                            </p>
+
+                            {/* FREQUENCY */}
+
+                            <p
+                              className="
+                                mt-2
+                                text-[11px]
+                                font-medium
+                                text-[#405675]
+                              "
+                            >
+                              {
+                                journalFrequency
+                              }
+                            </p>
+
+                            {/* BUTTONS */}
+
+                            <div
+                              className="
+                                mt-auto
+                                grid
+                                grid-cols-2
+                                gap-2
+                                pt-4
+                              "
+                            >
+                              <Link
+                                to={
+                                  detailsUrl
+                                }
+                                className="
+                                  inline-flex
+                                  min-h-[36px]
+                                  items-center
+                                  justify-center
+                                  rounded-[4px]
+                                  border
+                                  border-[#0756cf]
+                                  px-2
+                                  text-center
+                                  text-[10.5px]
+                                  font-semibold
+                                  text-[#0756cf]
+                                  transition
+
+                                  hover:bg-[#0756cf]
+                                  hover:text-white
+
+                                  sm:text-[11px]
+                                "
+                              >
+                                View
+                                Details
+                              </Link>
+
+                              <Link
+                                to={
+                                  detailsUrl
+                                }
+                                className="
+                                  inline-flex
+                                  min-h-[36px]
+                                  items-center
+                                  justify-center
+                                  gap-1
+                                  rounded-[4px]
+                                  border
+                                  border-[#24a55b]
+                                  px-2
+                                  text-center
+                                  text-[10.5px]
+                                  font-semibold
+                                  text-[#168746]
+                                  transition
+
+                                  hover:bg-[#168746]
+                                  hover:text-white
+
+                                  sm:text-[11px]
+                                "
+                              >
+                                Visit
+                                Journal
+
+                                <ExternalLink className="hidden h-3 w-3 min-[420px]:block" />
+                              </Link>
+                            </div>
+                          </div>
+                        </motion.article>
+                      );
+                    }
+
+                    /* =========================================
+                       LIST CARD
+                    ========================================= */
+
+                    return (
+                      <motion.article
+                        key={
+                          journal._key
+                        }
+                        layout
+                        initial={{
+                          opacity:
+                            0,
+                          y: 12,
+                        }}
+                        animate={{
+                          opacity:
+                            1,
+                          y: 0,
+                        }}
+                        transition={{
+                          duration:
+                            0.35,
+
+                          delay:
+                            index *
+                            0.025,
+                        }}
+                        whileHover={{
+                          y: -3,
+
+                          boxShadow:
+                            "0 12px 28px rgba(10,39,82,0.09)",
+                        }}
+                        className="
+                          group
+                          flex
+                          min-w-0
+                          flex-col
+                          overflow-hidden
+                          rounded-[9px]
+                          border
+                          border-[#dfe5ed]
+                          bg-white
+                          p-3
+                          transition-colors
+
+                          hover:border-[#9dbce9]
+
+                          sm:flex-row
+                          sm:items-stretch
+                          sm:gap-4
+
+                          lg:p-4
+                        "
+                      >
+
+                        {/* LIST IMAGE */}
+
+                        <div
+                          className="
+                            relative
+                            h-[110px]
+                            w-full
+                            shrink-0
+                            overflow-hidden
+                            rounded-[5px]
+                            bg-[#EFF3F7]
+
+                            sm:h-[122px]
+                            sm:w-[180px]
+
+                            md:w-[195px]
+
+                            lg:w-[210px]
+                          "
+                        >
+                          {cover ? (
+                            <img
+                              src={
+                                cover
+                              }
+                              alt={`${title} journal cover`}
+                              loading="lazy"
+                              draggable="false"
+                              className="
+                                h-full
+                                w-full
+                                object-cover
+                                transition-transform
+                                duration-500
+
+                                group-hover:scale-[1.045]
+                              "
+                            />
+                          ) : (
+                            <div
+                              className="
+                                grid
+                                h-full
+                                w-full
+                                place-items-center
+                                bg-[radial-gradient(circle_at_top,#1386da,#03183f_70%)]
+                              "
+                            >
+                              <BookOpen className="h-8 w-8 text-white/80" />
+                            </div>
+                          )}
+                        </div>
 
                         {/* LIST CONTENT */}
 
@@ -1873,20 +2307,33 @@ const detailsUrl = `/journals/${encodeURIComponent(journalIdentifier)}`;
                             View Details
                           </Link>
 
-                            <Link
-  to={detailsUrl}
-  className="
-    inline-flex h-9 items-center justify-center gap-1
-    rounded-[4px] border border-[#24a55b] px-2
-    text-[11px] font-semibold text-[#168746]
-    transition duration-300
-    hover:bg-[#168746] hover:text-white
-  "
->
-  Visit Journal
-  <ExternalLink className="h-3 w-3" />
-</Link>
-                          </div>
+                          <Link
+                            to={
+                              detailsUrl
+                            }
+                            className="
+                              inline-flex
+                              h-10
+                              items-center
+                              justify-center
+                              gap-1.5
+                              rounded-[4px]
+                              border
+                              border-[#24a55b]
+                              px-3
+                              text-[11px]
+                              font-semibold
+                              text-[#168746]
+                              transition
+
+                              hover:bg-[#168746]
+                              hover:text-white
+                            "
+                          >
+                            Visit Journal
+
+                            <ExternalLink className="h-3 w-3" />
+                          </Link>
                         </div>
                       </motion.article>
                     );
