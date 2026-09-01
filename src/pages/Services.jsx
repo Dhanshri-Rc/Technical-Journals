@@ -23,7 +23,7 @@ import {
   Users,
 } from "lucide-react";
 import Seo from "../components/common/Seo";
-import servicesBg from "../assets/images/servicebg.png";
+import servicesBg from "../assets/images/technical-journals-university-publishing-services.webp";
 
 
 const STATS = [

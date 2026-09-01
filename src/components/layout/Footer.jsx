@@ -8,7 +8,7 @@ import {
   YoutubeIcon,
 } from "../ui/SocialIcons";
 
-import logo from "../../assets/images/flogo.png";
+import logo from "../../assets/images/technical-journals-footer-logo.webp";
 
 import {
   SITE,

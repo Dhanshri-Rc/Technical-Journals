@@ -1,6 +1,6 @@
 import Seo from "./Seo";
 import PageHero from "./PageHero";
-import networkBg from "../../assets/images/contactbg.png";
+import networkBg from "../../assets/images/technical-journals-university-publishing-contact-hero.webp";
 
 export default function PolicyPage({ title, description, path, subtitle, sections }) {
   return (

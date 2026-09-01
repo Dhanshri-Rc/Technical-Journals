@@ -11,8 +11,8 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 
 import { NAV_LINKS, SITE } from "../../data/site";
-import logo from "../../assets/images/TechnicalLogo.png";
-import mlogo from "../../assets/images/flogo.png";
+import logo from "../../assets/images/technical-journals-academic-publishing-logo.webp";
+import mlogo from "../../assets/images/technical-journals-footer-logo.webp";
 
 import SearchModal from "../common/SearchModal";
 

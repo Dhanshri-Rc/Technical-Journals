@@ -26,7 +26,7 @@ import { fetchJournals } from "../services/journalService";
 import { submitManuscript } from "../services/manuscriptService";
 import { ApiError } from "../services/api";
 
-import networkBg from "../assets/images/contactbg.png";
+import networkBg from "../assets/images/technical-journals-university-publishing-contact-hero.webp";
 
 /* =========================================================
    FILE CONFIG

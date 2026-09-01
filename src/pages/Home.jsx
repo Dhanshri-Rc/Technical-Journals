@@ -35,23 +35,25 @@ import { SITE } from "../data/site";
 import { fetchFeaturedJournals } from "../services/journalService";
 import { fetchUniversities } from "../services/universityService";
 import { resolveImageUrl } from "../services/api";
-import heroBg from "../assets/images/hbg.png";
-import solutionsImg from "../assets/images/solution.png";
-import h1 from "../assets/images/h1.png";
-import h2 from "../assets/images/h2.png";
-import h3 from "../assets/images/h3.png";
-import h4 from "../assets/images/h4.png";
-import l1 from "../assets/images/l1.png";
-import l2 from "../assets/images/l2.png";
-import l3 from "../assets/images/l3.png";
-import l4 from "../assets/images/l4.png";
-import l5 from "../assets/images/l5.png";
-import l6 from "../assets/images/l6.png";
-import j1 from "../assets/images/j1.png";
-import j2 from "../assets/images/j2.png";
-import j3 from "../assets/images/j3.png";
-import j4 from "../assets/images/j4.png";
-import j5 from "../assets/images/j5.png";
+import heroBg from "../assets/images/technical-journals-university-academic-publishing-hero.webp";
+import solutionsImg from "../assets/images/technical-journals-university-publishing-solutions.webp";
+import h1 from "../assets/images/sdg-3-good-health-and-well-being.webp";
+import h2 from "../assets/images/sdg-4-quality-education.webp";
+import h3 from "../assets/images/sdg-9-industry-innovation-and-infrastructure.webp";
+import h4 from "../assets/images/sdg-17-partnerships-for-the-goals.webp";
+
+import l1 from "../assets/images/university-of-oxford-logo.webp";
+import l2 from "../assets/images/national-university-of-singapore-logo.webp";
+import l3 from "../assets/images/university-of-melbourne-logo.webp";
+import l4 from "../assets/images/university-of-toronto-logo.webp";
+import l5 from "../assets/images/technical-university-of-munich-logo.webp";
+import l6 from "../assets/images/university-of-cape-town-logo.webp";
+
+import j1 from "../assets/images/international-journal-research-development-management-review-cover.webp";
+import j2 from "../assets/images/international-journal-recent-advances-engineering-technology-cover.webp";
+import j3 from "../assets/images/international-journal-advanced-computer-engineering-communication-technology-cover.webp";
+import j4 from "../assets/images/international-journal-advanced-computer-theory-engineering-cover.webp";
+import j5 from "../assets/images/itsi-transactions-electrical-electronics-engineering-journal-cover.webp";
 
 export default function Home() {
   const ease = [0.22, 1, 0.36, 1];

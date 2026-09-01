@@ -33,14 +33,14 @@ import {
   Workflow,
 } from "lucide-react";
 
-import journalsBg from "../assets/images/journalBg.png";
-import journalCta from "../assets/images/journalCta.png";
+import journalsBg from "../assets/images/technical-journals-academic-journals-directory-hero.webp";
+import journalCta from "../assets/images/technical-journals-secure-university-journal-hosting-cta.webp";
 
-import j1 from "../assets/images/j1.png";
-import j2 from "../assets/images/j2.png";
-import j3 from "../assets/images/j3.png";
-import j4 from "../assets/images/j4.png";
-import j5 from "../assets/images/j5.png";
+import j1 from "../assets/images/international-journal-research-development-management-review-cover.webp";
+import j2 from "../assets/images/international-journal-recent-advances-engineering-technology-cover.webp";
+import j3 from "../assets/images/international-journal-advanced-computer-engineering-communication-technology-cover.webp";
+import j4 from "../assets/images/international-journal-advanced-computer-theory-engineering-cover.webp";
+import j5 from "../assets/images/itsi-transactions-electrical-electronics-engineering-journal-cover.webp";
 
 import {
   fetchJournals,

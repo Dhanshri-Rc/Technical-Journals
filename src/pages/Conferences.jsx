@@ -12,8 +12,8 @@ import {
   Search,
 } from "lucide-react";
 
-import confBg from "../assets/images/conferencebg.png";
-import conferenceCta from "../assets/images/conferencecta.png";
+import confBg from "../assets/images/technical-journals-academic-research-conferences.webp";
+import conferenceCta from "../assets/images/technical-journals-conference-calendar-partnership-cta.webp";
 
 import {
   fetchConferences,

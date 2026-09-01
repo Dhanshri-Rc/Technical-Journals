@@ -28,13 +28,15 @@ import {
 import { fetchUniversities } from "../services/universityService";
 import { resolveImageUrl } from "../services/api";
 import Seo from "../components/common/Seo";
-import homeBg from "../assets/images/homebg.png";
+import homeBg from "../assets/images/technical-journals-university-publishing-about-hero.webp";
 
 import { SITE } from "../data/site";
-import sdg3 from "../assets/images/h1.png";
-import sdg4 from "../assets/images/h2.png";
-import sdg9 from "../assets/images/h3.png";
-import sdg17 from "../assets/images/h4.png";
+
+import sdg3 from "../assets/images/sdg-3-good-health-and-well-being.webp";
+import sdg4 from "../assets/images/sdg-4-quality-education.webp";
+import sdg9 from "../assets/images/sdg-9-industry-innovation-and-infrastructure.webp";
+import sdg17 from "../assets/images/sdg-17-partnerships-for-the-goals.webp";
+
 
 const sdgs = [
   {

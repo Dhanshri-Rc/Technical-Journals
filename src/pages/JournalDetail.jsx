@@ -23,7 +23,7 @@ import {
   fetchJournalByIdOrSlug,
 } from "../services/journalService";
 
-import journalsBg from "../assets/images/journalBg.png";
+import journalsBg from "../assets/images/technical-journals-academic-journals-directory-hero.webp";
 
 /* =========================================================
    HELPERS

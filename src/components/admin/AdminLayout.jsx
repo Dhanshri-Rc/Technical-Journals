@@ -25,7 +25,7 @@ import {
   getSessionUser,
 } from "../../services/authService";
 
-import logo from "../../assets/images/foot.png";
+import logo from "../../assets/images/technical-journals-footer-academic-publishing-background.webp";
 
 /* ======================================================
    ADMIN SIDEBAR NAVIGATION

@@ -5,16 +5,16 @@ import { motion } from "framer-motion";
 import Seo from "../components/common/Seo";
 import Icon from "../components/ui/Icon";
 
-import uniBg from "../assets/images/uniBg.png";
-import ctaImg from "../assets/images/unicta.png";
-import l1 from "../assets/images/l1.png";
-import l2 from "../assets/images/l2.png";
-import l3 from "../assets/images/l3.png";
-import l4 from "../assets/images/l4.png";
-import l5 from "../assets/images/l5.png";
-import l6 from "../assets/images/l6.png";
-import l7 from "../assets/images/l7.png";
-import l8 from "../assets/images/l8.png";
+import uniBg from "../assets/images/technical-journals-university-publishing-university-hero.webp";
+import ctaImg from "../assets/images/technical-journals-secure-university-cta.webp";
+import l1 from "../assets/images/university-of-oxford-logo.webp";
+import l2 from "../assets/images/national-university-of-singapore-logo.webp";
+import l3 from "../assets/images/university-of-melbourne-logo.webp";
+import l4 from "../assets/images/university-of-toronto-logo.webp";
+import l5 from "../assets/images/technical-university-of-munich-logo.webp";
+import l6 from "../assets/images/university-of-cape-town-logo.webp";
+import l7 from "../assets/images/university-of-Sydney-logo.webp";
+import l8 from "../assets/images/kings-college-london-logo.webp";
 
 import { fetchUniversities } from "../services/universityService";
 import { resolveImageUrl } from "../services/api";

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import contactBg from "../../assets/images/contactbg.png";
+import contactBg from "../../assets/images/technical-journals-university-publishing-contact-hero.webp";
 
 export default function PageHero({
   eyebrow,

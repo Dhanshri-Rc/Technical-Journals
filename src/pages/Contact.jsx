@@ -11,8 +11,8 @@ import {
   Send,
 } from "lucide-react";
 
-import contactBg from "../assets/images/contactbg.png";
-import contactCta from "../assets/images/contactcta.png";
+import contactBg from "../assets/images/technical-journals-university-publishing-contact-hero.webp";
+import contactCta from "../assets/images/technical-journals-secure-university-contact-cta.webp";
 import { FAQS, SITE } from "../data/site";
 import { submitContactForm } from "../services/contactService";
 import { ApiError } from "../services/api";

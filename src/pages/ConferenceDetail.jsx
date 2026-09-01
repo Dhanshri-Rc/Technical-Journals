@@ -19,7 +19,7 @@ import {
   fetchConferenceByIdOrSlug,
 } from "../services/conferenceService";
 
-import confBg from "../assets/images/conferencebg.png";
+import confBg from "../assets/images/technical-journals-academic-research-conferences.webp";
 
 /* =========================================================
    HELPERS

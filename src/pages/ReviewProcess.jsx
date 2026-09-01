@@ -3,7 +3,7 @@ import Seo from "../components/common/Seo";
 import PageHero from "../components/common/PageHero";
 import SectionHeading from "../components/common/SectionHeading";
 import Icon from "../components/ui/Icon";
-import reviewBg from "../assets/images/conferencebg.png";
+import reviewBg from "../assets/images/technical-journals-academic-research-conferences.webp";
 import { REVIEW_TYPES, REVIEW_WORKFLOW } from "../data/site";
 
 const COLOR_MAP = {

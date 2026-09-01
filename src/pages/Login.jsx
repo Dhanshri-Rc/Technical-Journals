@@ -1,96 +1,182 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, LogIn, ShieldCheck, User as UserIcon } from "lucide-react";
+import { Eye, EyeOff, LogIn, ShieldCheck } from "lucide-react";
 import Seo from "../components/common/Seo";
-import { Label, ErrorText, Input, SubmitButton } from "../components/forms/FormField";
+import {
+  Label,
+  ErrorText,
+  Input,
+  SubmitButton,
+} from "../components/forms/FormField";
 import { validate, rules } from "../utils/validation";
 import { loginUser } from "../services/authService";
 import { ApiError } from "../services/api";
 import logo from "../assets/logos/logo.png";
 
 export default function Login() {
-  const [loginAs, setLoginAs] = useState("user");
-  const [values, setValues] = useState({ email: "", password: "" });
+  // Admin login only
+  const loginAs = "admin";
+
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+  });
+
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState("");
+
   const navigate = useNavigate();
 
   function onChange(e) {
-    setValues((v) => ({ ...v, [e.target.name]: e.target.value }));
+    setValues((v) => ({
+      ...v,
+      [e.target.name]: e.target.value,
+    }));
   }
 
   async function onSubmit(e) {
     e.preventDefault();
+
     setServerError("");
+
     const errs = validate(values, {
-      email: [rules.required("Please enter your email."), rules.email()],
-      password: [rules.required("Please enter your password.")],
+      email: [
+        rules.required("Please enter your email."),
+        rules.email(),
+      ],
+      password: [
+        rules.required("Please enter your password."),
+      ],
     });
+
     setErrors(errs);
+
     if (Object.keys(errs).length) return;
 
     setLoading(true);
+
     try {
-      const user = await loginUser({ email: values.email, password: values.password, loginAs });
+      const user = await loginUser({
+        email: values.email,
+        password: values.password,
+        loginAs,
+      });
+
       setLoading(false);
+
       navigate(user.role === "admin" ? "/admin" : "/");
     } catch (err) {
       setLoading(false);
-      setServerError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+
+      setServerError(
+        err instanceof ApiError
+          ? err.message
+          : "Something went wrong. Please try again."
+      );
     }
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-16 bg-slate-50">
-      <Seo title="Login" description="Log in to your Technical Journals account to manage submissions, reviews, and journal activity." path="/login" noindex />
-      <div className="w-full max-w-md bg-white rounded-xl border border-slate-200 p-8">
-        <div className="flex flex-col items-center mb-6">
-          <Link to="/"><img src={logo} alt="Technical Journals logo" className="h-12 mb-3" /></Link>
-          <h1 className="font-display font-bold text-xl text-slate-900">Welcome Back</h1>
-          <p className="text-sm text-slate-500">Log in to manage your journals and submissions.</p>
+    <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 px-4 py-16">
+
+      {/* ================= SEO ================= */}
+      <Seo
+        title="Admin Login"
+        description="Admin login for Technical Journals management dashboard."
+        path="/login"
+        noindex
+      />
+
+      {/* ================= LOGIN CARD ================= */}
+      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8">
+
+        {/* ================= LOGO & HEADING ================= */}
+        <div className="mb-6 flex flex-col items-center">
+
+          <Link to="/">
+            <img
+              src={logo}
+              alt="Technical Journals logo"
+              className="mb-3 h-12"
+            />
+          </Link>
+
+          <h1 className="font-display text-xl font-bold text-slate-900">
+            Admin Login
+          </h1>
+
+          <p className="mt-1 text-center text-sm text-slate-500">
+            Log in to access the Technical Journals admin dashboard.
+          </p>
+
         </div>
 
-        <div className="grid grid-cols-2 gap-2 mb-6 p-1 bg-slate-100 rounded-lg">
-          <button
-            type="button"
-            onClick={() => setLoginAs("user")}
-            className={`flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-semibold transition ${
-              loginAs === "user" ? "bg-white text-blue-700 shadow-sm" : "text-slate-500"
-            }`}
-          >
-            <UserIcon className="w-4 h-4" /> User Login
-          </button>
-          <button
-            type="button"
-            onClick={() => setLoginAs("admin")}
-            className={`flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-semibold transition ${
-              loginAs === "admin" ? "bg-white text-blue-700 shadow-sm" : "text-slate-500"
-            }`}
-          >
-            <ShieldCheck className="w-4 h-4" /> Admin Login
-          </button>
-        </div>
+       
 
+        {/* ================= SERVER ERROR ================= */}
         {serverError && (
-          <div className="mb-4 text-sm bg-red-50 border border-red-200 text-red-800 rounded-md px-3 py-2.5">
+          <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-800">
             {serverError}
           </div>
         )}
 
-        <form onSubmit={onSubmit} noValidate className="space-y-5">
+        {/* ================= LOGIN FORM ================= */}
+        <form
+          onSubmit={onSubmit}
+          noValidate
+          className="space-y-5"
+        >
+
+          {/* Email */}
           <div>
-            <Label htmlFor="email" required>Email Address</Label>
-            <Input id="email" name="email" type="email" autoComplete="email" value={values.email} onChange={onChange} placeholder={loginAs === "admin" ? "admin@technicaljournals.com" : "you@university.edu"} error={errors.email} />
-            <ErrorText id="email-error">{errors.email}</ErrorText>
+            <Label
+              htmlFor="email"
+              required
+            >
+              Email Address
+            </Label>
+
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={values.email}
+              onChange={onChange}
+              placeholder="admin@technicaljournals.com"
+              error={errors.email}
+            />
+
+            <ErrorText id="email-error">
+              {errors.email}
+            </ErrorText>
           </div>
+
+          {/* Password */}
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <Label htmlFor="password" required>Password</Label>
-              <Link to="/forgot-password" className="text-xs font-medium text-blue-700">Forgot Password?</Link>
+
+            <div className="mb-1.5 flex items-center justify-between">
+
+              <Label
+                htmlFor="password"
+                required
+              >
+                Password
+              </Label>
+
+              <Link
+                to="/forgot-password"
+                className="text-xs font-medium text-blue-700 hover:text-blue-800"
+              >
+                Forgot Password?
+              </Link>
+
             </div>
+
             <div className="relative">
+
               <Input
                 id="password"
                 name="password"
@@ -102,28 +188,57 @@ export default function Login() {
                 error={errors.password}
                 className="pr-10"
               />
+
               <button
                 type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={() =>
+                  setShowPassword((v) => !v)
+                }
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+                aria-label={
+                  showPassword
+                    ? "Hide password"
+                    : "Show password"
+                }
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
               </button>
+
             </div>
-            <ErrorText id="password-error">{errors.password}</ErrorText>
+
+            <ErrorText id="password-error">
+              {errors.password}
+            </ErrorText>
+
           </div>
+
+          {/* Remember Me */}
           <label className="flex items-center gap-2 text-sm text-slate-600">
-            <input type="checkbox" className="rounded border-slate-300 text-blue-700 focus:ring-blue-500" /> Remember me
+
+            <input
+              type="checkbox"
+              className="rounded border-slate-300 text-blue-700 focus:ring-blue-500"
+            />
+
+            Remember me
+
           </label>
-          <SubmitButton loading={loading} className="w-full">
-            <LogIn className="w-4 h-4" /> {loginAs === "admin" ? "Login as Admin" : "Login"}
+
+          {/* Login Button */}
+          <SubmitButton
+            loading={loading}
+            className="w-full"
+          >
+            <LogIn className="h-4 w-4" />
+            Login as Admin
           </SubmitButton>
+
         </form>
 
-        <p className="text-center text-sm text-slate-500 mt-6">
-          Don't have an account? <Link to="/register" className="text-blue-700 font-semibold">Register</Link>
-        </p>
       </div>
     </div>
   );
