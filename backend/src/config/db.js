@@ -1,27 +1,30 @@
-const mysql = require("mysql2/promise");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  port: Number(process.env.DB_PORT) || 3306,
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "technical_journals",
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-  dateStrings: true,
-});
+let connectionPromise = null;
 
-async function testConnection() {
-  try {
-    const conn = await pool.getConnection();
-    await conn.ping();
-    conn.release();
-    console.log("[db] MySQL connection pool established");
-  } catch (err) {
-    console.error("[db] Failed to connect to MySQL:", err.message);
-  }
+async function connectDatabase() {
+  if (mongoose.connection.readyState === 1) return mongoose.connection;
+  if (connectionPromise) return connectionPromise;
+
+  const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/technical_journals";
+  connectionPromise = mongoose
+    .connect(uri)
+    .then(() => {
+      console.log("[db] MongoDB connected successfully");
+      return mongoose.connection;
+    })
+    .catch((err) => {
+      connectionPromise = null;
+      console.error("[db] Failed to connect to MongoDB:", err.message);
+      throw err;
+    });
+
+  return connectionPromise;
 }
 
-module.exports = { pool, testConnection };
+async function testConnection() {
+  return connectDatabase();
+}
+
+module.exports = { mongoose, connectDatabase, testConnection };

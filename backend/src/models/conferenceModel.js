@@ -1,155 +1,161 @@
-const { pool } = require("../config/db");
+const { Conference } = require("../db/models");
+const {
+  nextId,
+  escapeRegex,
+  asFlag,
+  legacyRecord,
+  numericId,
+  localDateString,
+  addMonthsDateString,
+} = require("../utils/mongoHelpers");
 
 const SORT_MAP = {
-  upcoming: "c.start_date ASC",
-  newest: "c.created_at DESC",
-  title: "c.title ASC",
-  location: "c.location ASC",
+  upcoming: { start_date: 1 },
+  newest: { created_at: -1 },
+  title: { title: 1 },
+  location: { location: 1 },
 };
 
-function dateRangeClause(dateRange) {
-  switch (dateRange) {
-    case "upcoming":
-      return "c.start_date >= CURDATE()";
-    case "next3-6":
-      return "c.start_date BETWEEN DATE_ADD(CURDATE(), INTERVAL 3 MONTH) AND DATE_ADD(CURDATE(), INTERVAL 6 MONTH)";
-    case "next6-12":
-      return "c.start_date BETWEEN DATE_ADD(CURDATE(), INTERVAL 6 MONTH) AND DATE_ADD(CURDATE(), INTERVAL 12 MONTH)";
-    case "past":
-      return "c.start_date < CURDATE()";
-    default:
-      return null;
-  }
-}
-
 function buildFilters(query) {
-  const where = ["c.status = 'active'"];
-  const params = [];
+  const filter = { status: "active" };
 
+  const andGroups = [];
   if (query.search) {
-    where.push("(c.title LIKE ? OR c.code LIKE ? OR c.organizer LIKE ?)");
-    const like = `%${query.search}%`;
-    params.push(like, like, like);
+    const regex = { $regex: escapeRegex(query.search), $options: "i" };
+    andGroups.push({ $or: [{ title: regex }, { code: regex }, { organizer: regex }] });
   }
-  if (query.type) {
-    where.push("c.conference_type = ?");
-    params.push(query.type);
-  }
-  if (query.subject) {
-    where.push("c.subject_area = ?");
-    params.push(query.subject);
-  }
+  if (query.type) filter.conference_type = query.type;
+  if (query.subject) filter.subject_area = query.subject;
   if (query.location) {
-    where.push("(c.location LIKE ? OR c.city LIKE ? OR c.country LIKE ?)");
-    const like = `%${query.location}%`;
-    params.push(like, like, like);
+    const regex = { $regex: escapeRegex(query.location), $options: "i" };
+    andGroups.push({ $or: [{ location: regex }, { city: regex }, { country: regex }] });
   }
-  if (query.region) {
-    where.push("c.region = ?");
-    params.push(query.region);
-  }
-  const dateClause = dateRangeClause(query.dateRange);
-  if (dateClause) where.push(dateClause);
-  if (query.featured === "true") where.push("c.featured = 1");
+  if (andGroups.length) filter.$and = andGroups;
+  if (query.region) filter.region = query.region;
 
-  return { whereSql: where.join(" AND "), params };
+  switch (query.dateRange) {
+    case "upcoming":
+      filter.start_date = { $gte: localDateString() };
+      break;
+    case "next3-6":
+      filter.start_date = { $gte: addMonthsDateString(3), $lte: addMonthsDateString(6) };
+      break;
+    case "next6-12":
+      filter.start_date = { $gte: addMonthsDateString(6), $lte: addMonthsDateString(12) };
+      break;
+    case "past":
+      filter.start_date = { $lt: localDateString() };
+      break;
+    default:
+      break;
+  }
+
+  if (query.featured === "true") filter.featured = 1;
+  return filter;
 }
 
-async function findAll(query, { page, limit, offset }) {
-  const { whereSql, params } = buildFilters(query);
+async function findAll(query, { limit, offset }) {
+  const filter = buildFilters(query);
   const sort = SORT_MAP[query.sort] || SORT_MAP.upcoming;
-
-  const [rows] = await pool.query(
-    `SELECT * FROM conferences c WHERE ${whereSql} ORDER BY ${sort} LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
-  );
-  const [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM conferences c WHERE ${whereSql}`, params);
-  return { rows, total: countRows[0].total };
+  const [rows, total] = await Promise.all([
+    Conference.find(filter).sort(sort).skip(offset).limit(limit).lean(),
+    Conference.countDocuments(filter),
+  ]);
+  return { rows: legacyRecord(rows), total };
 }
 
 async function findByIdOrSlug(idOrSlug) {
-  const isNumeric = /^\d+$/.test(idOrSlug);
-  const [rows] = await pool.query(
-    `SELECT * FROM conferences WHERE ${isNumeric ? "id = ?" : "slug = ?"} LIMIT 1`,
-    [idOrSlug]
-  );
-  return rows[0] || null;
+  const isNumeric = /^\d+$/.test(String(idOrSlug));
+  const filter = isNumeric ? { id: Number(idOrSlug) } : { slug: idOrSlug };
+  const row = await Conference.findOne(filter).lean();
+  return row ? legacyRecord(row) : null;
+}
+
+async function distinctActive(field) {
+  const values = await Conference.distinct(field, { status: "active", [field]: { $nin: [null, ""] } });
+  return values.sort((a, b) => String(a).localeCompare(String(b)));
 }
 
 async function getFilterOptions() {
-  const [types] = await pool.query("SELECT DISTINCT conference_type AS v FROM conferences WHERE conference_type IS NOT NULL AND status='active' ORDER BY v");
-  const [subjects] = await pool.query("SELECT DISTINCT subject_area AS v FROM conferences WHERE subject_area IS NOT NULL AND status='active' ORDER BY v");
-  const [regions] = await pool.query("SELECT DISTINCT region AS v FROM conferences WHERE region IS NOT NULL AND status='active' ORDER BY v");
-  return {
-    types: types.map((r) => r.v),
-    subjects: subjects.map((r) => r.v),
-    regions: regions.map((r) => r.v),
-    dateRanges: ["upcoming", "next3-6", "next6-12", "past"],
-  };
+  const [types, subjects, regions] = await Promise.all([
+    distinctActive("conference_type"),
+    distinctActive("subject_area"),
+    distinctActive("region"),
+  ]);
+  return { types, subjects, regions, dateRanges: ["upcoming", "next3-6", "next6-12", "past"] };
 }
 
-async function findAllAdmin({ page, limit, offset }, search) {
-  const where = [];
-  const params = [];
+async function findAllAdmin({ limit, offset }, search) {
+  const filter = {};
   if (search) {
-    where.push("(title LIKE ? OR code LIKE ?)");
-    params.push(`%${search}%`, `%${search}%`);
+    const regex = { $regex: escapeRegex(search), $options: "i" };
+    filter.$or = [{ title: regex }, { code: regex }];
   }
-  const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
-  const [rows] = await pool.query(
-    `SELECT * FROM conferences ${whereSql} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
-  );
-  const [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM conferences ${whereSql}`, params);
-  return { rows, total: countRows[0].total };
+  const [rows, total] = await Promise.all([
+    Conference.find(filter).sort({ created_at: -1 }).skip(offset).limit(limit).lean(),
+    Conference.countDocuments(filter),
+  ]);
+  return { rows: legacyRecord(rows), total };
 }
 
 async function create(data) {
-  const [result] = await pool.query(
-    `INSERT INTO conferences
-      (slug, code, title, conference_type, subject_area, organizer, description, topics, start_date, end_date,
-       display_date, location, city, country, region, venue, conference_mode, registration_url, image, color,
-       status, featured)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-    [
-      data.slug, data.code || null, data.title, data.conference_type || null, data.subject_area || null,
-      data.organizer || null, data.description || null, data.topics || null, data.start_date || null,
-      data.end_date || null, data.display_date || null, data.location || null, data.city || null,
-      data.country || null, data.region || null, data.venue || null, data.conference_mode || "In-Person",
-      data.registration_url || null, data.image || null, data.color || null, data.status || "active",
-      data.featured ? 1 : 0,
-    ]
-  );
-  return findByIdOrSlug(String(result.insertId));
+  const id = await nextId("conferences");
+  await Conference.create({
+    id,
+    slug: data.slug,
+    code: data.code || null,
+    title: data.title,
+    conference_type: data.conference_type || null,
+    subject_area: data.subject_area || null,
+    organizer: data.organizer || null,
+    description: data.description || null,
+    topics: data.topics || null,
+    start_date: data.start_date || null,
+    end_date: data.end_date || null,
+    display_date: data.display_date || null,
+    location: data.location || null,
+    city: data.city || null,
+    country: data.country || null,
+    region: data.region || null,
+    venue: data.venue || null,
+    conference_mode: data.conference_mode || "In-Person",
+    registration_url: data.registration_url || null,
+    image: data.image || null,
+    color: data.color || null,
+    status: data.status || "active",
+    featured: asFlag(data.featured),
+  });
+  return findByIdOrSlug(String(id));
 }
 
 async function update(id, data) {
-  const fields = [];
-  const params = [];
+  const numeric = numericId(id);
+  if (!numeric) return null;
   const allowed = [
     "slug", "code", "title", "conference_type", "subject_area", "organizer", "description", "topics",
     "start_date", "end_date", "display_date", "location", "city", "country", "region", "venue",
     "conference_mode", "registration_url", "image", "color", "status", "featured",
   ];
+  const updateDoc = {};
   for (const key of allowed) {
-    if (data[key] !== undefined) {
-      fields.push(`${key} = ?`);
-      params.push(key === "featured" ? (data[key] ? 1 : 0) : data[key]);
-    }
+    if (data[key] !== undefined) updateDoc[key] = key === "featured" ? asFlag(data[key]) : data[key];
   }
-  if (fields.length === 0) return findByIdOrSlug(String(id));
-  params.push(id);
-  await pool.query(`UPDATE conferences SET ${fields.join(", ")} WHERE id = ?`, params);
-  return findByIdOrSlug(String(id));
+  if (Object.keys(updateDoc).length) await Conference.updateOne({ id: numeric }, { $set: updateDoc });
+  return findByIdOrSlug(String(numeric));
 }
 
 async function remove(id) {
-  await pool.query("DELETE FROM conferences WHERE id = ?", [id]);
+  const numeric = numericId(id);
+  if (!numeric) return false;
+  const result = await Conference.deleteOne({ id: numeric });
+  return result.deletedCount > 0;
 }
 
 async function findRawById(id) {
-  const [rows] = await pool.query("SELECT * FROM conferences WHERE id = ?", [id]);
-  return rows[0] || null;
+  const numeric = numericId(id);
+  if (!numeric) return null;
+  const row = await Conference.findOne({ id: numeric }).lean();
+  return row ? legacyRecord(row) : null;
 }
 
 module.exports = {

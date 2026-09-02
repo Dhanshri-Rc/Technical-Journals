@@ -139,7 +139,7 @@ async function onSubmit(e) {
           <Field label="Indexing (comma separated)"><input name="indexing" value={values.indexing || ""} onChange={onChange} placeholder="Scopus, WoS, UGC" className={inputClass} /></Field>
           <Field label="Frequency">
             <select name="frequency" value={values.frequency || ""} onChange={onChange} className={inputClass}>
-              {["Monthly", "Bi-Monthly", "Quarterly", "Semi-Annual", "Annual"].map((f) => <option key={f}>{f}</option>)}
+              {["Monthly", "Bi-Monthly", "Quarterly", "Bi-Quarterly", "Semi-Annual", "Annual"].map((f) => <option key={f}>{f}</option>)}
             </select>
           </Field>
           <Field label="Access Type">

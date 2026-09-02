@@ -15,6 +15,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const manuscriptRoutes = require(
   "./routes/manuscriptRoutes"
 );
+const footerSettingsRoutes = require("./routes/footerSettingsRoutes");
 const app = express();
 
 app.use(helmet({ crossOriginResourcePolicy: false }));
@@ -33,6 +34,7 @@ app.use("/api/journals", journalRoutes);
 app.use("/api/conferences", conferenceRoutes);
 app.use("/api/universities", universityRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/footer-settings", footerSettingsRoutes);
 app.use("/api/admin", adminRoutes);
 app.use(
   "/api/manuscripts",

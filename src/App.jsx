@@ -131,6 +131,7 @@ const AdminUniversitiesList = lazy(() => import("./pages/admin/AdminUniversities
 const AdminUniversityForm = lazy(() => import("./pages/admin/AdminUniversityForm"));
 const AdminEnquiries = lazy(() => import("./pages/admin/AdminEnquiries"));
 const AdminManuscripts = lazy(() => import("./pages/admin/AdminManuscripts"));
+const AdminFooterSettings = lazy(() => import("./pages/admin/AdminFooterSettings"));
 
 
 
@@ -311,6 +312,7 @@ export default function App() {
   path="manuscripts"
   element={<AdminManuscripts />}
 />
+          <Route path="footer-settings" element={<AdminFooterSettings />} />
         </Route>
 
 

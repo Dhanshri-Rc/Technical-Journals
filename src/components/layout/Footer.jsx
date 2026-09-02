@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Mail, Phone } from "lucide-react";
 
@@ -15,6 +16,7 @@ import {
   FOOTER_LINKS,
   CONTACT_INFO,
 } from "../../data/site";
+import { fetchFooterSettings } from "../../services/footerService";
 
 
 /* =========================================================
@@ -50,6 +52,34 @@ const socialLinks = [
 ========================================================= */
 
 export default function Footer() {
+  const [footerSettings, setFooterSettings] = useState(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetchFooterSettings(controller.signal)
+      .then((data) => {
+        if (data) setFooterSettings(data);
+      })
+      .catch((error) => {
+        if (error?.name !== "AbortError") {
+          // Keep the current static values as a resilient fallback.
+        }
+      });
+
+    return () => controller.abort();
+  }, []);
+
+  const contactInfo = {
+    ...CONTACT_INFO,
+    ...(footerSettings || {}),
+  };
+
+  const social = {
+    ...(SITE.social || {}),
+    ...(footerSettings?.social || {}),
+  };
+
   return (
     <footer
       className="
@@ -207,7 +237,7 @@ export default function Footer() {
               "
             >
               {socialLinks.map(({ Icon, key, label }) => {
-                const href = SITE.social?.[key];
+                const href = social?.[key];
 
                 if (!href) return null;
 
@@ -393,7 +423,7 @@ export default function Footer() {
                       group-hover:text-white
                     "
                   >
-                    {CONTACT_INFO.address}
+                    {contactInfo.address}
                   </span>
                 </li>
 
@@ -404,7 +434,7 @@ export default function Footer() {
 
                 <li className="min-w-0">
                   <a
-                    href={`mailto:${CONTACT_INFO.email}`}
+                    href={`mailto:${contactInfo.email}`}
                     className="
                       group
                       flex
@@ -458,7 +488,7 @@ export default function Footer() {
                         duration-300
                       "
                     >
-                      {CONTACT_INFO.email}
+                      {contactInfo.email}
                     </span>
                   </a>
                 </li>
@@ -470,7 +500,7 @@ export default function Footer() {
 
                 <li className="min-w-0">
                   <a
-                    href={`tel:${CONTACT_INFO.phone}`}
+                    href={`tel:${contactInfo.phone}`}
                     className="
                       group
                       flex
@@ -524,7 +554,7 @@ export default function Footer() {
                         duration-300
                       "
                     >
-                      {CONTACT_INFO.phone}
+                      {contactInfo.phone}
                     </span>
                   </a>
                 </li>

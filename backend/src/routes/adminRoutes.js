@@ -88,6 +88,10 @@ const manuscriptController = require(
   "../controllers/manuscriptController"
 );
 
+const footerSettingsController = require(
+  "../controllers/footerSettingsController"
+);
+
 /* ======================================================
    UPLOADERS
 ====================================================== */
@@ -279,6 +283,40 @@ router.patch(
 router.delete(
   "/enquiries/:id",
   contactController.adminDeleteEnquiry
+);
+
+/* ======================================================
+   FOOTER SETTINGS
+====================================================== */
+
+router.get(
+  "/footer-settings",
+  footerSettingsController.adminListFooterSettings
+);
+
+router.get(
+  "/footer-settings/:id",
+  footerSettingsController.adminGetFooterSettings
+);
+
+router.post(
+  "/footer-settings",
+  footerSettingsController.adminCreateFooterSettings
+);
+
+router.put(
+  "/footer-settings/:id",
+  footerSettingsController.adminUpdateFooterSettings
+);
+
+router.patch(
+  "/footer-settings/:id",
+  footerSettingsController.adminUpdateFooterSettings
+);
+
+router.delete(
+  "/footer-settings/:id",
+  footerSettingsController.adminDeleteFooterSettings
 );
 
 module.exports = router;

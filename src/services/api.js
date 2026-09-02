@@ -1,6 +1,6 @@
 /**
  * Central API client for the Technical Journals backend.
- * Talks to the Node/Express/MySQL API in /backend.
+ * Talks to the Node/Express/MongoDB API in /backend.
  */
 
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").replace(/\/$/, "");

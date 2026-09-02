@@ -1,26 +1,29 @@
 const slugify = require("slugify");
-const { pool } = require("../config/db");
+const { Journal, Conference, University } = require("../db/models");
+
+const MODEL_MAP = {
+  journals: Journal,
+  conferences: Conference,
+  universities: University,
+};
 
 function baseSlug(text) {
   return slugify(text, { lower: true, strict: true, trim: true });
 }
 
-// Generates a unique slug for `table`, optionally excluding a given id (for updates).
 async function uniqueSlug(table, text, excludeId = null) {
+  const Model = MODEL_MAP[table];
+  if (!Model) throw new Error(`Unsupported slug collection: ${table}`);
+
   const base = baseSlug(text) || "item";
   let candidate = base;
   let suffix = 1;
 
-  // eslint-disable-next-line no-constant-condition
   while (true) {
-    const params = [candidate];
-    let sql = `SELECT id FROM ${table} WHERE slug = ?`;
-    if (excludeId) {
-      sql += " AND id != ?";
-      params.push(excludeId);
-    }
-    const [rows] = await pool.query(sql, params);
-    if (rows.length === 0) return candidate;
+    const filter = { slug: candidate };
+    if (excludeId !== null && excludeId !== undefined) filter.id = { $ne: Number(excludeId) };
+    const exists = await Model.exists(filter);
+    if (!exists) return candidate;
     suffix += 1;
     candidate = `${base}-${suffix}`;
   }

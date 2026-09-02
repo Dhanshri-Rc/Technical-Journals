@@ -1,49 +1,42 @@
-const { pool } = require("../config/db");
+const { Enquiry } = require("../db/models");
+const { nextId, legacyRecord, numericId } = require("../utils/mongoHelpers");
 
 async function create({ name, email, subject, message }) {
-  const [result] = await pool.query(
-    `INSERT INTO contact_enquiries (name, email, subject, message, status) VALUES (?, ?, ?, ?, 'new')`,
-    [name, email, subject, message]
-  );
-  const [rows] = await pool.query("SELECT * FROM contact_enquiries WHERE id = ?", [result.insertId]);
-  return rows[0];
-}
-
-async function findAll({ page, limit, offset }, status) {
-  const where = [];
-  const params = [];
-  if (status) {
-    where.push("status = ?");
-    params.push(status);
-  }
-  const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
-  const [rows] = await pool.query(
-    `SELECT * FROM contact_enquiries ${whereSql} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
-  );
-  const [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM contact_enquiries ${whereSql}`, params);
-  return { rows, total: countRows[0].total };
-}
-
-async function findById(id) {
-  const [rows] = await pool.query("SELECT * FROM contact_enquiries WHERE id = ?", [id]);
-  return rows[0] || null;
-}
-
-async function updateStatus(id, status, adminNotes) {
-  const fields = ["status = ?"];
-  const params = [status];
-  if (adminNotes !== undefined) {
-    fields.push("admin_notes = ?");
-    params.push(adminNotes);
-  }
-  params.push(id);
-  await pool.query(`UPDATE contact_enquiries SET ${fields.join(", ")} WHERE id = ?`, params);
+  const id = await nextId("contact_enquiries");
+  await Enquiry.create({ id, name, email, subject, message, status: "new" });
   return findById(id);
 }
 
+async function findAll({ limit, offset }, status) {
+  const filter = status ? { status } : {};
+  const [rows, total] = await Promise.all([
+    Enquiry.find(filter).sort({ created_at: -1 }).skip(offset).limit(limit).lean(),
+    Enquiry.countDocuments(filter),
+  ]);
+  return { rows: legacyRecord(rows), total };
+}
+
+async function findById(id) {
+  const numeric = numericId(id);
+  if (!numeric) return null;
+  const row = await Enquiry.findOne({ id: numeric }).lean();
+  return row ? legacyRecord(row) : null;
+}
+
+async function updateStatus(id, status, adminNotes) {
+  const numeric = numericId(id);
+  if (!numeric) return null;
+  const update = { status };
+  if (adminNotes !== undefined) update.admin_notes = adminNotes;
+  await Enquiry.updateOne({ id: numeric }, { $set: update });
+  return findById(numeric);
+}
+
 async function remove(id) {
-  await pool.query("DELETE FROM contact_enquiries WHERE id = ?", [id]);
+  const numeric = numericId(id);
+  if (!numeric) return false;
+  const result = await Enquiry.deleteOne({ id: numeric });
+  return result.deletedCount > 0;
 }
 
 module.exports = { create, findAll, findById, updateStatus, remove };

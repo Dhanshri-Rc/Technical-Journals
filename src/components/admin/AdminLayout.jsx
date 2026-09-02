@@ -18,6 +18,7 @@ import {
   ExternalLink,
   Menu,
   X,
+  Settings,
 } from "lucide-react";
 
 import {
@@ -62,6 +63,11 @@ const NAV_ITEMS = [
     to: "/admin/enquiries",
     label: "Enquiries",
     icon: Mail,
+  },
+  {
+    to: "/admin/footer-settings",
+    label: "Footer Settings",
+    icon: Settings,
   },
 ];
 

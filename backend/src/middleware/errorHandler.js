@@ -10,22 +10,24 @@ function errorHandler(err, req, res, _next) {
 
   let status = err.status || 500;
   let message = err.message || "Internal server error";
+  let errors = err.errors || [];
 
-  // MySQL duplicate entry
-  if (err.code === "ER_DUP_ENTRY") {
+  if (err?.code === 11000) {
     status = 409;
     message = "A record with these details already exists.";
+    errors = [];
   }
 
-  // Multer file errors
-  if (err.name === "MulterError") {
-    status = 400;
+  if (err?.name === "ValidationError") {
+    status = 422;
+    message = "Validation failed";
+    errors = Object.values(err.errors || {}).map((item) => item.message);
   }
 
-  const body = { success: false, message, errors: err.errors || [] };
-  if (env.nodeEnv !== "production") {
-    body.stack = err.stack;
-  }
+  if (err.name === "MulterError") status = 400;
+
+  const body = { success: false, message, errors };
+  if (env.nodeEnv !== "production") body.stack = err.stack;
   res.status(status).json(body);
 }
 

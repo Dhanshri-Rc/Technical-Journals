@@ -1,197 +1,168 @@
-const { pool } = require("../config/db");
+const { Journal, University } = require("../db/models");
+const { nextId, escapeRegex, asFlag, legacyRecord, numericId } = require("../utils/mongoHelpers");
 
 const SORT_MAP = {
-  relevance: "j.featured DESC, j.created_at DESC",
-  title_asc: "j.title ASC",
-  title_desc: "j.title DESC",
-  newest: "j.created_at DESC",
-  oldest: "j.created_at ASC",
+  relevance: { featured: -1, created_at: -1 },
+  title_asc: { title: 1 },
+  title_desc: { title: -1 },
+  newest: { created_at: -1 },
+  oldest: { created_at: 1 },
 };
 
 function buildFilters(query) {
-  const where = ["j.status = 'active'"];
-  const params = [];
-
+  const filter = { status: "active" };
   if (query.search) {
-    where.push("(j.title LIKE ? OR j.issn LIKE ? OR j.subject_area LIKE ?)");
-    const like = `%${query.search}%`;
-    params.push(like, like, like);
+    const regex = { $regex: escapeRegex(query.search), $options: "i" };
+    filter.$or = [{ title: regex }, { issn: regex }, { subject_area: regex }];
   }
-  if (query.subject) {
-    where.push("j.subject_area = ?");
-    params.push(query.subject);
-  }
-  if (query.category) {
-    where.push("j.category = ?");
-    params.push(query.category);
-  }
-  if (query.frequency) {
-    where.push("j.frequency = ?");
-    params.push(query.frequency);
-  }
-  if (query.accessType) {
-    where.push("j.access_type = ?");
-    params.push(query.accessType);
-  }
-  if (query.language) {
-    where.push("j.language = ?");
-    params.push(query.language);
-  }
+  if (query.subject) filter.subject_area = query.subject;
+  if (query.category) filter.category = query.category;
+  if (query.frequency) filter.frequency = query.frequency;
+  if (query.accessType) filter.access_type = query.accessType;
+  if (query.language) filter.language = query.language;
   if (query.indexing) {
-    // Journals may list several indexing databases comma-separated.
-    where.push("FIND_IN_SET(?, REPLACE(j.indexing, ', ', ',')) > 0");
-    params.push(query.indexing);
+    const token = escapeRegex(query.indexing);
+    filter.indexing = { $regex: `(^|,\\s*)${token}(\\s*,|$)`, $options: "i" };
   }
-  if (query.featured === "true") {
-    where.push("j.featured = 1");
-  }
-
-  return { whereSql: where.join(" AND "), params };
+  if (query.featured === "true") filter.featured = 1;
+  return filter;
 }
 
-async function findAll(query, { page, limit, offset }) {
-  const { whereSql, params } = buildFilters(query);
+async function attachUniversity(rows, includeSlug = false) {
+  const records = legacyRecord(rows);
+  const ids = [...new Set(records.map((row) => row.university_id).filter((id) => id !== null && id !== undefined))];
+  if (!ids.length) return records;
+  const universities = await University.find({ id: { $in: ids } }).select({ id: 1, name: 1, slug: 1, _id: 0 }).lean();
+  const map = new Map(universities.map((u) => [u.id, u]));
+  return records.map((row) => {
+    const university = map.get(row.university_id);
+    return {
+      ...row,
+      university_name: university?.name || null,
+      ...(includeSlug ? { university_slug: university?.slug || null } : {}),
+    };
+  });
+}
+
+async function findAll(query, { limit, offset }) {
+  const filter = buildFilters(query);
   const sort = SORT_MAP[query.sort] || SORT_MAP.relevance;
-
-  const [rows] = await pool.query(
-    `SELECT j.*, u.name AS university_name
-     FROM journals j
-     LEFT JOIN universities u ON u.id = j.university_id
-     WHERE ${whereSql}
-     ORDER BY ${sort}
-     LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
-  );
-
-  const [countRows] = await pool.query(
-    `SELECT COUNT(*) AS total FROM journals j WHERE ${whereSql}`,
-    params
-  );
-
-  return { rows, total: countRows[0].total };
+  const [rows, total] = await Promise.all([
+    Journal.find(filter).sort(sort).skip(offset).limit(limit).lean(),
+    Journal.countDocuments(filter),
+  ]);
+  return { rows: await attachUniversity(rows), total };
 }
 
 async function findByIdOrSlug(idOrSlug) {
-  const isNumeric = /^\d+$/.test(idOrSlug);
-  const [rows] = await pool.query(
-    `SELECT j.*, u.name AS university_name, u.slug AS university_slug
-     FROM journals j
-     LEFT JOIN universities u ON u.id = j.university_id
-     WHERE ${isNumeric ? "j.id = ?" : "j.slug = ?"} LIMIT 1`,
-    [idOrSlug]
-  );
-  return rows[0] || null;
+  const isNumeric = /^\d+$/.test(String(idOrSlug));
+  const filter = isNumeric ? { id: Number(idOrSlug) } : { slug: idOrSlug };
+  const row = await Journal.findOne(filter).lean();
+  if (!row) return null;
+  const [joined] = await attachUniversity([row], true);
+  return joined || null;
 }
 
 async function findFeatured(limit = 10) {
-  const [rows] = await pool.query(
-    `SELECT j.*, u.name AS university_name FROM journals j
-     LEFT JOIN universities u ON u.id = j.university_id
-     WHERE j.status = 'active' AND j.featured = 1
-     ORDER BY j.created_at DESC LIMIT ?`,
-    [limit]
-  );
-  return rows;
+  const rows = await Journal.find({ status: "active", featured: 1 }).sort({ created_at: -1 }).limit(Number(limit)).lean();
+  return attachUniversity(rows);
+}
+
+async function distinctActive(field) {
+  const values = await Journal.distinct(field, { status: "active", [field]: { $nin: [null, ""] } });
+  return values.sort((a, b) => String(a).localeCompare(String(b)));
 }
 
 async function getFilterOptions() {
-  const [subjects] = await pool.query(
-    "SELECT DISTINCT subject_area AS v FROM journals WHERE subject_area IS NOT NULL AND status='active' ORDER BY v"
-  );
-  const [categories] = await pool.query(
-    "SELECT DISTINCT category AS v FROM journals WHERE category IS NOT NULL AND status='active' ORDER BY v"
-  );
-  const [frequencies] = await pool.query(
-    "SELECT DISTINCT frequency AS v FROM journals WHERE frequency IS NOT NULL AND status='active' ORDER BY v"
-  );
-  const [accessTypes] = await pool.query(
-    "SELECT DISTINCT access_type AS v FROM journals WHERE access_type IS NOT NULL AND status='active' ORDER BY v"
-  );
-  const [languages] = await pool.query(
-    "SELECT DISTINCT language AS v FROM journals WHERE language IS NOT NULL AND status='active' ORDER BY v"
-  );
-  const [indexingRows] = await pool.query(
-    "SELECT DISTINCT indexing AS v FROM journals WHERE indexing IS NOT NULL AND status='active'"
-  );
+  const [subjects, categories, frequencies, accessTypes, languages, indexingRows] = await Promise.all([
+    distinctActive("subject_area"),
+    distinctActive("category"),
+    distinctActive("frequency"),
+    distinctActive("access_type"),
+    distinctActive("language"),
+    distinctActive("indexing"),
+  ]);
   const indexingSet = new Set();
-  indexingRows.forEach((r) => r.v.split(",").forEach((i) => indexingSet.add(i.trim())));
-
-  return {
-    subjects: subjects.map((r) => r.v),
-    categories: categories.map((r) => r.v),
-    frequencies: frequencies.map((r) => r.v),
-    accessTypes: accessTypes.map((r) => r.v),
-    languages: languages.map((r) => r.v),
-    indexing: Array.from(indexingSet).sort(),
-  };
+  indexingRows.forEach((value) => String(value).split(",").forEach((item) => indexingSet.add(item.trim())));
+  return { subjects, categories, frequencies, accessTypes, languages, indexing: Array.from(indexingSet).filter(Boolean).sort() };
 }
 
-// ---- Admin ----
-async function findAllAdmin({ page, limit, offset }, search) {
-  const where = [];
-  const params = [];
+async function findAllAdmin({ limit, offset }, search) {
+  const filter = {};
   if (search) {
-    where.push("(title LIKE ? OR issn LIKE ?)");
-    params.push(`%${search}%`, `%${search}%`);
+    const regex = { $regex: escapeRegex(search), $options: "i" };
+    filter.$or = [{ title: regex }, { issn: regex }];
   }
-  const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
-
-  const [rows] = await pool.query(
-    `SELECT * FROM journals ${whereSql} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
-  );
-  const [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM journals ${whereSql}`, params);
-  return { rows, total: countRows[0].total };
+  const [rows, total] = await Promise.all([
+    Journal.find(filter).sort({ created_at: -1 }).skip(offset).limit(limit).lean(),
+    Journal.countDocuments(filter),
+  ]);
+  return { rows: legacyRecord(rows), total };
 }
 
 async function create(data) {
-  const [result] = await pool.query(
-    `INSERT INTO journals
-      (slug, title, short_title, description, about, aims_scope, subject_area, category, issn, eissn, pissn,
-       indexing, frequency, access_type, language, publisher, university_id, cover_image, color, icon,
-       website_url, review_type, meta_title, meta_description, status, featured)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-    [
-      data.slug, data.title, data.short_title || null, data.description || null, data.about || null,
-      data.aims_scope || null, data.subject_area || null, data.category || null, data.issn || null,
-      data.eissn || null, data.pissn || null, data.indexing || null, data.frequency || null,
-      data.access_type || "Open Access", data.language || "English", data.publisher || null,
-      data.university_id || null, data.cover_image || null, data.color || null, data.icon || null,
-      data.website_url || null, data.review_type || null, data.meta_title || null,
-      data.meta_description || null, data.status || "active", data.featured ? 1 : 0,
-    ]
-  );
-  return findByIdOrSlug(String(result.insertId));
+  const id = await nextId("journals");
+  await Journal.create({
+    id,
+    slug: data.slug,
+    title: data.title,
+    short_title: data.short_title || null,
+    description: data.description || null,
+    about: data.about || null,
+    aims_scope: data.aims_scope || null,
+    subject_area: data.subject_area || null,
+    category: data.category || null,
+    issn: data.issn || null,
+    eissn: data.eissn || null,
+    pissn: data.pissn || null,
+    indexing: data.indexing || null,
+    frequency: data.frequency || null,
+    access_type: data.access_type || "Open Access",
+    language: data.language || "English",
+    publisher: data.publisher || null,
+    university_id: data.university_id || null,
+    cover_image: data.cover_image || null,
+    color: data.color || null,
+    icon: data.icon || null,
+    website_url: data.website_url || null,
+    review_type: data.review_type || null,
+    meta_title: data.meta_title || null,
+    meta_description: data.meta_description || null,
+    status: data.status || "active",
+    featured: asFlag(data.featured),
+  });
+  return findByIdOrSlug(String(id));
 }
 
 async function update(id, data) {
-  const fields = [];
-  const params = [];
+  const numeric = numericId(id);
+  if (!numeric) return null;
   const allowed = [
     "slug", "title", "short_title", "description", "about", "aims_scope", "subject_area", "category",
     "issn", "eissn", "pissn", "indexing", "frequency", "access_type", "language", "publisher",
     "university_id", "cover_image", "color", "icon", "website_url", "review_type", "meta_title",
     "meta_description", "status", "featured",
   ];
+  const updateDoc = {};
   for (const key of allowed) {
-    if (data[key] !== undefined) {
-      fields.push(`${key} = ?`);
-      params.push(key === "featured" ? (data[key] ? 1 : 0) : data[key]);
-    }
+    if (data[key] !== undefined) updateDoc[key] = key === "featured" ? asFlag(data[key]) : data[key];
   }
-  if (fields.length === 0) return findByIdOrSlug(String(id));
-  params.push(id);
-  await pool.query(`UPDATE journals SET ${fields.join(", ")} WHERE id = ?`, params);
-  return findByIdOrSlug(String(id));
+  if (Object.keys(updateDoc).length) await Journal.updateOne({ id: numeric }, { $set: updateDoc });
+  return findByIdOrSlug(String(numeric));
 }
 
 async function remove(id) {
-  await pool.query("DELETE FROM journals WHERE id = ?", [id]);
+  const numeric = numericId(id);
+  if (!numeric) return false;
+  const result = await Journal.deleteOne({ id: numeric });
+  return result.deletedCount > 0;
 }
 
 async function findRawById(id) {
-  const [rows] = await pool.query("SELECT * FROM journals WHERE id = ?", [id]);
-  return rows[0] || null;
+  const numeric = numericId(id);
+  if (!numeric) return null;
+  const row = await Journal.findOne({ id: numeric }).lean();
+  return row ? legacyRecord(row) : null;
 }
 
 module.exports = {

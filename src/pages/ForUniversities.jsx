@@ -20,7 +20,7 @@ import { fetchUniversities } from "../services/universityService";
 import { resolveImageUrl } from "../services/api";
 
 /* =========================================================
-   UNIVERSITY DATA — loaded from MySQL via GET /api/universities.
+   UNIVERSITY DATA — loaded from the backend via GET /api/universities.
    Falls back to a local placeholder logo by position when a
    university has no uploaded logo yet.
 ========================================================= */

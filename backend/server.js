@@ -1,9 +1,17 @@
 const app = require("./src/app");
 const env = require("./src/config/env");
-const { testConnection } = require("./src/config/db");
+const { connectDatabase } = require("./src/config/db");
 
-testConnection();
+async function start() {
+  try {
+    await connectDatabase();
+    app.listen(env.port, () => {
+      console.log(`[server] Technical Journals API listening on http://localhost:${env.port}`);
+    });
+  } catch (err) {
+    console.error("[server] Unable to start because the database connection failed.");
+    process.exit(1);
+  }
+}
 
-app.listen(env.port, () => {
-  console.log(`[server] Technical Journals API listening on http://localhost:${env.port}`);
-});
+start();

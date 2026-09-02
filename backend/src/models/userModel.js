@@ -1,22 +1,31 @@
-const { pool } = require("../config/db");
+const { User } = require("../db/models");
+const { nextId, legacyRecord, numericId } = require("../utils/mongoHelpers");
 
 async function findByEmail(email) {
-  const [rows] = await pool.query("SELECT * FROM users WHERE email = ? LIMIT 1", [email.toLowerCase()]);
-  return rows[0] || null;
+  const row = await User.findOne({ email: String(email).toLowerCase() }).lean();
+  return row ? legacyRecord(row) : null;
 }
 
 async function findById(id) {
-  const [rows] = await pool.query("SELECT * FROM users WHERE id = ? LIMIT 1", [id]);
-  return rows[0] || null;
+  const numeric = numericId(id);
+  if (!numeric) return null;
+  const row = await User.findOne({ id: numeric }).lean();
+  return row ? legacyRecord(row) : null;
 }
 
 async function createUser({ name, email, university, professionalRole, passwordHash }) {
-  const [result] = await pool.query(
-    `INSERT INTO users (name, email, university, professional_role, password_hash, account_role, status)
-     VALUES (?, ?, ?, ?, ?, 'user', 'active')`,
-    [name, email.toLowerCase(), university || null, professionalRole, passwordHash]
-  );
-  return findById(result.insertId);
+  const id = await nextId("users");
+  await User.create({
+    id,
+    name,
+    email: String(email).toLowerCase(),
+    university: university || null,
+    professional_role: professionalRole,
+    password_hash: passwordHash,
+    account_role: "user",
+    status: "active",
+  });
+  return findById(id);
 }
 
 function sanitize(user) {

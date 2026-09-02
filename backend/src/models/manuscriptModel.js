@@ -1,277 +1,113 @@
-const { pool } = require("../config/db");
+const { Manuscript, Journal } = require("../db/models");
+const { nextId, escapeRegex, legacyRecord, numericId } = require("../utils/mongoHelpers");
 
-// ======================================================
-// CREATE MANUSCRIPT
-// ======================================================
+async function attachJournal(rows, includeSlug = true) {
+  const records = legacyRecord(rows);
+  const ids = [...new Set(records.map((row) => row.journal_id).filter(Boolean))];
+  if (!ids.length) return records;
+  const journals = await Journal.find({ id: { $in: ids } }).select({ id: 1, title: 1, short_title: 1, slug: 1, _id: 0 }).lean();
+  const map = new Map(journals.map((j) => [j.id, j]));
+  return records.map((row) => {
+    const journal = map.get(row.journal_id);
+    return {
+      ...row,
+      journal_title: journal?.title || null,
+      journal_short_title: journal?.short_title || null,
+      ...(includeSlug ? { journal_slug: journal?.slug || null } : {}),
+    };
+  });
+}
 
 async function create(data) {
-  const [result] = await pool.query(
-    `INSERT INTO manuscript_submissions
-      (
-        tracking_id,
-        journal_id,
-        title,
-        author_name,
-        email,
-        abstract,
-        file_name,
-        file_url,
-        status
-      )
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-      data.tracking_id,
-      data.journal_id,
-      data.title,
-      data.author_name,
-      data.email,
-      data.abstract,
-      data.file_name,
-      data.file_url,
-      data.status || "submitted",
-    ]
-  );
-
-  return findById(result.insertId);
-}
-
-// ======================================================
-// FIND BY ID
-// ======================================================
-
-async function findById(id) {
-  const [rows] = await pool.query(
-    `SELECT
-        m.*,
-
-        j.title AS journal_title,
-        j.short_title AS journal_short_title,
-        j.slug AS journal_slug
-
-     FROM manuscript_submissions m
-
-     LEFT JOIN journals j
-       ON j.id = m.journal_id
-
-     WHERE m.id = ?
-
-     LIMIT 1`,
-    [id]
-  );
-
-  return rows[0] || null;
-}
-
-// ======================================================
-// FIND BY TRACKING ID
-// ======================================================
-
-async function findByTrackingId(trackingId) {
-  const [rows] = await pool.query(
-    `SELECT
-        m.*,
-
-        j.title AS journal_title,
-        j.short_title AS journal_short_title,
-        j.slug AS journal_slug
-
-     FROM manuscript_submissions m
-
-     LEFT JOIN journals j
-       ON j.id = m.journal_id
-
-     WHERE m.tracking_id = ?
-
-     LIMIT 1`,
-    [trackingId]
-  );
-
-  return rows[0] || null;
-}
-
-// ======================================================
-// ADMIN - LIST MANUSCRIPTS
-// ======================================================
-
-async function findAllAdmin(
-  { page, limit, offset },
-  search = "",
-  status = ""
-) {
-  const where = [];
-  const params = [];
-
-  // Search
-  if (search) {
-    const like = `%${search}%`;
-
-    where.push(`
-      (
-        m.tracking_id LIKE ?
-        OR m.title LIKE ?
-        OR m.author_name LIKE ?
-        OR m.email LIKE ?
-        OR j.title LIKE ?
-      )
-    `);
-
-    params.push(
-      like,
-      like,
-      like,
-      like,
-      like
-    );
-  }
-
-  // Status filter
-  if (status) {
-    where.push("m.status = ?");
-    params.push(status);
-  }
-
-  const whereSql = where.length
-    ? `WHERE ${where.join(" AND ")}`
-    : "";
-
-  const [rows] = await pool.query(
-    `SELECT
-        m.id,
-        m.tracking_id,
-        m.journal_id,
-        m.title,
-        m.author_name,
-        m.email,
-        m.status,
-        m.file_name,
-        m.file_url,
-        m.submitted_at,
-        m.updated_at,
-
-        j.title AS journal_title,
-        j.short_title AS journal_short_title
-
-     FROM manuscript_submissions m
-
-     LEFT JOIN journals j
-       ON j.id = m.journal_id
-
-     ${whereSql}
-
-     ORDER BY m.submitted_at DESC
-
-     LIMIT ? OFFSET ?`,
-    [
-      ...params,
-      limit,
-      offset,
-    ]
-  );
-
-  const [countRows] = await pool.query(
-    `SELECT COUNT(*) AS total
-
-     FROM manuscript_submissions m
-
-     LEFT JOIN journals j
-       ON j.id = m.journal_id
-
-     ${whereSql}`,
-    params
-  );
-
-  return {
-    rows,
-    total: countRows[0].total,
-  };
-}
-
-// ======================================================
-// ADMIN - UPDATE STATUS
-// ======================================================
-
-async function updateStatus(id, status) {
-  await pool.query(
-    `UPDATE manuscript_submissions
-     SET status = ?
-     WHERE id = ?`,
-    [status, id]
-  );
-
+  const id = await nextId("manuscript_submissions");
+  await Manuscript.create({
+    id,
+    tracking_id: data.tracking_id,
+    journal_id: Number(data.journal_id),
+    title: data.title,
+    author_name: data.author_name,
+    email: data.email,
+    abstract: data.abstract,
+    file_name: data.file_name,
+    file_url: data.file_url,
+    status: data.status || "submitted",
+  });
   return findById(id);
 }
 
-// ======================================================
-// ADMIN - DELETE
-// ======================================================
+async function findById(id) {
+  const numeric = numericId(id);
+  if (!numeric) return null;
+  const row = await Manuscript.findOne({ id: numeric }).lean();
+  if (!row) return null;
+  const [joined] = await attachJournal([row], true);
+  return joined || null;
+}
+
+async function findByTrackingId(trackingId) {
+  const row = await Manuscript.findOne({ tracking_id: trackingId }).lean();
+  if (!row) return null;
+  const [joined] = await attachJournal([row], true);
+  return joined || null;
+}
+
+async function findAllAdmin({ limit, offset }, search = "", status = "") {
+  const filter = {};
+  if (status) filter.status = status;
+
+  if (search) {
+    const regex = { $regex: escapeRegex(search), $options: "i" };
+    const matchingJournals = await Journal.find({ title: regex }).select({ id: 1, _id: 0 }).lean();
+    filter.$or = [
+      { tracking_id: regex },
+      { title: regex },
+      { author_name: regex },
+      { email: regex },
+      { journal_id: { $in: matchingJournals.map((j) => j.id) } },
+    ];
+  }
+
+  const [rows, total] = await Promise.all([
+    Manuscript.find(filter)
+      .select({ abstract: 0 })
+      .sort({ submitted_at: -1 })
+      .skip(offset)
+      .limit(limit)
+      .lean(),
+    Manuscript.countDocuments(filter),
+  ]);
+
+  return { rows: await attachJournal(rows, false), total };
+}
+
+async function updateStatus(id, status) {
+  const numeric = numericId(id);
+  if (!numeric) return null;
+  await Manuscript.updateOne({ id: numeric }, { $set: { status, updated_at: new Date() } });
+  return findById(numeric);
+}
 
 async function remove(id) {
-  const [result] = await pool.query(
-    `DELETE FROM manuscript_submissions
-     WHERE id = ?`,
-    [id]
-  );
-
-  return result.affectedRows > 0;
+  const numeric = numericId(id);
+  if (!numeric) return false;
+  const result = await Manuscript.deleteOne({ id: numeric });
+  return result.deletedCount > 0;
 }
-
-// ======================================================
-// DASHBOARD COUNTS
-// ======================================================
 
 async function getStats() {
-  const [rows] = await pool.query(
-    `SELECT
-      COUNT(*) AS total,
-
-      SUM(
-        CASE
-          WHEN status = 'submitted'
-          THEN 1 ELSE 0
-        END
-      ) AS submitted,
-
-      SUM(
-        CASE
-          WHEN status = 'under_review'
-          THEN 1 ELSE 0
-        END
-      ) AS under_review,
-
-      SUM(
-        CASE
-          WHEN status = 'revision_required'
-          THEN 1 ELSE 0
-        END
-      ) AS revision_required,
-
-      SUM(
-        CASE
-          WHEN status = 'accepted'
-          THEN 1 ELSE 0
-        END
-      ) AS accepted,
-
-      SUM(
-        CASE
-          WHEN status = 'rejected'
-          THEN 1 ELSE 0
-        END
-      ) AS rejected
-
-     FROM manuscript_submissions`
-  );
-
-  return rows[0];
+  const statuses = ["submitted", "under_review", "revision_required", "accepted", "rejected"];
+  const [total, ...counts] = await Promise.all([
+    Manuscript.countDocuments({}),
+    ...statuses.map((status) => Manuscript.countDocuments({ status })),
+  ]);
+  return {
+    total,
+    submitted: counts[0],
+    under_review: counts[1],
+    revision_required: counts[2],
+    accepted: counts[3],
+    rejected: counts[4],
+  };
 }
 
-module.exports = {
-  create,
-  findById,
-  findByTrackingId,
-
-  findAllAdmin,
-  updateStatus,
-  remove,
-  getStats,
-};
+module.exports = { create, findById, findByTrackingId, findAllAdmin, updateStatus, remove, getStats };
