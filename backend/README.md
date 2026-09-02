@@ -57,7 +57,7 @@ Example body:
 
 ```json
 {
-  "address": "Central Railway Colony, Omkar Nagar, Nagpur, Maharashtra 440027",
+  "address": "1408 Kohinoor Sportsville, Hinjewadi Phase 1, Pune, Maharashtra 411057",
   "email": "contact@technicaljournals.org",
   "phone": "9970294396",
   "social": {

@@ -78,7 +78,7 @@ export default function Contact() {
   const email = SITE?.email || "contact@technicaljournals.org";
   const supportEmail = SITE?.supportEmail || "support@technicaljournals.org";
   const phone = SITE?.phone || "9970294396";
-  const address = SITE?.address || "Central Railway Colony, Omkar Nagar, Nagpur, Maharashtra 440027";
+  const address = SITE?.address || "1408 Kohinoor Sportsville, Hinjewadi Phase 1, Pune, Maharashtra 411057";
 
   const details = [
     { icon: Mail, title: "Email Us", lines: [email, supportEmail], tone: "bg-[#eaf3ff] text-[#0865e8]" },
@@ -225,7 +225,7 @@ export default function Contact() {
           <div className="p-5 sm:p-7 lg:p-8">
             <h2 className="text-[20px] font-[550] text-[#092351]">Our Location</h2>
             <motion.div whileHover={{ boxShadow: "0 10px 25px rgba(14,41,78,.12)" }} className="mt-5 h-[265px] overflow-hidden rounded-[7px] border border-[#d9e1ec] sm:h-[300px] lg:h-[310px]">
-              <iframe title="Technical Journals office location map" className="h-full w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Covent+Garden,+London&output=embed" />
+              <iframe title="Technical Journals office location map" className="h-full w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=1408+Kohinoor+Sportsville,+Hinjewadi+Phase+1,+Pune,+Maharashtra+411057&output=embed" />
             </motion.div>
 
             <div className="mt-6 rounded-[8px] bg-[#f8fafd] p-5 sm:p-6">

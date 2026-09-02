@@ -6,7 +6,7 @@ export const SITE = {
   email: "info@technicaljournals.org",
   supportEmail: "support@technicaljournals.org",
   phone: "9970294396",
-  address: "Central Railway Colony, Omkar Nagar, Nagpur, Maharashtra 440027",
+  address: "1408 Kohinoor Sportsville, Hinjewadi Phase 1, Pune, Maharashtra 411057",
   hours: "Mon - Fri: 9:00 AM - 6:00 PM (GMT)",
   social: {
     facebook: "https://facebook.com/technicaljournals",
@@ -194,7 +194,7 @@ export const REVIEW_WORKFLOW = [
 ];
 
 export const CONTACT_INFO = {
-  address: "Central Railway Colony, Omkar Nagar, Nagpur, Maharashtra 440027",
+  address: " 1408 Kohinoor Sportsville, Hinjewadi Phase 1, Pune, Maharashtra 411057",
   email: "contact@technicaljournals.org",
   phone: "9970294396",
 };
