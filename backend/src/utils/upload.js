@@ -32,7 +32,7 @@ function makeUploader(subfolder) {
 }
 
 function publicUrl(subfolder, filename) {
-  return `/uploads/${subfolder}/${filename}`;
+  return `/backend/uploads/${subfolder}/${filename}`;
 }
 
 module.exports = { makeUploader, publicUrl };

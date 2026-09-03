@@ -24,10 +24,22 @@ app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan(env.nodeEnv === "production" ? "combined" : "dev"));
 
-// Serve uploaded images
-app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
+app.use(
+  "/backend/uploads",
+  express.static(path.join(__dirname, "..", "uploads"))
+);
 
-app.get("/api/health", (_req, res) => res.json({ success: true, message: "API is running" }));
+// Redirect old URLs
+app.use("/uploads", (req, res) => {
+  return res.redirect(302, `/backend/uploads${req.url}`);
+});
+
+app.get("/api/health", (_req, res) =>
+  res.json({
+    success: true,
+    message: "API is running",
+  })
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/journals", journalRoutes);

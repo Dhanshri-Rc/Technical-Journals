@@ -3,7 +3,7 @@
  * Talks to the Node/Express/MongoDB API in /backend.
  */
 
-const BASE_URL = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").replace(/\/$/, "");
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "");
 
 // Origin without the trailing /api — used to resolve uploaded image paths like /uploads/...
 export const API_ORIGIN = BASE_URL.replace(/\/api$/, "");
