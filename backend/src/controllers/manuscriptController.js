@@ -177,7 +177,8 @@ const submitManuscript = asyncHandler(
     ----------------------------- */
 
     const fileUrl =
-      `/backend/uploads/journals/${req.file.filename}`;
+      `/backend/uploads/manuscripts/${req.file.filename}`;
+   
 
 
     /* -----------------------------
